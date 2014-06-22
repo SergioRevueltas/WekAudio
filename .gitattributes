@@ -1,0 +1,11 @@
+# Default
+*               text=auto
+
+# Files we want to normalize
+*.java          text
+*.xml           text
+*.txt           text
+*.project       text
+*.properties    text
+*.classpath     text
+*.prefs         text
