@@ -1,6 +1,5 @@
-package com.srevueltas.core;
+package com.srevueltas.gui;
 
-import com.srevueltas.gui.Window;
 
 
 public class Main {
