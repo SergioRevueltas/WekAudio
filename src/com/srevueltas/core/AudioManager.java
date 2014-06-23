@@ -158,9 +158,83 @@ public class AudioManager {
 	}
 	*/
 
+	
+	
 	public int[][] getAudioData() {
 		return audioData;
 	}
+
+	
+	public AudioInputStream getAudioInputStream() {
+		return audioInputStream;
+	}
+
+
+	
+	public void setAudioInputStream(AudioInputStream audioInputStream) {
+		this.audioInputStream = audioInputStream;
+	}
+
+
+	
+	public int getNumChannels() {
+		return numChannels;
+	}
+
+
+	
+	public void setNumChannels(int numChannels) {
+		this.numChannels = numChannels;
+	}
+
+
+	
+	public int getFrameRate() {
+		return frameRate;
+	}
+
+
+	
+	public void setFrameRate(int frameRate) {
+		this.frameRate = frameRate;
+	}
+
+
+	
+	public int getNumFrames() {
+		return numFrames;
+	}
+
+
+	
+	public void setNumFrames(int numFrames) {
+		this.numFrames = numFrames;
+	}
+
+
+	
+	public int getFrameSize() {
+		return frameSize;
+	}
+
+
+	
+	public void setFrameSize(int frameSize) {
+		this.frameSize = frameSize;
+	}
+
+
+	
+	public boolean isBigEndian() {
+		return isBigEndian;
+	}
+
+
+	
+	public void setBigEndian(boolean isBigEndian) {
+		this.isBigEndian = isBigEndian;
+	}
+
 
 	public void setBuffer(byte[] buffer) {
 		this.buffer = buffer;

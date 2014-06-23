@@ -1,4 +1,4 @@
-package com.srevueltas.core;
+package com.srevueltas.gui;
 
 import java.awt.Color;
 import java.awt.Graphics;

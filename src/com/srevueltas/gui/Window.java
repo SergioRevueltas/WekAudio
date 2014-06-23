@@ -1,12 +1,14 @@
 package com.srevueltas.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Event;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -21,7 +23,6 @@ import javax.swing.filechooser.FileFilter;
 import net.miginfocom.swing.MigLayout;
 
 import com.srevueltas.core.AudioManager;
-import com.srevueltas.core.WavePanel;
 
 
 public class Window extends JFrame implements ActionListener{
@@ -42,8 +43,7 @@ public class Window extends JFrame implements ActionListener{
 	private WavePanel rawWavePanelChannel1;
 	private AudioManager audioManager;
 	private JSeparator separator;
-	private JSeparator separator_1;
-	
+
 	public Window() {
 		super("SergioRevueltasPFC");
 		loadGUI();
@@ -65,22 +65,21 @@ public class Window extends JFrame implements ActionListener{
 		getContentPane().setLayout(new MigLayout("", "[1008px]", "[294.00px:42.00px:291.00px]"));
 		
 		rawWavePanelContainer = new JPanel();
-		rawWavePanelContainer.setLayout(new MigLayout("", "[:451.00:5.00sp][::44.27sp,grow]", "[50.87%:109.00:44.94%,grow][][][50.29%:168.00px:44.90%,grow,center]"));
+		rawWavePanelContainer.setLayout(new MigLayout("", "[:451.00:5.00sp][::45.57sp,grow]", "[50.87%:109.00:44.94%,grow][][:33.00:40.00][50.29%:168.00px:44.90%,grow,center]"));
 		
 		getContentPane().add(rawWavePanelContainer, "cell 0 0,grow");
 		
 		lblChannel = new JLabel("Channel 0");
 		rawWavePanelContainer.add(lblChannel, "cell 0 0,alignx center,aligny center");
+		rawWavePanelContainer.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.gray));
 		
 		channel0Container = new JPanel();
 		rawWavePanelContainer.add(channel0Container, "cell 1 0,grow");
 		channel0Container.setLayout(new BorderLayout());
 		
-		separator_1 = new JSeparator();
-		rawWavePanelContainer.add(separator_1, "cell 1 1");
-		
 		separator = new JSeparator();
-		rawWavePanelContainer.add(separator, "cell 0 2 2 1");
+		rawWavePanelContainer.add(separator, "cell 0 1 2 1,grow");
+		separator.setVisible(true);
 		
 		JLabel lblChannel_1 = new JLabel("Channel 1");
 		rawWavePanelContainer.add(lblChannel_1, "cell 0 3,alignx center,aligny center");
@@ -169,10 +168,14 @@ public class Window extends JFrame implements ActionListener{
 		if(seleccion == JFileChooser.APPROVE_OPTION){
 			String rutaAbs = jfc.getSelectedFile().getAbsolutePath();
 			audioManager.cargarWav(rutaAbs);
+			channel0Container.removeAll();
+			channel1Container.removeAll();
 			rawWavePanelChannel0 = new WavePanel(audioManager.getAudioData()[0],audioManager.getSampleRate(),audioManager.getSampleSizeInBits());
 			channel0Container.add(rawWavePanelChannel0, BorderLayout.CENTER);
-			rawWavePanelChannel1 = new WavePanel(audioManager.getAudioData()[1],audioManager.getSampleRate(),audioManager.getSampleSizeInBits());
-			channel1Container.add(rawWavePanelChannel1, BorderLayout.CENTER);
+			if(audioManager.getNumChannels() == 2) {
+				rawWavePanelChannel1 = new WavePanel(audioManager.getAudioData()[1],audioManager.getSampleRate(),audioManager.getSampleSizeInBits());
+				channel1Container.add(rawWavePanelChannel1, BorderLayout.CENTER);
+			}
 			validate();
 			repaint();
 		}
