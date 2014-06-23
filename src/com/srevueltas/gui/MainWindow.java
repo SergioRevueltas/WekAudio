@@ -3,7 +3,6 @@ package com.srevueltas.gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Event;
-import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -27,7 +26,7 @@ import net.miginfocom.swing.MigLayout;
 import com.srevueltas.core.AudioManager;
 
 
-public class Window extends JFrame implements ActionListener{
+public class MainWindow extends JFrame implements ActionListener{
 
 	private JMenuBar jmenuBar;
 	private JMenu menuArchivo;
@@ -45,10 +44,10 @@ public class Window extends JFrame implements ActionListener{
 	private WavePanel rawWavePanelChannel1;
 	private AudioManager audioManager;
 	private JSeparator separator;
-	private JPanel panel;
+	private JPanel audioInfoPanel;
 	private JTextArea txtrAudioinfo;
 
-	public Window() {
+	public MainWindow() {
 		super("SergioRevueltasPFC");
 		loadGUI();
 		audioManager = new AudioManager();
@@ -68,17 +67,18 @@ public class Window extends JFrame implements ActionListener{
 		setJMenuBarListening();
 		getContentPane().setLayout(new MigLayout("", "[1008px,grow]", "[::40.00px,grow][294.00px:42.00px:291.00px]"));
 		
-		panel = new JPanel();
-		getContentPane().add(panel, "cell 0 0,grow");
-		panel.setLayout(new BorderLayout(0, 0));
+		audioInfoPanel = new JPanel();
+		getContentPane().add(audioInfoPanel, "cell 0 0,grow");
+		audioInfoPanel.setLayout(new BorderLayout(0, 0));
 		
-		txtrAudioinfo = new JTextArea();
+		/*txtrAudioinfo = new JTextArea();
 		txtrAudioinfo.setBackground(SystemColor.menu);
+		txtrAudioinfo.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.gray));
 		txtrAudioinfo.setEditable(false);
-		panel.add(txtrAudioinfo);
-		
+		audioInfoPanel.add(txtrAudioinfo);
+		*/
 		rawWavePanelContainer = new JPanel();
-		rawWavePanelContainer.setLayout(new MigLayout("", "[:451.00:5.00sp][::45.57sp,grow]", "[50.87%:109.00:44.94%,grow][][:33.00:40.00][50.29%:168.00px:44.90%,grow,center]"));
+		rawWavePanelContainer.setLayout(new MigLayout("", "[:5.00sp:5.00sp,grow][::45.00sp,grow]", "[50.87%:109.00:44.94%,grow][][:33.00:40.00][50.29%:168.00px:44.90%,grow,center]"));
 		
 		getContentPane().add(rawWavePanelContainer, "cell 0 1,grow");
 		
@@ -180,7 +180,7 @@ public class Window extends JFrame implements ActionListener{
 		if(seleccion == JFileChooser.APPROVE_OPTION){
 			String rutaAbs = jfc.getSelectedFile().getAbsolutePath();
 			audioManager.cargarWav(rutaAbs);
-			txtrAudioinfo.setText(audioManager.getAudioInfo());
+			//txtrAudioinfo.setText(audioManager.getAudioInfo());
 			channel0Container.removeAll();
 			channel1Container.removeAll();
 			rawWavePanelChannel0 = new WavePanel(audioManager.getAudioData()[0],audioManager.getSampleRate(),audioManager.getSampleSizeInBits());

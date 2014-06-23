@@ -17,7 +17,7 @@ public class WavePanel extends JPanel {
 	private int sampleMaxValue;
 	
 	public WavePanel(int [] audioData, int sampleRate, int sampleSizeInBits) {
-		setLayout(new MigLayout("", "[100.00px:n:100.00px][][][][][][][][][][][][][]", "[100.00px:n:100.00px]"));
+		setLayout(new MigLayout("", "[grow]", "[grow]"));
 		this.audioData = audioData;
 		this.sampleRate = sampleRate;
 		this.sampleMaxValue = (int) Math.pow(2,sampleSizeInBits-1);

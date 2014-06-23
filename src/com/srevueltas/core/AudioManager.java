@@ -21,21 +21,6 @@ public class AudioManager {
 	private int frameSize;
 	private boolean isBigEndian;
 
-	/*
-	public static float SAMPLE_RATE = 44100; // 8000,11025,16000,22050,44100
-	public static int SAMPLE_SIZE_IN_BITS = 8; //8, 16
-	public static int N_CHANNELS = 1; //1, 2
-	public static boolean SIGNO = true;
-	public static boolean BIG_ENDIAN = false;
-	
-	private AudioFormat audioFormat; // Formato de audio de entrada
-	private Mixer.Info[] mixerInfo;  // Lista de mezcladores disponibles
-	private Mixer mezclador; // Mezclador
-	private DataLine.Info linea; // Linea de entrada de captura
-	private TargetDataLine tarjetaSonido; // Puente entre la zona de memoria
-	private boolean stopCapture;
-	*/
-
 	public AudioManager() {
 		this.audioInputStream = null;
 		this.filePath = "";
@@ -48,11 +33,6 @@ public class AudioManager {
 		this.numFrames = 0;
 		this.frameSize = 0;
 		this.isBigEndian = false;
-
-		// this.mixerInfo = AudioSystem.getMixerInfo();
-		// this.audioFormat = new AudioFormat(SAMPLE_RATE, SAMPLE_SIZE_IN_BITS, N_CHANNELS, SIGNO, BIG_ENDIAN);
-		// this.linea = new DataLine.Info(TargetDataLine.class, audioFormat);
-		// inicializarCaptura();
 	}
 
 
@@ -67,6 +47,21 @@ public class AudioManager {
 			this.isBigEndian = audioInputStream.getFormat().isBigEndian();
 		}
 	}
+
+	public String getAudioInfo() {
+		if (audioInputStream != null) {
+			return filePath +
+					"\tEncoding: "+audioInputStream.getFormat().getEncoding().toString() +
+					"\tIs Big Endian = " + isBigEndian + 
+					"\nSample rate = " + sampleRate + " Hz" +
+					"\tSample size = " + sampleSizeInBits + " bits" +
+					"\tFrame size = " + frameSize + " bytes" +
+					"\tNumber of frames = " + numFrames;
+		} else {
+			return "";
+		}
+	}
+
 
 	public void cargarWav(String ruta) {
 		this.filePath = ruta;
@@ -86,7 +81,8 @@ public class AudioManager {
 			e.printStackTrace();
 		}
 		convertToSamplesAndChannels();
-		System.out.println("Archivo: " + ruta +
+		
+		/*System.out.println("Archivo: " + ruta +
 				"\nEncoding: "+audioInputStream.getFormat().getEncoding().toString() +
 				"\nNumero de canales = " + numChannels +
 				"\nSample rate = " + sampleRate + " -- Frame rate = " + frameRate +
@@ -94,22 +90,9 @@ public class AudioManager {
 				"\nFrame size = " + frameSize + " bytes" +
 				"\nNumero de frames = " + numFrames +
 				"\nIs Big Endian = " + isBigEndian);
+				*/
 	}
 	
-	public String getAudioInfo() {
-		if (audioInputStream != null) {
-			return filePath +
-					"\tEncoding: "+audioInputStream.getFormat().getEncoding().toString() +
-					"\tIs Big Endian = " + isBigEndian + 
-					"\nSample rate = " + sampleRate + " Hz" +
-					"\tSample size = " + sampleSizeInBits + " bits" +
-					"\tFrame size = " + frameSize + " bytes" +
-					"\tNumber of frames = " + numFrames;
-		} else {
-			return "";
-		}
-	}
-
 	private void convertToSamplesAndChannels() {
 		audioData = new int[numChannels][numFrames];
 		int sampleIndex = 0;
@@ -123,135 +106,67 @@ public class AudioManager {
 			sampleIndex++;
 		}
 	}
-
+	
 	private int getSixteenBitSample(int high, int low) {
 		return (high << 8) + (low & 0x00ff);
 	}
-	/*
-	private void inicializarCaptura() {
-		//Construccion de una linea de datos con el formato de audio deseado
-		linea = new DataLine.Info(TargetDataLine.class, audioFormat);
-		try {
-			//Bucle para buscar un mezclador compatible con la linea de datos
-			for (int i = 0; i < mixerInfo.length; i++) {
-				mezclador = AudioSystem.getMixer(mixerInfo[i]);
-				if (mezclador.isLineSupported(linea)) {
-					break;
-				}
-			}
-			tarjetaSonido = (TargetDataLine) mezclador.getLine(linea);
-			// Prepare the line for use.
-			tarjetaSonido.open(audioFormat);
-		} catch (LineUnavailableException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	*/
-
-	/*
-	public void run() {
-		//Variable para dejar de capturar
-		stopCapture = false;
-		try {
-
-			while (!stopCapture) {
-				//Lee los datos capturados por el sismeta de audio
-				int cnt = tarjetaSonido.read(buffer, 0, buffer.length);
-				if (cnt > 0) {
-					// Save data in output stream object.
-					//byteArrayOutputStream.write(tempBuffer,0,cnt);
-					for (int i = 0; i < buffer.length; i++) {
-						System.out.println(buffer[i]);
-					}
-
-				}
-			}
-			tarjetaSonido.stop();
-		} catch (Exception e) {
-			System.out.println(e);
-			System.exit(0);
-		}
-	}
-	*/
-
+	
+	
+	
+	
 	
 	
 	public int[][] getAudioData() {
 		return audioData;
 	}
 
-	
 	public AudioInputStream getAudioInputStream() {
 		return audioInputStream;
 	}
-
-
 	
 	public void setAudioInputStream(AudioInputStream audioInputStream) {
 		this.audioInputStream = audioInputStream;
 	}
-
-
 	
 	public int getNumChannels() {
 		return numChannels;
 	}
-
-
 	
 	public void setNumChannels(int numChannels) {
 		this.numChannels = numChannels;
 	}
-
-
 	
 	public int getFrameRate() {
 		return frameRate;
 	}
-
-
 	
 	public void setFrameRate(int frameRate) {
 		this.frameRate = frameRate;
 	}
-
-
 	
 	public int getNumFrames() {
 		return numFrames;
 	}
-
-
 	
 	public void setNumFrames(int numFrames) {
 		this.numFrames = numFrames;
 	}
 
-
-	
 	public int getFrameSize() {
 		return frameSize;
 	}
-
-
 	
 	public void setFrameSize(int frameSize) {
 		this.frameSize = frameSize;
 	}
-
-
 	
 	public boolean isBigEndian() {
 		return isBigEndian;
 	}
-
-
 	
 	public void setBigEndian(boolean isBigEndian) {
 		this.isBigEndian = isBigEndian;
 	}
-
 
 	public void setBuffer(byte[] buffer) {
 		this.buffer = buffer;
@@ -265,32 +180,20 @@ public class AudioManager {
 		this.audioData = audioData;
 	}
 
-	
 	public int getSampleRate() {
 		return sampleRate;
 	}
-
 	
 	public void setSampleRate(int sampleRate) {
 		this.sampleRate = sampleRate;
 	}
-
 	
 	public int getSampleSizeInBits() {
 		return sampleSizeInBits;
 	}
-
 	
 	public void setSampleSizeInBits(int sampleSizeInBits) {
 		this.sampleSizeInBits = sampleSizeInBits;
 	}
 	
-	
-	/*
-	void capturar() {
-		tarjetaSonido.start();
-	//	this.start();
-	}
-
-	*/
 }
