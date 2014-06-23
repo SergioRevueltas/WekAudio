@@ -10,6 +10,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 public class AudioManager {
 
 	private AudioInputStream audioInputStream;
+	private String filePath;
 	private byte[] buffer; // Buffer de datos de audio en bytes
 	private int[][] audioData; // Samples en canales
 	private int numChannels; // 1, 2
@@ -37,6 +38,7 @@ public class AudioManager {
 
 	public AudioManager() {
 		this.audioInputStream = null;
+		this.filePath = "";
 		this.buffer = null;
 		this.audioData = null;
 		this.numChannels = 0;
@@ -67,6 +69,7 @@ public class AudioManager {
 	}
 
 	public void cargarWav(String ruta) {
+		this.filePath = ruta;
 		int result = 0;
 		File file = new File(ruta);
 		try {
@@ -91,6 +94,20 @@ public class AudioManager {
 				"\nFrame size = " + frameSize + " bytes" +
 				"\nNumero de frames = " + numFrames +
 				"\nIs Big Endian = " + isBigEndian);
+	}
+	
+	public String getAudioInfo() {
+		if (audioInputStream != null) {
+			return filePath +
+					"\tEncoding: "+audioInputStream.getFormat().getEncoding().toString() +
+					"\tIs Big Endian = " + isBigEndian + 
+					"\nSample rate = " + sampleRate + " Hz" +
+					"\tSample size = " + sampleSizeInBits + " bits" +
+					"\tFrame size = " + frameSize + " bytes" +
+					"\tNumber of frames = " + numFrames;
+		} else {
+			return "";
+		}
 	}
 
 	private void convertToSamplesAndChannels() {

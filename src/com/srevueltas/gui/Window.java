@@ -3,6 +3,7 @@ package com.srevueltas.gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Event;
+import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -17,6 +18,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
+import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
 
@@ -43,6 +45,8 @@ public class Window extends JFrame implements ActionListener{
 	private WavePanel rawWavePanelChannel1;
 	private AudioManager audioManager;
 	private JSeparator separator;
+	private JPanel panel;
+	private JTextArea txtrAudioinfo;
 
 	public Window() {
 		super("SergioRevueltasPFC");
@@ -62,12 +66,21 @@ public class Window extends JFrame implements ActionListener{
 		rawWavePanelChannel1 = null;
 		loadJMenuBar();
 		setJMenuBarListening();
-		getContentPane().setLayout(new MigLayout("", "[1008px]", "[294.00px:42.00px:291.00px]"));
+		getContentPane().setLayout(new MigLayout("", "[1008px,grow]", "[::40.00px,grow][294.00px:42.00px:291.00px]"));
+		
+		panel = new JPanel();
+		getContentPane().add(panel, "cell 0 0,grow");
+		panel.setLayout(new BorderLayout(0, 0));
+		
+		txtrAudioinfo = new JTextArea();
+		txtrAudioinfo.setBackground(SystemColor.menu);
+		txtrAudioinfo.setEditable(false);
+		panel.add(txtrAudioinfo);
 		
 		rawWavePanelContainer = new JPanel();
 		rawWavePanelContainer.setLayout(new MigLayout("", "[:451.00:5.00sp][::45.57sp,grow]", "[50.87%:109.00:44.94%,grow][][:33.00:40.00][50.29%:168.00px:44.90%,grow,center]"));
 		
-		getContentPane().add(rawWavePanelContainer, "cell 0 0,grow");
+		getContentPane().add(rawWavePanelContainer, "cell 0 1,grow");
 		
 		lblChannel = new JLabel("Channel 0");
 		rawWavePanelContainer.add(lblChannel, "cell 0 0,alignx center,aligny center");
@@ -161,13 +174,13 @@ public class Window extends JFrame implements ActionListener{
 				return false;
 			}
 		};
-		
 		jfc.setFileFilter(filtro);
 		//mostramos el dialog
 		int seleccion = jfc.showOpenDialog(this);
 		if(seleccion == JFileChooser.APPROVE_OPTION){
 			String rutaAbs = jfc.getSelectedFile().getAbsolutePath();
 			audioManager.cargarWav(rutaAbs);
+			txtrAudioinfo.setText(audioManager.getAudioInfo());
 			channel0Container.removeAll();
 			channel1Container.removeAll();
 			rawWavePanelChannel0 = new WavePanel(audioManager.getAudioData()[0],audioManager.getSampleRate(),audioManager.getSampleSizeInBits());
