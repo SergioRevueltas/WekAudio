@@ -2,9 +2,10 @@ package com.srevueltas.core;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.GridLayout;
 
 import javax.swing.JPanel;
+
+import net.miginfocom.swing.MigLayout;
 
 public class WavePanel extends JPanel {
 
@@ -16,7 +17,7 @@ public class WavePanel extends JPanel {
 	private int sampleMaxValue;
 	
 	public WavePanel(int [] audioData, int sampleRate, int sampleSizeInBits) {
-		setLayout(new GridLayout(0,1));
+		setLayout(new MigLayout("", "[100.00px:n:100.00px]", "[100.00px:n:100.00px]"));
 		this.audioData = audioData;
 		this.sampleRate = sampleRate;
 		this.sampleMaxValue = (int) Math.pow(2,sampleSizeInBits-1);

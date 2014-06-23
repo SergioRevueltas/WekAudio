@@ -9,11 +9,16 @@ import java.io.File;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
 import javax.swing.filechooser.FileFilter;
+
+import net.miginfocom.swing.MigLayout;
 
 import com.srevueltas.core.AudioManager;
 import com.srevueltas.core.WavePanel;
@@ -28,26 +33,61 @@ public class Window extends JFrame implements ActionListener{
 	private JMenu menuEdicion;
 	private JMenuItem calcularPitch;
 	private JMenuItem calcularMFCCs;
-	private WavePanel rawWavePanel;
+	private JLabel lblChannel;
 	
+	private JPanel rawWavePanelContainer;
+	private JPanel channel0Container;
+	private JPanel channel1Container;
+	private WavePanel rawWavePanelChannel0;	
+	private WavePanel rawWavePanelChannel1;
 	private AudioManager audioManager;
+	private JSeparator separator;
+	private JSeparator separator_1;
 	
 	public Window() {
 		super("SergioRevueltasPFC");
-		setResizable(true);
-		setBounds(200,200, 500, 350);
-		getContentPane().setLayout(new BorderLayout());
-
+		loadGUI();
 		audioManager = new AudioManager();
 		
-		loadJMenuBar();
-		setJMenuBarListening();
-		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-   
 		show();
 		validate();
 		repaint();
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+
+	private void loadGUI() {
+		setResizable(true);
+		setBounds(200,200, 1024, 800);
+		rawWavePanelChannel0 = null;
+		rawWavePanelChannel1 = null;
+		loadJMenuBar();
+		setJMenuBarListening();
+		getContentPane().setLayout(new MigLayout("", "[1008px]", "[294.00px:42.00px:291.00px]"));
+		
+		rawWavePanelContainer = new JPanel();
+		rawWavePanelContainer.setLayout(new MigLayout("", "[:451.00:5.00sp][::44.27sp,grow]", "[50.87%:109.00:44.94%,grow][][][50.29%:168.00px:44.90%,grow,center]"));
+		
+		getContentPane().add(rawWavePanelContainer, "cell 0 0,grow");
+		
+		lblChannel = new JLabel("Channel 0");
+		rawWavePanelContainer.add(lblChannel, "cell 0 0,alignx center,aligny center");
+		
+		channel0Container = new JPanel();
+		rawWavePanelContainer.add(channel0Container, "cell 1 0,grow");
+		channel0Container.setLayout(new BorderLayout());
+		
+		separator_1 = new JSeparator();
+		rawWavePanelContainer.add(separator_1, "cell 1 1");
+		
+		separator = new JSeparator();
+		rawWavePanelContainer.add(separator, "cell 0 2 2 1");
+		
+		JLabel lblChannel_1 = new JLabel("Channel 1");
+		rawWavePanelContainer.add(lblChannel_1, "cell 0 3,alignx center,aligny center");
+		
+		channel1Container = new JPanel();
+		rawWavePanelContainer.add(channel1Container, "cell 1 3,grow");
+		channel1Container.setLayout(new BorderLayout());
 	}
 
 	private void loadJMenuBar() {
@@ -88,7 +128,7 @@ public class Window extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource()==abrir){
-			abrir();
+			abrirWav();
 		}
 		if(e.getSource()==salir){
 			System.out.println("salir");
@@ -102,7 +142,7 @@ public class Window extends JFrame implements ActionListener{
 		}
 	}
 
-	private void abrir() {
+	private void abrirWav() {
 		//configuramos el filechooser y el filtro de archivos
 		JFileChooser jfc = new JFileChooser("audioFiles");
 		jfc.setDialogTitle("Abrir");
@@ -129,12 +169,15 @@ public class Window extends JFrame implements ActionListener{
 		if(seleccion == JFileChooser.APPROVE_OPTION){
 			String rutaAbs = jfc.getSelectedFile().getAbsolutePath();
 			audioManager.cargarWav(rutaAbs);
-			rawWavePanel = new WavePanel(audioManager.getAudioData()[0],audioManager.getSampleRate(),audioManager.getSampleSizeInBits()); 
-			getContentPane().add(rawWavePanel, BorderLayout.CENTER);
-			show();
+			rawWavePanelChannel0 = new WavePanel(audioManager.getAudioData()[0],audioManager.getSampleRate(),audioManager.getSampleSizeInBits());
+			channel0Container.add(rawWavePanelChannel0, BorderLayout.CENTER);
+			rawWavePanelChannel1 = new WavePanel(audioManager.getAudioData()[1],audioManager.getSampleRate(),audioManager.getSampleSizeInBits());
+			channel1Container.add(rawWavePanelChannel1, BorderLayout.CENTER);
 			validate();
 			repaint();
 		}
 		
 	}
+	
+
 }
