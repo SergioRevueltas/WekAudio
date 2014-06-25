@@ -3,6 +3,7 @@ package com.srevueltas.gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Event;
+import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -71,12 +72,12 @@ public class MainWindow extends JFrame implements ActionListener{
 		getContentPane().add(audioInfoPanel, "cell 0 0,grow");
 		audioInfoPanel.setLayout(new BorderLayout(0, 0));
 		
-		/*txtrAudioinfo = new JTextArea();
+		txtrAudioinfo = new JTextArea();
 		txtrAudioinfo.setBackground(SystemColor.menu);
 		txtrAudioinfo.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.gray));
 		txtrAudioinfo.setEditable(false);
 		audioInfoPanel.add(txtrAudioinfo);
-		*/
+		
 		rawWavePanelContainer = new JPanel();
 		rawWavePanelContainer.setLayout(new MigLayout("", "[:5.00sp:5.00sp,grow][::45.00sp,grow]", "[50.87%:109.00:44.94%,grow][][:33.00:40.00][50.29%:168.00px:44.90%,grow,center]"));
 		
@@ -179,8 +180,7 @@ public class MainWindow extends JFrame implements ActionListener{
 		int seleccion = jfc.showOpenDialog(this);
 		if(seleccion == JFileChooser.APPROVE_OPTION){
 			String rutaAbs = jfc.getSelectedFile().getAbsolutePath();
-			audioManager.cargarWav(rutaAbs);
-			//txtrAudioinfo.setText(audioManager.getAudioInfo());
+			audioManager.loadWav(rutaAbs);
 			channel0Container.removeAll();
 			channel1Container.removeAll();
 			rawWavePanelChannel0 = new WavePanel(audioManager.getAudioData()[0],audioManager.getSampleRate(),audioManager.getSampleSizeInBits());
@@ -189,6 +189,7 @@ public class MainWindow extends JFrame implements ActionListener{
 				rawWavePanelChannel1 = new WavePanel(audioManager.getAudioData()[1],audioManager.getSampleRate(),audioManager.getSampleSizeInBits());
 				channel1Container.add(rawWavePanelChannel1, BorderLayout.CENTER);
 			}
+			txtrAudioinfo.setText(audioManager.getAudioInfo());
 			validate();
 			repaint();
 		}

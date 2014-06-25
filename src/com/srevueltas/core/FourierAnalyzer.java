@@ -23,7 +23,7 @@ public class FourierAnalyzer {
 		this.sampleRate = sampleRate;
 		this.samplesBuffer = new double[sampleSize / 2][2];
 		this.window = new double[sampleSize];
-		Window.computeCoefficients(windowType, window);
+		WindowFunction.computeCoefficients(windowType, window);
 	}
 
 	public void forwardConvert(float[] samples, float[] spectrum) {

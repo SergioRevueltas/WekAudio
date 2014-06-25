@@ -9,6 +9,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class AudioManager {
 
+	private FourierAnalyzer fourierAnalyzer;
 	private AudioInputStream audioInputStream;
 	private String filePath;
 	private byte[] buffer; // Buffer de datos de audio en bytes
@@ -22,6 +23,7 @@ public class AudioManager {
 	private boolean isBigEndian;
 
 	public AudioManager() {
+		this.fourierAnalyzer = null;
 		this.audioInputStream = null;
 		this.filePath = "";
 		this.buffer = null;
@@ -63,7 +65,7 @@ public class AudioManager {
 	}
 
 
-	public void cargarWav(String ruta) {
+	public void loadWav(String ruta) {
 		this.filePath = ruta;
 		int result = 0;
 		File file = new File(ruta);
