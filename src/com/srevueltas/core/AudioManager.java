@@ -3,11 +3,14 @@ package com.srevueltas.core;
 import java.io.File;
 import java.io.IOException;
 
+import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class AudioManager {
+	
+	private static int FRAME_LENGHT = 1024;
 
 	private FourierAnalyzer fourierAnalyzer;
 	private AudioInputStream audioInputStream;
@@ -18,9 +21,11 @@ public class AudioManager {
 	private int sampleRate; // numero de samples por segundo: 8000,11025,16000,22050,44100
 	private int sampleSizeInBits; // 8, 16
 	private int frameRate;
-	private int numFrames;
+	private long numFrames;
 	private int frameSize;
 	private boolean isBigEndian;
+	
+	private int[] currentFrame;
 
 	public AudioManager() {
 		this.fourierAnalyzer = null;
@@ -35,19 +40,41 @@ public class AudioManager {
 		this.numFrames = 0;
 		this.frameSize = 0;
 		this.isBigEndian = false;
+		
+		this.currentFrame = null;
 	}
 
 
-	private void getAudioProperties(AudioInputStream audioInputStream) {
+	private void loadAudioProperties(AudioInputStream audioInputStream) {
 		if (audioInputStream != null) {
 			this.numChannels = audioInputStream.getFormat().getChannels();
 			this.sampleRate = (int) audioInputStream.getFormat().getSampleRate();
 			this.sampleSizeInBits = audioInputStream.getFormat().getSampleSizeInBits();
 			this.frameRate = (int) audioInputStream.getFormat().getFrameRate();
-			this.numFrames = (int) audioInputStream.getFrameLength();
+			this.numFrames = audioInputStream.getFrameLength();
 			this.frameSize = audioInputStream.getFormat().getFrameSize();
 			this.isBigEndian = audioInputStream.getFormat().isBigEndian();
 		}
+	}
+	
+	private AudioInputStream downSampleRate(AudioInputStream audioInputStream, float newSampleRate) {
+		if (audioInputStream != null) {
+			AudioFormat	targetFormat = new AudioFormat(
+					audioInputStream.getFormat().getEncoding(),
+					newSampleRate,
+					sampleSizeInBits,
+					numChannels,
+					frameSize,
+					newSampleRate,
+					isBigEndian);
+			if(!AudioSystem.isConversionSupported(targetFormat, audioInputStream.getFormat())){
+				System.out.println("Conversion is not supported");
+				return null;
+			}
+			AudioInputStream targetStream = AudioSystem.getAudioInputStream(targetFormat, audioInputStream);
+			return targetStream;
+		}
+		return null;
 	}
 
 	public String getAudioInfo() {
@@ -71,9 +98,12 @@ public class AudioManager {
 		File file = new File(ruta);
 		try {
 			audioInputStream = AudioSystem.getAudioInputStream(file);
-			getAudioProperties(audioInputStream);
+			loadAudioProperties(audioInputStream);
+			//AudioInputStream a = downSampleRate(audioInputStream, 8000f);
+			//loadAudioProperties(a);
+			//int n = AudioSystem.write(a, AudioSystem.getAudioFileFormat(file).getType(), new File("a.wav"));
 			// totalBytes = bytes per frame * total number of frames
-			int totalBytes = frameSize * numFrames;
+			int totalBytes = (int) (frameSize * numFrames);
 			this.buffer = new byte[totalBytes];
 			result = audioInputStream.read(buffer);
 			System.out.println("Resultado readInputStream: " + result + " bytes leidos.");
@@ -83,20 +113,10 @@ public class AudioManager {
 			e.printStackTrace();
 		}
 		convertToSamplesAndChannels();
-		
-		/*System.out.println("Archivo: " + ruta +
-				"\nEncoding: "+audioInputStream.getFormat().getEncoding().toString() +
-				"\nNumero de canales = " + numChannels +
-				"\nSample rate = " + sampleRate + " -- Frame rate = " + frameRate +
-				"\nSample size = " + sampleSizeInBits + " bits" +
-				"\nFrame size = " + frameSize + " bytes" +
-				"\nNumero de frames = " + numFrames +
-				"\nIs Big Endian = " + isBigEndian);
-				*/
 	}
 	
 	private void convertToSamplesAndChannels() {
-		audioData = new int[numChannels][numFrames];
+		audioData = new int[numChannels][(int)numFrames];
 		int sampleIndex = 0;
 		for (int t = 0; t < buffer.length;) {
 			for (int channel = 0; channel < numChannels; channel++) {
@@ -114,6 +134,22 @@ public class AudioManager {
 	}
 	
 	
+	
+	private void loadCurrentFrame(int startPosition){
+		if (startPosition >= 0){
+			if (startPosition + FRAME_LENGHT > (audioData.length - 1)) {
+				startPosition = audioData.length - FRAME_LENGHT - 1;
+			}
+		} else {
+			System.out.println("frame start position exception");
+			startPosition = 0;
+		}
+		currentFrame = new int[FRAME_LENGHT];
+		for (int i = startPosition; i < FRAME_LENGHT; i++) {
+			currentFrame[i] = audioData[0][i];
+		}
+	}
+			
 	
 	
 	
@@ -146,11 +182,11 @@ public class AudioManager {
 		this.frameRate = frameRate;
 	}
 	
-	public int getNumFrames() {
+	public long getNumFrames() {
 		return numFrames;
 	}
 	
-	public void setNumFrames(int numFrames) {
+	public void setNumFrames(long numFrames) {
 		this.numFrames = numFrames;
 	}
 

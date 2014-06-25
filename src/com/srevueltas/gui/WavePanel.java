@@ -16,19 +16,25 @@ public class WavePanel extends JPanel {
 	private int sampleRate;
 	private int sampleMaxValue;
 	
-	public WavePanel(int [] audioData, int sampleRate, int sampleSizeInBits) {
+	private int maxHeight;
+	private int maxWidth;
+	private int y[];
+
+	public WavePanel(int [] audioData, int sampleRate, int sampleSizeInBits, int maxHeight, int maxWidth) {
 		setLayout(new MigLayout("", "[grow]", "[grow]"));
 		this.audioData = audioData;
 		this.sampleRate = sampleRate;
 		this.sampleMaxValue = (int) Math.pow(2,sampleSizeInBits-1);
+		this.maxHeight = maxHeight;
+		this.maxWidth = maxWidth;
 	}
 
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
-		paintAmplitudeTimeAxis(g);
+		paintTimeAxis(g);
 		paintAudioRawData(g);
-		
+		//scaleAndPaintAudioData(g);
 		// to test audio data max value
 		//Arrays.sort(audioData);
 		//System.out.println(audioData[audioData.length-1]);
@@ -53,12 +59,31 @@ public class WavePanel extends JPanel {
 			y0 = y1;
 		}
 	}
-
+	/*
+	private void scaleAndPaintAudioData(Graphics g) {
+		this.y = new int[audioData.length];
+		for (int i = 0; i < audioData.length; i++) {
+			y[i] = (int) (audioData[i] * 0.95 + maxHeight/2);
+		}
+		g.setColor(WAVE_COLOR);
+		int sampleIndexIncrement = audioData.length / getWidth();
+		int x0 = 0;
+		int y0 = (int) (getHeight() / 2);
+		//int x1 = 0;
+		for (int i = 1; i < y.length; i++) {
+			int x1 = (int) ((i - 1) * sampleIndexIncrement);
+			int x2 = (int) (i * sampleIndexIncrement);
+			int y1 = y[i - 1];
+			int y2 = y[i];
+			g.drawLine(x1, y1, x2, y2);
+		}
+	}
+	*/
 	/**
-	 * paint responsive axis
+	 * paint responsive time axis, one per second.
 	 * @param g
 	 */
-	private void paintAmplitudeTimeAxis(Graphics g) {
+	private void paintTimeAxis(Graphics g) {
 		g.setColor(AXIS_COLOR);
 		//x axis
 		int xAxisPosition = (int) getHeight() / 2;
