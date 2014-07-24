@@ -11,7 +11,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 public class AudioManager {
 	
 	private static int FRAME_LENGHT = 1024;
-
+	
 	private FourierAnalyzer fourierAnalyzer;
 	private AudioInputStream audioInputStream;
 	private String filePath;
