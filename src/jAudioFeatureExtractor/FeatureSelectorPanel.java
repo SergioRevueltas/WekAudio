@@ -213,11 +213,11 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 
 		control_panel.add(new JLabel("Window Size (samples):"));
 
-		window_length_text_field = new JTextArea("512", 1, 20);
+		window_length_text_field = new JTextArea("1024", 1, 20);
 		control_panel.add(window_length_text_field);
 
 		control_panel.add(new JLabel("Window Overlap (fraction):"));
-		window_overlap_fraction_text_field = new JTextArea("0.0", 1, 20);
+		window_overlap_fraction_text_field = new JTextArea("0.5", 1, 20);
 		control_panel.add(window_overlap_fraction_text_field);
 
 		set_aggregators_button = new JButton("Alter Aggregators");

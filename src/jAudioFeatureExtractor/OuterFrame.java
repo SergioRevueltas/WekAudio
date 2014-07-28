@@ -107,8 +107,8 @@ public class OuterFrame extends JFrame {
 		ace = new JRadioButtonMenuItem("ACE");
 		arff = new JRadioButtonMenuItem("ARFF");
 		ButtonGroup bg = new ButtonGroup();
-		bg.add(ace);
 		bg.add(arff);
+		bg.add(ace);
 
 		
 		// Instantiate panels
@@ -123,7 +123,7 @@ public class OuterFrame extends JFrame {
 		feature_selector_panel.setBackground(blue);
 		recording_selector_panel.setBackground(blue);
 
-		ace.setSelected(true);
+		arff.setSelected(true);
 		ace.addActionListener(controller.outputTypeAction);
 		arff.addActionListener(controller.outputTypeAction);
 		controller.extractionThread = new ExtractionThread(controller, this);

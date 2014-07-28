@@ -6,16 +6,33 @@
 
 package jAudioFeatureExtractor;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-
-import java.io.*;
-
-import javax.sound.sampled.*;
-import jAudioFeatureExtractor.jAudioTools.*;
 import jAudioFeatureExtractor.ACE.XMLParsers.FileFilterXML;
 import jAudioFeatureExtractor.DataTypes.RecordingInfo;
+import jAudioFeatureExtractor.jAudioTools.AudioMethods;
+import jAudioFeatureExtractor.jAudioTools.AudioMethodsPlayback;
+import jAudioFeatureExtractor.jAudioTools.AudioSamples;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.SourceDataLine;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
 
 /**
  * A window that allows users to select audio files to extract features from,
@@ -208,7 +225,7 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 		values_save_path_button = new JButton("Feature Values Save Path:");
 		button_panel.add(values_save_path_button);
 		values_save_path_button.addActionListener(this);
-		values_save_path_text_field = new JTextArea("feature_values_1.xml", 1,
+		values_save_path_text_field = new JTextArea("default.arff", 1,
 				20);
 		button_panel.add(values_save_path_text_field);
 
@@ -664,7 +681,7 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 		// Create the JFileChooser if it does not already exist
 		if (save_file_chooser == null) {
 			save_file_chooser = new JFileChooser();
-			save_file_chooser.setCurrentDirectory(new File("."));
+			save_file_chooser.setCurrentDirectory(new File("exportedFeatureValues"));
 			save_file_chooser.setFileFilter(new FileFilterXML());
 		}
 

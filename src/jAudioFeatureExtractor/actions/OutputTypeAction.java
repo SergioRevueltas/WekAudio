@@ -1,13 +1,11 @@
 package jAudioFeatureExtractor.actions;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 
 import javax.swing.AbstractAction;
+import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButtonMenuItem;
-import javax.swing.JCheckBox;
 
 /**
  * Action responsible for processing when a user changes from either ACE or ARFF
@@ -19,7 +17,7 @@ public class OutputTypeAction extends AbstractAction {
 
 	static final long serialVersionUID = 1;
 
-	private int outputType = 0;
+	private int outputType = 1;
 
 	private JRadioButtonMenuItem ace;
 
