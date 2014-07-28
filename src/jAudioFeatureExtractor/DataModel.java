@@ -1,19 +1,23 @@
 package jAudioFeatureExtractor;
 
-import java.io.File;
-import java.io.OutputStream;
-import java.util.Iterator;
-import java.util.LinkedList;
-
 import jAudioFeatureExtractor.ACE.DataTypes.FeatureDefinition;
 import jAudioFeatureExtractor.ACE.XMLParsers.XMLDocumentParser;
 import jAudioFeatureExtractor.Aggregators.Aggregator;
 import jAudioFeatureExtractor.Aggregators.AggregatorContainer;
-import jAudioFeatureExtractor.AudioFeatures.*;
+import jAudioFeatureExtractor.AudioFeatures.Derivative;
+import jAudioFeatureExtractor.AudioFeatures.FeatureExtractor;
+import jAudioFeatureExtractor.AudioFeatures.Mean;
+import jAudioFeatureExtractor.AudioFeatures.MetaFeatureFactory;
+import jAudioFeatureExtractor.AudioFeatures.StandardDeviation;
 import jAudioFeatureExtractor.DataTypes.RecordingInfo;
 import jAudioFeatureExtractor.jAudioTools.AudioMethodsPlayback;
 //import jAudioFeatureExtractor.jAudioTools.AudioSamples;
 import jAudioFeatureExtractor.jAudioTools.FeatureProcessor;
+
+import java.io.File;
+import java.io.OutputStream;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 /**
  * All components that are not tightly tied to GUI. Used by console interface as
@@ -174,8 +178,7 @@ public class DataModel {
 					featureXMLLocation, "feature_list");
 			extractors = (LinkedList<FeatureExtractor>) lists[0];
 			def = (LinkedList<Boolean>) lists[1];
-			Aggregator[] aggArray = ((LinkedList<Aggregator>) lists[2])
-					.toArray(new Aggregator[] {});
+			Aggregator[] aggArray = ((LinkedList<Aggregator>) lists[2]).toArray(new Aggregator[] {});
 
 			for (int i = 0; i < aggArray.length; ++i) {
 				aggregatorMap.put(aggArray[i].getAggregatorDefinition().name,

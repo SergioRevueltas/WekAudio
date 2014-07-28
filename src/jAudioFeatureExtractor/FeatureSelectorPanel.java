@@ -253,7 +253,8 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 				save_overall_file_featurese_check_box,
 				window_length_text_field, window_overlap_fraction_text_field);
 		controller.dm_.aggregators = new Aggregator[] {
-				(Aggregator) (controller.dm_.aggregatorMap.get("Mean").clone()) };
+				(Aggregator) (controller.dm_.aggregatorMap.get("Mean").clone()),
+				(Aggregator) (controller.dm_.aggregatorMap.get("Density Based Average").clone())};
 	}
 
 	/* PUBLIC METHODS ********************************************************* */
