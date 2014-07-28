@@ -1,7 +1,9 @@
 /**
  * Density Based Average
- * Created by Sergio Revueltas (2014) 
+ * @author Sergio Revueltas 
+ * 
  * Based on P.Angelov and R.Yager paper 
+ * http://dx.doi.org/10.1016/j.ins.2012.08.006
  */
 package jAudioFeatureExtractor.Aggregators;
 
@@ -82,6 +84,7 @@ public class DensityBasedAverage extends Aggregator {
 	/**
 	 * Aggregates the values of the features specified by the init function accross all windows of the data recieved.
 	 * @param double[][][] values where data are [window][feature][values]
+	 * @author Sergio Revueltas
 	 */
 	public void aggregate(double[][][] values) {
 		if ((values == null) || (values.length == 0)) {
@@ -143,49 +146,10 @@ public class DensityBasedAverage extends Aggregator {
 
 				}
 			
-			
-			
 			}	
 		}
 	}
 	
 	
-	private void calculateDensity(double[][][]values, int max){
-		result = new double[max];
-		definition.dimensions = max;
-		double[] densities = new double[max];
-		double[] weights = new double[max];
-		for (int i = 0; i < max; ++i) {
-			int count = 0;
-			double sum = 0.0;
-			double densityAddition = 0.0;
-			
-			for (int j = 0; j < values.length; ++j) {
-				if ((values[j][feature] != null) && (values[j][feature].length > i)) {
-					double distance = 0.0;
-					for (int k = 0; k < values.length; k++) {
-						// calculate the distance/dissimilarity between current value and the rest of values
-						distance += Math.pow(values[j][feature][i] - values[k][feature][i], 2);
-					}
-					// calculate density of current value
-					densities[j] = 1 / (1 + (distance / max));
-					count++;
-				}
-			}
-			// calculate densityAddition
-			for (int j = 0; j < densities.length; j++) {
-				densityAddition += densities[j];						
-			}
-			// calculate the weights
-			for (int j = 0; j < weights.length; j++) {
-				weights[j] = densities[j] / densityAddition;				
-			}
-			// calculate density based average
-			for (int j = 0; j < weights.length; j++) {
-				result[i] += (weights[j] * values[j][feature][i]);				
-			}
-
-		}
-	}
 	
 }
