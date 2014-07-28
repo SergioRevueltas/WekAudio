@@ -404,8 +404,7 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 	 * Initialize the table displaying the features which can be extracted.
 	 */
 	private void setUpFeatureTable() {
-		controller.fstm_.fillTable(controller.dm_.featureDefinitions,
-				controller.dm_.defaults, controller.dm_.is_primary);
+		controller.fstm_.fillTable(controller.dm_.featureDefinitions, controller.dm_.defaults, controller.dm_.is_primary);
 		decorator = new SortingTableModelDecorator(controller.fstm_);
 		features_table = new JTable(decorator);
 
