@@ -1,0 +1,39 @@
+@relation jAudio
+@ATTRIBUTE "Spectral Centroid Overall Average0" NUMERIC
+@ATTRIBUTE "Spectral Rolloff Point Overall Average0" NUMERIC
+@ATTRIBUTE "Spectral Flux Overall Average0" NUMERIC
+@ATTRIBUTE "Compactness Overall Average0" NUMERIC
+@ATTRIBUTE "Spectral Variability Overall Average0" NUMERIC
+@ATTRIBUTE "Root Mean Square Overall Average0" NUMERIC
+@ATTRIBUTE "Fraction Of Low Energy Windows Overall Average0" NUMERIC
+@ATTRIBUTE "Zero Crossings Overall Average0" NUMERIC
+@ATTRIBUTE "Strongest Beat Overall Average0" NUMERIC
+@ATTRIBUTE "Beat Sum Overall Average0" NUMERIC
+@ATTRIBUTE "Strength Of Strongest Beat Overall Average0" NUMERIC
+@ATTRIBUTE "LPC Overall Average0" NUMERIC
+@ATTRIBUTE "LPC Overall Average1" NUMERIC
+@ATTRIBUTE "LPC Overall Average2" NUMERIC
+@ATTRIBUTE "LPC Overall Average3" NUMERIC
+@ATTRIBUTE "LPC Overall Average4" NUMERIC
+@ATTRIBUTE "LPC Overall Average5" NUMERIC
+@ATTRIBUTE "LPC Overall Average6" NUMERIC
+@ATTRIBUTE "LPC Overall Average7" NUMERIC
+@ATTRIBUTE "LPC Overall Average8" NUMERIC
+@ATTRIBUTE "LPC Overall Average9" NUMERIC
+@ATTRIBUTE "Method of Moments Overall Average0" NUMERIC
+@ATTRIBUTE "Method of Moments Overall Average1" NUMERIC
+@ATTRIBUTE "Method of Moments Overall Average2" NUMERIC
+@ATTRIBUTE "Method of Moments Overall Average3" NUMERIC
+@ATTRIBUTE "Method of Moments Overall Average4" NUMERIC
+@ATTRIBUTE "Area Method of Moments of MFCCs Overall Average0" NUMERIC
+@ATTRIBUTE "Area Method of Moments of MFCCs Overall Average1" NUMERIC
+@ATTRIBUTE "Area Method of Moments of MFCCs Overall Average2" NUMERIC
+@ATTRIBUTE "Area Method of Moments of MFCCs Overall Average3" NUMERIC
+@ATTRIBUTE "Area Method of Moments of MFCCs Overall Average4" NUMERIC
+@ATTRIBUTE "Area Method of Moments of MFCCs Overall Average5" NUMERIC
+@ATTRIBUTE "Area Method of Moments of MFCCs Overall Average6" NUMERIC
+@ATTRIBUTE "Area Method of Moments of MFCCs Overall Average7" NUMERIC
+@ATTRIBUTE "Area Method of Moments of MFCCs Overall Average8" NUMERIC
+@ATTRIBUTE "Area Method of Moments of MFCCs Overall Average9" NUMERIC
+@DATA
+2.719E1,7.079E-2,8.659E-5,3.921E3,1.727E-3,9.117E-2,0E0,4.336E1,0E0,0E0,0E0,-9.797E-1,8.739E-1,-2.012E-1,1.288E-1,8.923E-2,-3.54E-2,-5.968E-3,1.166E-1,1.014E-1,0E0,1.522E-1,4.82E1,2.868E3,4.798E5,1.33E8,-1.973E3,1.273E2,5.615E1,-2.076E4,-9.089E3,-3.524E3,7.821E6,8.264E4,3.584E4,5.411E5

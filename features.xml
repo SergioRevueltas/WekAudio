@@ -144,4 +144,6 @@
 	<aggregator>jAudioFeatureExtractor.Aggregators.MFCC</aggregator>
 	<aggregator>jAudioFeatureExtractor.Aggregators.MultipleFeatureHistogram</aggregator>
 	<aggregator>jAudioFeatureExtractor.Aggregators.AreaPolynomialApproximation</aggregator>
+	<aggregator>jAudioFeatureExtractor.Aggregators.DensityBasedAverage</aggregator>
+	
 </featureList>
