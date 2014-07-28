@@ -56,7 +56,6 @@
 	</feature>
 	<feature>
 		<class>jAudioFeatureExtractor.AudioFeatures.StrongestBeat</class>
-		<on/>
 	</feature>
 	<feature>
 		<class>jAudioFeatureExtractor.AudioFeatures.BeatSum</class>

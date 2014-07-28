@@ -681,7 +681,7 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 		// Create the JFileChooser if it does not already exist
 		if (save_file_chooser == null) {
 			save_file_chooser = new JFileChooser();
-			save_file_chooser.setCurrentDirectory(new File("exportedFeatureValues"));
+			save_file_chooser.setCurrentDirectory(new File("exportedFeatureValues/"));
 			save_file_chooser.setFileFilter(new FileFilterXML());
 		}
 

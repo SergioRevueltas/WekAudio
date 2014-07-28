@@ -1,0 +1,39 @@
+@relation jAudio
+@ATTRIBUTE "Spectral Centroid Overall Average0" NUMERIC
+@ATTRIBUTE "Spectral Rolloff Point Overall Average0" NUMERIC
+@ATTRIBUTE "Spectral Flux Overall Average0" NUMERIC
+@ATTRIBUTE "Compactness Overall Average0" NUMERIC
+@ATTRIBUTE "Zero Crossings Overall Average0" NUMERIC
+@ATTRIBUTE "MFCC Overall Average0" NUMERIC
+@ATTRIBUTE "MFCC Overall Average1" NUMERIC
+@ATTRIBUTE "MFCC Overall Average2" NUMERIC
+@ATTRIBUTE "MFCC Overall Average3" NUMERIC
+@ATTRIBUTE "MFCC Overall Average4" NUMERIC
+@ATTRIBUTE "MFCC Overall Average5" NUMERIC
+@ATTRIBUTE "MFCC Overall Average6" NUMERIC
+@ATTRIBUTE "MFCC Overall Average7" NUMERIC
+@ATTRIBUTE "MFCC Overall Average8" NUMERIC
+@ATTRIBUTE "MFCC Overall Average9" NUMERIC
+@ATTRIBUTE "MFCC Overall Average10" NUMERIC
+@ATTRIBUTE "MFCC Overall Average11" NUMERIC
+@ATTRIBUTE "MFCC Overall Average12" NUMERIC
+@ATTRIBUTE "Spectral Centroid Density Based Average0" NUMERIC
+@ATTRIBUTE "Spectral Rolloff Point Density Based Average0" NUMERIC
+@ATTRIBUTE "Spectral Flux Density Based Average0" NUMERIC
+@ATTRIBUTE "Compactness Density Based Average0" NUMERIC
+@ATTRIBUTE "Zero Crossings Density Based Average0" NUMERIC
+@ATTRIBUTE "MFCC Density Based Average0" NUMERIC
+@ATTRIBUTE "MFCC Density Based Average1" NUMERIC
+@ATTRIBUTE "MFCC Density Based Average2" NUMERIC
+@ATTRIBUTE "MFCC Density Based Average3" NUMERIC
+@ATTRIBUTE "MFCC Density Based Average4" NUMERIC
+@ATTRIBUTE "MFCC Density Based Average5" NUMERIC
+@ATTRIBUTE "MFCC Density Based Average6" NUMERIC
+@ATTRIBUTE "MFCC Density Based Average7" NUMERIC
+@ATTRIBUTE "MFCC Density Based Average8" NUMERIC
+@ATTRIBUTE "MFCC Density Based Average9" NUMERIC
+@ATTRIBUTE "MFCC Density Based Average10" NUMERIC
+@ATTRIBUTE "MFCC Density Based Average11" NUMERIC
+@ATTRIBUTE "MFCC Density Based Average12" NUMERIC
+@DATA
+2.719E1,7.079E-2,8.659E-5,3.921E3,4.336E1,-1.591E2,4.111E0,1.185E0,2.075E-1,-3.137E0,-3.509E0,-4.816E0,9.133E-2,-7.668E0,-7.248E0,-4.722E0,-6.411E0,-4.054E0,2.531E1,7.078E-2,8.659E-5,3.946E3,3.459E1,-1.699E2,4.513E0,1.017E0,2.382E-1,-3.172E0,-3.812E0,-4.931E0,1.716E-1,-8.059E0,-7.62E0,-4.86E0,-6.581E0,-3.838E0
