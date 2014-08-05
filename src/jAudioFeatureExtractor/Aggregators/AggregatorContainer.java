@@ -150,6 +150,7 @@ public class AggregatorContainer {
 		for (int i = 0; i < aggregatorList.size(); ++i) {
 			aggregatorList.get(i).outputARFFHeaderEntries(output);
 		}
+		output.writeBytes("@ATTRIBUTE class {amb_A, amb_B}"+System.getProperty("line.separator"));
 		output.writeBytes("@DATA"+System.getProperty("line.separator"));
 	}
 

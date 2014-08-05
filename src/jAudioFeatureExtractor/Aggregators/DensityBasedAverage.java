@@ -120,13 +120,13 @@ public class DensityBasedAverage extends Aggregator {
 							// calculate the distance/dissimilarity between current value i from window j 
 							// and the rest of values i from windows k
 							for (int k = 0; k < values.length; k++) {
-								if ((values[k][feature] != null) && (values[k][feature].length > i)) {
+								if ((values[k][feature] != null) && (values[k][feature].length > i) && j!=k) {
 									distance += Math.pow(values[j][feature][i] - values[k][feature][i], 2);
 									count++;
 								}
 							}
 							// calculate density of current value
-							densities[j] = 1 / (1 + (distance / count));
+							densities[j] = 1 / (1 + (distance / densities.length));
 						}
 					}
 					// calculate densityAddition

@@ -10,17 +10,17 @@ import jAudioFeatureExtractor.Cancel;
 import jAudioFeatureExtractor.ExplicitCancel;
 import jAudioFeatureExtractor.Updater;
 import jAudioFeatureExtractor.ACE.DataTypes.FeatureDefinition;
-import jAudioFeatureExtractor.Aggregators.Aggregator;
 import jAudioFeatureExtractor.Aggregators.AggregatorContainer;
-import jAudioFeatureExtractor.Aggregators.AreaMoments;
-import jAudioFeatureExtractor.Aggregators.MFCC;
-import jAudioFeatureExtractor.Aggregators.Mean;
-import jAudioFeatureExtractor.Aggregators.MultipleFeatureHistogram;
-import jAudioFeatureExtractor.Aggregators.StandardDeviation;
-import jAudioFeatureExtractor.AudioFeatures.*;
-import javax.sound.sampled.*;
-import java.io.*;
+import jAudioFeatureExtractor.AudioFeatures.FeatureExtractor;
+
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.OutputStream;
 import java.util.LinkedList;
+
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
 
 /**
  * This class is used to pre-process and extract features from audio recordings.

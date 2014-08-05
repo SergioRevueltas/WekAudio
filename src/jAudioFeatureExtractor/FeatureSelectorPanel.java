@@ -319,13 +319,10 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 			boolean save_overall_recording_features = save_overall_file_featurese_check_box.isSelected();
 			String feature_values_save_path = "exportedFeatureValues/" + outer_frame.recording_selector_panel.values_save_path_text_field.getText();
 			String feature_definitions_save_path = outer_frame.recording_selector_panel.definitions_save_path_text_field.getText();
-			int window_size = Integer.parseInt(window_length_text_field
-					.getText());
-			double window_overlap = Double
-					.parseDouble(window_overlap_fraction_text_field.getText());
+			int window_size = Integer.parseInt(window_length_text_field.getText());
+			double window_overlap = Double.parseDouble(window_overlap_fraction_text_field.getText());
 			boolean normalise = controller.normalise.isSelected();
-			double sampling_rate = controller.samplingRateAction
-					.getSamplingRate();
+			double sampling_rate = controller.samplingRateAction.getSamplingRate();
 			int outputType = controller.outputTypeAction.getSelected();
 
 			// Get the audio recordings to extract features from and throw an
