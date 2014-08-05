@@ -17,6 +17,7 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.OutputStream;
 import java.util.LinkedList;
+import java.util.Set;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -271,8 +272,9 @@ public class FeatureProcessor {
 	 * 
 	 * @param recording_file
 	 *            The audio file to extract features from.
+	 * @param setFileNames 
 	 */
-	public void extractFeatures(File recording_file, Updater updater)
+	public void extractFeatures(File recording_file, Updater updater, Set<String> setFileNames)
 			throws Exception {
 		// Pre-process the recording and extract the samples from the audio
 		this.updater = updater;
@@ -348,7 +350,7 @@ public class FeatureProcessor {
 		} else if (outputType == 1) {
 			saveARFFFeatureVectorsForARecording(window_feature_values,
 					window_start_indices, recording_file.getPath(),
-					aggregator);
+					aggregator, setFileNames);
 		}
 
 		// Save the feature definitions
@@ -886,6 +888,7 @@ public class FeatureProcessor {
 	 * @param identifier
 	 *            A string to use for identifying this recording. Often a file
 	 *            path.
+	 * @param setFileNames 
 	 * @param overall_feature_values
 	 *            The extracted overall average and standard deviations of the
 	 *            window feature values. The first indice identifies the feature
@@ -902,15 +905,15 @@ public class FeatureProcessor {
 	 */
 	private void saveARFFFeatureVectorsForARecording(
 			double[][][] feature_values, int[] window_start_indices,
-			String identifier, AggregatorContainer aggContainer) throws Exception {
+			String identifier, AggregatorContainer aggContainer, Set<String> setFileNames) throws Exception {
 		// We have to flatten the feature tree into a single set.
 		// Either output overall features or output all features
 		if (save_overall_recording_features) {
 			if (!isARFFOverallHeaderWritten) {
-				aggContainer.outputARFFHeaderEntries(values_writer);
+				aggContainer.outputARFFHeaderEntries(values_writer, setFileNames.toArray(new String[setFileNames.size()]));
 				isARFFOverallHeaderWritten = true;
 			}
-			aggContainer.outputARFFValueEntries(values_writer);
+			aggContainer.outputARFFValueEntries(values_writer, identifier);
 		} else {
 			for (int win = 0; win < feature_values.length; ++win) {
 				for (int feat = 0; feat < feature_values[win].length; ++feat) {

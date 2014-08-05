@@ -144,13 +144,21 @@ public class AggregatorContainer {
 	 * Output the headers for the Weka machine learning format.
 	 * 
 	 * @param output data stream to place output header info to.
+	 * @param setFileNames 
 	 * @throws Exception
 	 */
-	public void outputARFFHeaderEntries(DataOutputStream output) throws Exception {
+	public void outputARFFHeaderEntries(DataOutputStream output, String[] arrayFileNames) throws Exception {
 		for (int i = 0; i < aggregatorList.size(); ++i) {
 			aggregatorList.get(i).outputARFFHeaderEntries(output);
 		}
-		output.writeBytes("@ATTRIBUTE class {amb_A, amb_B}"+System.getProperty("line.separator"));
+		output.writeBytes("@ATTRIBUTE class {");
+		for (int i = 0; i < arrayFileNames.length; i++) {
+			if(i < arrayFileNames.length - 1){	
+				output.writeBytes(arrayFileNames[i] + ", ");				
+			} else {
+				output.writeBytes(arrayFileNames[i] + "}" + System.getProperty("line.separator"));
+			}
+		}
 		output.writeBytes("@DATA"+System.getProperty("line.separator"));
 	}
 
@@ -158,16 +166,16 @@ public class AggregatorContainer {
 	 * Output the content in a Weka data format.
 	 * 
 	 * @param output data stream to place the Weka data in.
+	 * @param identifier 
 	 * @throws Exception IO error occurs.
 	 */
-	public void outputARFFValueEntries(DataOutputStream output) throws Exception {
+	public void outputARFFValueEntries(DataOutputStream output, String identifier) throws Exception {
+		String className = identifier.substring(identifier.lastIndexOf("\\")+1,identifier.lastIndexOf("_"));
 		for (int i = 0; i < aggregatorList.size(); ++i) {
 			aggregatorList.get(i).outputARFFValueEntries(output);
-			if(i< aggregatorList.size()-1){
-				output.writeBytes(",");
-			}
+			output.writeBytes(",");
 		}
-		output.writeBytes(Aggregator.LINE_SEP);
+		output.writeBytes(className + Aggregator.LINE_SEP);
 	}
 
 	void buildAggregatorList() throws Exception{

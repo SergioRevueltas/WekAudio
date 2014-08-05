@@ -16,8 +16,10 @@ import jAudioFeatureExtractor.jAudioTools.FeatureProcessor;
 
 import java.io.File;
 import java.io.OutputStream;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Set;
 
 /**
  * All components that are not tightly tied to GUI. Used by console interface as
@@ -293,6 +295,11 @@ public class DataModel {
 			throw new Exception(
 					"No recordings available to extract features from.");
 
+		Set<String> setFileNames = new HashSet<String>();
+		for (RecordingInfo r : recordings) {
+			setFileNames.add(r.file_path.substring(r.file_path.lastIndexOf("\\")+1,r.file_path.lastIndexOf("_")));
+		}
+		
 		if (updater != null) {
 			updater.setNumberOfFiles(recordings.length);
 		}
@@ -322,7 +329,7 @@ public class DataModel {
 			if (updater != null) {
 				updater.announceUpdate(i, 0);
 			}
-			processor.extractFeatures(load_file, updater);
+			processor.extractFeatures(load_file, updater, setFileNames);
 		}
 
 		// Finalize saved XML files
