@@ -61,7 +61,7 @@ public class featureExtraction{
     /**
      * Number of samples per frame
      */
-    protected final static int frameLength = 512;
+    protected final static int frameLength = 1024;
     /**
      * Number of overlapping samples (usually 50% of frame length)
      */

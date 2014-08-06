@@ -170,7 +170,7 @@ public class FourierAnalyzer {
 	}
 	
 	/**
-	 * Increases the input signal's highers frequencies
+	 * Increases the highers frequencies of the input signal
 	 * 
 	 * Arrays must be the same length
 	 * 
@@ -188,7 +188,7 @@ public class FourierAnalyzer {
 		outSignal[0] = rawSignal[0];
 	}
 	/**
-	 * Increases the input signal's highers frequencies
+	 * Increases the highers frequencies of the input signal 
 	 * 
 	 * Arrays must be the same length
 	 * 

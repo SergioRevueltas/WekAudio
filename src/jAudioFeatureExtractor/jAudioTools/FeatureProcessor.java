@@ -301,10 +301,16 @@ public class FeatureProcessor {
 		for (int i = 0; i < window_start_indices.length; i++)
 			window_start_indices[i] = window_start_indices_I[i].intValue();
 
+		
+		
+		
 		// Extract the feature values from the samples
 		double[][][] window_feature_values = getFeatures(samples,
 				window_start_indices);
 
+		
+		
+		
 		// Find the feature averages and standard deviations if appropriate
 //		AggregatorContainer aggContainer = new AggregatorContainer();
 		// FeatureDefinition[][] overall_feature_definitions = new
