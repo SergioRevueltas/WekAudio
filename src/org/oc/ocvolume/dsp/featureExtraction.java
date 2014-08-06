@@ -69,8 +69,9 @@ public class featureExtraction{
     /**
      * Number of MFCCs per frame
      * Modifed 4/5/06 to be non final variable - Daniel McEnnnis
+     * Modifed 6/8/2014 to 50 - Sergio Revueltas
      */
-    public int numCepstra = 13;
+    public int numCepstra = 50;
     /**
      * FFT Size (Must be be a power of 2)
      */

@@ -23,7 +23,7 @@ public class MFCC extends FeatureExtractor {
 		String name = "MFCC";
 		String description = "MFCC calculations based upon Orange Cow code";
 		String[] attributes = new String[]{"Number of Coeffecients"};
-		definition = new FeatureDefinition(name, description, true, 20,attributes);
+		definition = new FeatureDefinition(name, description, true, 50,attributes);
 		dependencies = new String[] { "Magnitude Spectrum" };
 		offsets = new int[] { 0 };
 		fe = new featureExtraction();
