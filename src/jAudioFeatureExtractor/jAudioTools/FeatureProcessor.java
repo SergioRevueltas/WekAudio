@@ -279,6 +279,8 @@ public class FeatureProcessor {
 		// Pre-process the recording and extract the samples from the audio
 		this.updater = updater;
 		double[] samples = preProcessRecording(recording_file);
+		
+		
 		if(cancel.isCancel()){
 			throw new ExplicitCancel("Killed after loading data");
 		}
@@ -633,7 +635,10 @@ public class FeatureProcessor {
 			audio_data.normalizeMixedDownSamples();
 
 		// Return all channels compressed into one
-		return audio_data.getSamplesMixedDown();
+		double[] samples = audio_data.getSamplesMixedDown();
+		
+		return preEmphasis(samples);
+		
 	}
 
 	/**
@@ -728,6 +733,24 @@ public class FeatureProcessor {
 		// Return the results
 		return results;
 	}
+	
+	/**
+	 * Increases the highers frequencies of the input signal
+	 * 
+	 * Arrays must be the same length
+	 * 
+	 * @param rawSignal The input signal samples
+	 * @return outSignal The output signal samples
+	 */
+	private double[] preEmphasis(double[] rawSignal) {
+		double[] outSignal = new double[rawSignal.length];
+		for (int i = rawSignal.length - 1; i > 0; i--) {
+			outSignal[i] = rawSignal[i] - 0.95f * rawSignal[i - 1];
+		}
+		outSignal[0] = rawSignal[0];
+		return outSignal;
+	}
+	
 
 	/**
 	 * Calculates the averages and standard deviations over a whole recording of
