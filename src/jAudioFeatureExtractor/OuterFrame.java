@@ -96,7 +96,7 @@ public class OuterFrame extends JFrame {
 		splash.loadSplash();		
 			
 		// Set window title
-		setTitle("jAudio Feature Extractor");
+		setTitle("Sergio Revueltas PFC");
 
 		// Make quit when exit box pressed
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -116,7 +116,7 @@ public class OuterFrame extends JFrame {
 		feature_selector_panel = new FeatureSelectorPanel(this, c);
 
 		controller.normalise = new JCheckBoxMenuItem("Normalise Recordings",
-				false);
+				true);
 
 		Color blue = new Color((float) 0.75, (float) 0.85, (float) 1.0);
 		this.getContentPane().setBackground(blue);

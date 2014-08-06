@@ -1,10 +1,35 @@
 package jAudioFeatureExtractor;
 
-import java.util.Vector;
-
 import jAudioFeatureExtractor.ACE.DataTypes.Batch;
 import jAudioFeatureExtractor.ACE.DataTypes.FeatureDefinition;
-import jAudioFeatureExtractor.actions.*;
+import jAudioFeatureExtractor.actions.AboutAction;
+import jAudioFeatureExtractor.actions.AddBatchAction;
+import jAudioFeatureExtractor.actions.AddRecordingAction;
+import jAudioFeatureExtractor.actions.CopyAction;
+import jAudioFeatureExtractor.actions.CutAction;
+import jAudioFeatureExtractor.actions.EditRecordingsAction;
+import jAudioFeatureExtractor.actions.ExecuteBatchAction;
+import jAudioFeatureExtractor.actions.ExitAction;
+import jAudioFeatureExtractor.actions.GlobalWindowChangeAction;
+import jAudioFeatureExtractor.actions.LoadAction;
+import jAudioFeatureExtractor.actions.LoadBatchAction;
+import jAudioFeatureExtractor.actions.OutputTypeAction;
+import jAudioFeatureExtractor.actions.PasteAction;
+import jAudioFeatureExtractor.actions.PlayMIDIAction;
+import jAudioFeatureExtractor.actions.PlayNowAction;
+import jAudioFeatureExtractor.actions.PlaySamplesAction;
+import jAudioFeatureExtractor.actions.RecordFromMicAction;
+import jAudioFeatureExtractor.actions.RemoveBatchAction;
+import jAudioFeatureExtractor.actions.RemoveRecordingAction;
+import jAudioFeatureExtractor.actions.SamplingRateAction;
+import jAudioFeatureExtractor.actions.SaveAction;
+import jAudioFeatureExtractor.actions.SaveBatchAction;
+import jAudioFeatureExtractor.actions.StopPlayBackAction;
+import jAudioFeatureExtractor.actions.SynthesizeAction;
+import jAudioFeatureExtractor.actions.ViewBatchAction;
+import jAudioFeatureExtractor.actions.ViewFileInfoAction;
+
+import java.util.Vector;
 
 import javax.swing.AbstractAction;
 import javax.swing.JCheckBoxMenuItem;
@@ -222,7 +247,7 @@ public class Controller implements ModelListener {
 	 * normalise needs to be available for saving settings and similar actions
 	 */
 	public JCheckBoxMenuItem normalise = new JCheckBoxMenuItem(
-			"Normalise Recordings", false);
+			"Normalise Recordings", true);
 
 	/**
 	 * @see jAudioFeatureExtractor.ExtractionThread

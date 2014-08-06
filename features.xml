@@ -81,6 +81,7 @@
 	</feature>
 	<feature>
 		<class>jAudioFeatureExtractor.AudioFeatures.LPC</class>
+		<on/>	
 	</feature>
 	<feature>
 		<class>jAudioFeatureExtractor.AudioFeatures.Moments</class>

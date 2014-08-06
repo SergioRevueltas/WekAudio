@@ -112,6 +112,8 @@ public class FeatureProcessor {
 	private Cancel cancel;
 	
 	private AggregatorContainer aggregator;
+	
+	private boolean preEmphasis;
 
 	/* CONSTRUCTOR ************************************************************ */
 
@@ -258,6 +260,8 @@ public class FeatureProcessor {
 		} else if (outputType == 1) {
 			writeValuesARFFHeader();
 		}
+		
+		preEmphasis = false;
 	}
 
 	/* PUBLIC METHODS ********************************************************* */
@@ -637,7 +641,9 @@ public class FeatureProcessor {
 		// Return all channels compressed into one
 		double[] samples = audio_data.getSamplesMixedDown();
 		
-		return preEmphasis(samples);
+		if(preEmphasis)
+			preEmphasis(samples);
+		return samples;
 		
 	}
 
