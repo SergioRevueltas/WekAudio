@@ -16,8 +16,8 @@ import jAudioFeatureExtractor.AudioFeatures.FeatureExtractor;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Set;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -276,9 +276,9 @@ public class FeatureProcessor {
 	 * 
 	 * @param recording_file
 	 *            The audio file to extract features from.
-	 * @param setFileNames 
+	 * @param listFileNames 
 	 */
-	public void extractFeatures(File recording_file, Updater updater, Set<String> setFileNames)
+	public void extractFeatures(File recording_file, Updater updater, ArrayList<String> listFileNames)
 			throws Exception {
 		// Pre-process the recording and extract the samples from the audio
 		this.updater = updater;
@@ -362,7 +362,7 @@ public class FeatureProcessor {
 		} else if (outputType == 1) {
 			saveARFFFeatureVectorsForARecording(window_feature_values,
 					window_start_indices, recording_file.getPath(),
-					aggregator, setFileNames);
+					aggregator, listFileNames);
 		}
 
 		// Save the feature definitions
@@ -923,7 +923,7 @@ public class FeatureProcessor {
 	 * @param identifier
 	 *            A string to use for identifying this recording. Often a file
 	 *            path.
-	 * @param setFileNames 
+	 * @param listFileNames 
 	 * @param overall_feature_values
 	 *            The extracted overall average and standard deviations of the
 	 *            window feature values. The first indice identifies the feature
@@ -940,12 +940,12 @@ public class FeatureProcessor {
 	 */
 	private void saveARFFFeatureVectorsForARecording(
 			double[][][] feature_values, int[] window_start_indices,
-			String identifier, AggregatorContainer aggContainer, Set<String> setFileNames) throws Exception {
+			String identifier, AggregatorContainer aggContainer, ArrayList<String> listFileNames) throws Exception {
 		// We have to flatten the feature tree into a single set.
 		// Either output overall features or output all features
 		if (save_overall_recording_features) {
 			if (!isARFFOverallHeaderWritten) {
-				aggContainer.outputARFFHeaderEntries(values_writer, setFileNames.toArray(new String[setFileNames.size()]));
+				aggContainer.outputARFFHeaderEntries(values_writer, listFileNames.toArray(new String[listFileNames.size()]));
 				isARFFOverallHeaderWritten = true;
 			}
 			aggContainer.outputARFFValueEntries(values_writer, identifier);

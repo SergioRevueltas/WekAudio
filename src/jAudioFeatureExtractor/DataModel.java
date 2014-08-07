@@ -16,6 +16,8 @@ import jAudioFeatureExtractor.jAudioTools.FeatureProcessor;
 
 import java.io.File;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -299,7 +301,8 @@ public class DataModel {
 		for (RecordingInfo r : recordings) {
 			setFileNames.add(r.file_path.substring(r.file_path.lastIndexOf("\\")+1,r.file_path.lastIndexOf("_")));
 		}
-		
+		ArrayList<String> listFileNames = new ArrayList<String>(setFileNames);
+		Collections.sort(listFileNames);
 		if (updater != null) {
 			updater.setNumberOfFiles(recordings.length);
 		}
@@ -329,7 +332,7 @@ public class DataModel {
 			if (updater != null) {
 				updater.announceUpdate(i, 0);
 			}
-			processor.extractFeatures(load_file, updater, setFileNames);
+			processor.extractFeatures(load_file, updater, listFileNames);
 		}
 
 		// Finalize saved XML files
