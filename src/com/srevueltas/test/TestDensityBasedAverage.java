@@ -7,7 +7,10 @@ import jAudioFeatureExtractor.Aggregators.Mean;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
+/**
+ * Unit tests for DBA method
+ * @author Sergio Revueltas
+ */
 public class TestDensityBasedAverage {
 	
 	Controller c;
@@ -76,11 +79,11 @@ public class TestDensityBasedAverage {
 	}
 
 	/**
-	 * For exmple [-10,10,-10,10,-10,10]
+	 * For example [-10,10,-10,10,-10,10]
 	 * @throws Exception
 	 */
 	@Test
-	public void when_values_are_simetric_to_zero_then_dba_is_zero() throws Exception{
+	public void when_values_are_simetric_to_zero_with_the_same_distance_then_dba_is_zero() throws Exception{
 		double [][][] values = new double[100][1][1];
 		
 		for (int i = 0; i < values.length; i++) {
@@ -108,7 +111,7 @@ public class TestDensityBasedAverage {
 	 * @throws Exception
 	 */
 	@Test
-	public void when_values_are_simetric_to_zero_then_mean_is_zero() throws Exception{	
+	public void when_values_are_simetric_to_zero_with_different_distances_then_mean_is_zero() throws Exception{	
 		double [][][] values = new double[200][1][1];
 		int count = -100;
 		for (int i = 0; i < values.length; i++) {
@@ -165,7 +168,7 @@ public class TestDensityBasedAverage {
 			for (int j = 0; j < values[i].length; j++) {
 				for (int k = 0; k < values[i][j].length; k++) {
 					if (i == 0){
-						values[i][j][k] = 10000;
+						values[i][j][k] = 1000;
 					} else {
 						values[i][j][k] = 100;
 					}
