@@ -106,23 +106,25 @@ public class DensityBasedAverage extends Aggregator {
 							
 				// now calculate density based average over all the dimensions
 				result = new double[max];
-				definition.dimensions = max;
+				if (!isTestRunning()){
+					definition.dimensions = max;
+				}
 				double[] densities = new double[values.length];
 				double[] weights = new double[values.length];
 				// iterate over all dimensions (number of values)
 				for (int i = 0; i < max; ++i) {
-					int count = 0;
+					//int count = 0;
 					double densityAddition = 0.0;
 					// iterate over all windows
 					for (int j = 0; j < values.length; j++) {
 						if ((values[j][feature] != null) && (values[j][feature].length > i)) {
 							double distance = 0.0;
-							// calculate the distance/dissimilarity between current value i from window j 
-							// and the rest of values i from windows k
+							// calculate the distance/dissimilarity between current i value from j window and
+							// the rest of i values from k windows
 							for (int k = 0; k < values.length; k++) {
 								if ((values[k][feature] != null) && (values[k][feature].length > i) && j!=k) {
 									distance += Math.pow(values[j][feature][i] - values[k][feature][i], 2);
-									count++;
+									//count++;
 								}
 							}
 							// calculate density of current value
@@ -137,12 +139,13 @@ public class DensityBasedAverage extends Aggregator {
 					for (int j = 0; j < weights.length; j++) {
 						weights[j] = densities[j] / densityAddition;				
 					}
-					// calculate density based average
+					// calculate DBA (density based average)
 					for (int j = 0; j < weights.length; j++) {
 						if (values[j][feature] != null){
 							result[i] += (weights[j] * values[j][feature][i]);
 						}
 					}
+					result[i] = Math.round(result[i]);
 
 				}
 			

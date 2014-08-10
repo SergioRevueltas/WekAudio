@@ -21,11 +21,9 @@
 	</feature>
 	<feature>
 		<class>jAudioFeatureExtractor.AudioFeatures.SpectralCentroid</class>
-		<on/>
 	</feature>
 	<feature>
 		<class>jAudioFeatureExtractor.AudioFeatures.SpectralRolloffPoint</class>
-		<on/>
 	</feature>
 	<feature>
 		<class>jAudioFeatureExtractor.AudioFeatures.SpectralFlux</class>

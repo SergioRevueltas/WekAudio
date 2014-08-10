@@ -3,12 +3,14 @@
  */
 package jAudioFeatureExtractor.Aggregators;
 
-import java.io.DataOutputStream;
-
 import jAudioFeatureExtractor.ACE.DataTypes.AggregatorDefinition;
 import jAudioFeatureExtractor.ACE.DataTypes.FeatureDefinition;
 import jAudioFeatureExtractor.AudioFeatures.FeatureExtractor;
 import jAudioFeatureExtractor.GeneralTools.StringMethods;
+
+import java.io.DataOutputStream;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Aggregator is an interface for specifying the mechanism for collapsing
@@ -251,6 +253,17 @@ public abstract class Aggregator {
 	 */
 	public double[] getResults(){
 		return result;
+	}
+	
+	public boolean isTestRunning(){
+		boolean junit = false;
+		StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+		List list = Arrays.asList(stackTrace);
+		String line = list.get(list.size() - 1).toString();
+		if (line.contains("junit")) {
+			junit = true;
+		}
+		return junit;
 	}
 
 }

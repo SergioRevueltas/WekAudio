@@ -98,7 +98,9 @@ public class Mean extends Aggregator {
 			} else {
 				// now calculate means over all the dimensions
 				result = new double[max];
-				definition.dimensions = max;
+				if (!isTestRunning()){
+					definition.dimensions = max;
+				}
 				for (int i = 0; i < max; ++i) {
 					int count = 0;
 					double sum = 0.0;

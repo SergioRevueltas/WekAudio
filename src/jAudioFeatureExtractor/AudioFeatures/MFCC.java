@@ -18,12 +18,13 @@ public class MFCC extends FeatureExtractor {
 	
 	/**
 	 * Construct a MFCC object, setting definition, dependencies, and offsets.
+	 * Edited by Sergio Revueltas 07/08/2014
 	 */
 	public MFCC() {
 		String name = "MFCC";
 		String description = "MFCC calculations based upon Orange Cow code";
 		String[] attributes = new String[]{"Number of Coeffecients"};
-		definition = new FeatureDefinition(name, description, true, 50,attributes);
+		definition = new FeatureDefinition(name, description, true, 30,attributes);
 		dependencies = new String[] { "Magnitude Spectrum" };
 		offsets = new int[] { 0 };
 		fe = new featureExtraction();
