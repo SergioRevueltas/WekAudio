@@ -147,7 +147,7 @@ public class DensityBasedAverage extends Aggregator {
 					}
 					// to fix bug related to double precision
 					//52 bit mantissa, so will be able to represent a 32bit integer without lost of data.
-					result[i] = Math.round(result[i]);
+					//result[i] = Math.round(result[i]);
 				}
 			
 			}	

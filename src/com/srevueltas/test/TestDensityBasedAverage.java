@@ -135,7 +135,10 @@ public class TestDensityBasedAverage {
 		Assert.assertArrayEquals(meanResults, dbaResults, 0);
 	}
 	
-	
+	/**
+	 * From 900 to 1100
+	 * @throws Exception
+	 */
 	@Test
 	public void when_values_are_simetric_to_1000_then_dba_is_like_mean() throws Exception{	
 		double [][][] values = new double[200][1][1];
