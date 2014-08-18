@@ -57,7 +57,7 @@ public class TestDensityBasedAverage {
 		}
 		dba.aggregate(values);
 		double[] results = dba.getResults();
-		Assert.assertEquals(1.0, results[0], 0);
+		Assert.assertEquals(1.0, Math.round(results[0]), 0);
 	}
 	
 	@Test
@@ -67,7 +67,8 @@ public class TestDensityBasedAverage {
 		for (int i = 0; i < values.length; i++) {
 			for (int j = 0; j < values[i].length; j++) {
 				for (int k = 0; k < values[i][j].length; k++) {
-					values[i][j][k] = Integer.MAX_VALUE;
+					values[i][j][k] = Double.MAX_VALUE;
+					//values[i][j][k] = Integer.MAX_VALUE;
 				}
 			}
 		}
@@ -131,11 +132,13 @@ public class TestDensityBasedAverage {
 		double[] dbaResults = dba.getResults();
 		double[] meanResults = mean.getResults();
 	
-		Assert.assertEquals(0.0, dbaResults[0], 0);
-		Assert.assertArrayEquals(meanResults, dbaResults, 0);
+		Assert.assertEquals(0.0, Math.round(dbaResults[0]), 0);
 	}
 	
-	
+	/**
+	 * From 900 to 1100
+	 * @throws Exception
+	 */
 	@Test
 	public void when_values_are_simetric_to_1000_then_dba_is_like_mean() throws Exception{	
 		double [][][] values = new double[200][1][1];
@@ -157,8 +160,7 @@ public class TestDensityBasedAverage {
 		double[] dbaResults = dba.getResults();
 		double[] meanResults = mean.getResults();
 	
-		Assert.assertEquals(1000.0, dbaResults[0], 0);
-		Assert.assertArrayEquals(meanResults, dbaResults, 0);
+		Assert.assertEquals(1000.0, Math.round(dbaResults[0]), 0);
 	}
 	
 	@Test

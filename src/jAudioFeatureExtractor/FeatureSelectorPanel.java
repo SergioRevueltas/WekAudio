@@ -35,50 +35,41 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 /**
- * A window that allows users to select which features to save as well as some
- * basic parameters relating to these features. These parameters include the
- * window length to use for analyses, the amount of overlap between analysis
- * windows, whether or not to normalise recordings and thh sampling rate to
- * convert files to before analysis. The user may also see the features that can
- * be extracted and some details about them.
+ * A window that allows users to select which features to save as well as some basic parameters relating to these
+ * features. These parameters include the window length to use for analyses, the amount of overlap between analysis
+ * windows, whether or not to normalise recordings and thh sampling rate to convert files to before analysis. The user
+ * may also see the features that can be extracted and some details about them.
  * <p>
- * The resulting feature values and the features used are saved to the specified
- * feature_vector_file and a feature_key_file respectively.
+ * The resulting feature values and the features used are saved to the specified feature_vector_file and a
+ * feature_key_file respectively.
  * <p>
- * For multi-track audio, analyses are performed of all tracks mixed down into
- * one channel.
+ * For multi-track audio, analyses are performed of all tracks mixed down into one channel.
  * <p>
- * Note that some features need other features in order to be extracted. Even if
- * a feature is not checked for saving, it will be extracted (but not saved) if
- * another feature that needs it is checked for saving.
+ * Note that some features need other features in order to be extracted. Even if a feature is not checked for saving, it
+ * will be extracted (but not saved) if another feature that needs it is checked for saving.
  * <p>
- * The table allows the user to view all features which are possible to extract.
- * The Save click box indicates whether this feature is to be saved during
- * feature extraction. The Dimensions indicate how many values are produced for
- * a given feature each time that it is extracted. Double clicking on a feature
- * brings up a window describing it.
+ * The table allows the user to view all features which are possible to extract. The Save click box indicates whether
+ * this feature is to be saved during feature extraction. The Dimensions indicate how many values are produced for a
+ * given feature each time that it is extracted. Double clicking on a feature brings up a window describing it.
  * <p>
- * The Window Size indicates the number of samples that are used in each window
- * that features are extracted from.
+ * The Window Size indicates the number of samples that are used in each window that features are extracted from.
  * <p>
- * The Window Overlap indicates the fraction, from 0 to 1, of overlap between
- * adjacent analysis windows.
+ * The Window Overlap indicates the fraction, from 0 to 1, of overlap between adjacent analysis windows.
  * <p>
- * The Normalise check box indicates whether recordings are to be normalised
- * before playback.
+ * The Normalise check box indicates whether recordings are to be normalised before playback.
  * <p>
- * The Extract Features button extracts all appropriate features and from the
- * loaded recordings, and saves the results to disk.
+ * The Extract Features button extracts all appropriate features and from the loaded recordings, and saves the results
+ * to disk.
  * <p>
- * The Feature Values Save Path and Feature Definitions Save Path allow the user
- * to choose what paths to save extracted feature values and feature definitions
- * respectively.
+ * The Feature Values Save Path and Feature Definitions Save Path allow the user to choose what paths to save extracted
+ * feature values and feature definitions respectively.
  * <p>
  * Double clicking on a feature will bring up a description of it.
  * 
  * @author Cory McKay
  */
 public class FeatureSelectorPanel extends JPanel implements ActionListener {
+
 	/* FIELDS ***************************************************************** */
 
 	static final long serialVersionUID = 1;
@@ -93,13 +84,12 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 	 */
 	// private FeatureExtractor[] feature_extractors;
 	/**
-	 * The default as to whether each feature is to be saved after feature
-	 * extraction. Indices correspond to those of feature_extractors.
+	 * The default as to whether each feature is to be saved after feature extraction. Indices correspond to those of
+	 * feature_extractors.
 	 */
 	// private boolean[] feature_save_defaults;
 	/**
-	 * Replaces feature_extractors and feature_save_defaults with a view neutral
-	 * model.
+	 * Replaces feature_extractors and feature_save_defaults with a view neutral model.
 	 */
 	// private FeatureModel featureModel;
 	private MultipleToggleAction multipleToggleAction;
@@ -144,6 +134,8 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 	// private JButton definitions_save_path_button;
 	private JButton extract_features_button;
 
+	private JButton classify_button;
+
 	private JButton set_aggregators_button;
 
 	/**
@@ -170,8 +162,7 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 	 * <p>
 	 * Daniel McEnnis 05-08-05 Added GlobalWindowChange button
 	 * 
-	 * @param outer_frame
-	 *            The GUI element that contains this object.
+	 * @param outer_frame The GUI element that contains this object.
 	 */
 	public FeatureSelectorPanel(OuterFrame outer_frame, Controller c) {
 		// Store containing panel
@@ -228,6 +219,10 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 		extract_features_button.addActionListener(this);
 		control_panel.add(extract_features_button);
 
+		classify_button = new JButton("Classify");
+		classify_button.addActionListener(this);
+		control_panel.add(classify_button);
+
 		control_panel.setBackground(blue);
 
 		add(control_panel, BorderLayout.SOUTH);
@@ -253,8 +248,8 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 				save_overall_file_featurese_check_box,
 				window_length_text_field, window_overlap_fraction_text_field);
 		controller.dm_.aggregators = new Aggregator[] {
-				(Aggregator) (controller.dm_.aggregatorMap.get("Mean").clone()),
-				(Aggregator) (controller.dm_.aggregatorMap.get("Density Based Average").clone())};
+				//(Aggregator) (controller.dm_.aggregatorMap.get("Mean").clone()),
+				(Aggregator) (controller.dm_.aggregatorMap.get("Density Based Average").clone()) };
 	}
 
 	/* PUBLIC METHODS ********************************************************* */
@@ -262,13 +257,12 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 	/**
 	 * Calls the appropriate methods when the buttons are pressed.
 	 * 
-	 * @param event
-	 *            The event that is to be reacted to.
+	 * @param event The event that is to be reacted to.
 	 */
 	public void actionPerformed(ActionEvent event) {
 		// React to the extract_features_button
 		if (event.getSource().equals(extract_features_button))
-			extractFeatures();
+			extractFeatures(false);
 		else if (event.getSource()
 				.equals(save_overall_file_featurese_check_box)) {
 			JCheckBox tmp = (JCheckBox) event.getSource();
@@ -301,24 +295,27 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 			}
 		} else if (event.getSource().equals(set_aggregators_button)) {
 			launchAggEditTable();
+		} else if (event.getSource().equals(classify_button)) {
+			classifyInstances(true);
 		}
 	}
 
 	/* PRIVATE METHODS ******************************************************** */
-
 	/**
-	 * Extract the features from all of the files added in the GUI. Use the
-	 * features and feature settings entered in the GUI. Save the results in a
-	 * feature_vector_file and the features used in a feature_key_file. Daniel
-	 * McEnnis 05-09-05 Moved guts into FeatureModel
+	 * Extract the features from all of the files added in the GUI. Use the features and feature settings entered in the
+	 * GUI. Save the results in a feature_vector_file and the features used in a feature_key_file. Daniel McEnnis
+	 * 05-09-05 Moved guts into FeatureModel
 	 */
-	private void extractFeatures() {
+	private void classifyInstances(boolean toClassify) {
 		try {
 			// Get the control parameters
 			boolean save_features_for_each_window = save_window_features_check_box.isSelected();
 			boolean save_overall_recording_features = save_overall_file_featurese_check_box.isSelected();
-			String feature_values_save_path = "exportedFeatureValues/" + outer_frame.recording_selector_panel.values_save_path_text_field.getText();
-			String feature_definitions_save_path = outer_frame.recording_selector_panel.definitions_save_path_text_field.getText();
+			String feature_values_save_path =
+					"exportedFeatureValues/"
+							+ outer_frame.recording_selector_panel.values_save_path_text_field.getText();
+			String feature_definitions_save_path =
+					outer_frame.recording_selector_panel.definitions_save_path_text_field.getText();
 			int window_size = Integer.parseInt(window_length_text_field.getText());
 			double window_overlap = Double.parseDouble(window_overlap_fraction_text_field.getText());
 			boolean normalise = controller.normalise.isSelected();
@@ -356,12 +353,90 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 			}
 
 			// Find which features are selected to be saved
-			// boolean[] features_to_save = new
-			// boolean[controller.dm_.features.length];
 			for (int i = 0; i < controller.dm_.defaults.length; i++) {
-				// features_to_save[i] = ((Boolean)
-				// controller.fstm_.getValueAt(i,
-				// 0)).booleanValue();
+				controller.dm_.defaults[i] = ((Boolean) controller.fstm_
+						.getValueAt(i, 0)).booleanValue();
+			}
+
+			// threads can only execute once. Rebuild the thread here
+			controller.extractionThread = new ExtractionThread(controller, outer_frame);
+
+			controller.extractionThread.setup(save_overall_recording_features,
+					save_features_for_each_window, feature_values_save_path,
+					feature_definitions_save_path, window_size, window_overlap, toClassify);
+			// extract the features
+			controller.extractionThread.start();
+
+		} catch (Throwable t) {
+			// React to the Java Runtime running out of memory
+			if (t.toString().equals("java.lang.OutOfMemoryError"))
+				JOptionPane
+						.showMessageDialog(
+								null,
+								"The Java Runtime ran out of memory. Please rerun this program\n"
+										+ "with a higher amount of memory assigned to the Java Runtime heap.",
+								"ERROR", JOptionPane.ERROR_MESSAGE);
+			else if (t instanceof Exception) {
+				Exception e = (Exception) t;
+				JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR",
+						JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+
+	/**
+	 * Extract the features from all of the files added in the GUI. Use the features and feature settings entered in the
+	 * GUI. Save the results in a feature_vector_file and the features used in a feature_key_file. Daniel McEnnis
+	 * 05-09-05 Moved guts into FeatureModel
+	 */
+	private void extractFeatures(boolean toClassify) {
+		try {
+			// Get the control parameters
+			boolean save_features_for_each_window = save_window_features_check_box.isSelected();
+			boolean save_overall_recording_features = save_overall_file_featurese_check_box.isSelected();
+			String feature_values_save_path =
+					"exportedFeatureValues/"
+							+ outer_frame.recording_selector_panel.values_save_path_text_field.getText();
+			String feature_definitions_save_path =
+					outer_frame.recording_selector_panel.definitions_save_path_text_field.getText();
+			int window_size = Integer.parseInt(window_length_text_field.getText());
+			double window_overlap = Double.parseDouble(window_overlap_fraction_text_field.getText());
+			boolean normalise = controller.normalise.isSelected();
+			double sampling_rate = controller.samplingRateAction.getSamplingRate();
+			int outputType = controller.outputTypeAction.getSelected();
+
+			// Get the audio recordings to extract features from and throw an
+			// exception
+			// if there are none
+			RecordingInfo[] recordings = controller.dm_.recordingInfo;
+			if (recordings == null)
+				throw new Exception(
+						"No recordings available to extract features from.");
+
+			// Ask user if s/he wishes to change window size to a power of 2 if
+			// it
+			// is not already.
+			if (window_size >= 0) {
+				int pow_2_size = jAudioFeatureExtractor.GeneralTools.Statistics
+						.ensureIsPowerOfN(window_size, 2);
+				if (window_size != pow_2_size) {
+					String message = "Given window size is " + window_size
+							+ ", which is not a power\n"
+							+ "of 2. Would you like to increase this to the\n"
+							+ "next highest power of 2 (" + pow_2_size + ")?";
+					int convert = JOptionPane.showConfirmDialog(null, message,
+							"WARNING", JOptionPane.YES_NO_OPTION);
+					if (convert == JOptionPane.YES_OPTION) {
+						window_length_text_field.setText(String
+								.valueOf(pow_2_size));
+						window_size = Integer.parseInt(window_length_text_field
+								.getText());
+					}
+				}
+			}
+
+			// Find which features are selected to be saved
+			for (int i = 0; i < controller.dm_.defaults.length; i++) {
 				controller.dm_.defaults[i] = ((Boolean) controller.fstm_
 						.getValueAt(i, 0)).booleanValue();
 			}
@@ -369,10 +444,10 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 			// threads can only execute once. Rebuild the thread here
 			controller.extractionThread = new ExtractionThread(controller,
 					outer_frame);
-
+			// setup thread
 			controller.extractionThread.setup(save_overall_recording_features,
 					save_features_for_each_window, feature_values_save_path,
-					feature_definitions_save_path, window_size, window_overlap);
+					feature_definitions_save_path, window_size, window_overlap, toClassify);
 			// extract the features
 			controller.extractionThread.start();
 
@@ -397,7 +472,8 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 	 * Initialize the table displaying the features which can be extracted.
 	 */
 	private void setUpFeatureTable() {
-		controller.fstm_.fillTable(controller.dm_.featureDefinitions, controller.dm_.defaults, controller.dm_.is_primary);
+		controller.fstm_.fillTable(controller.dm_.featureDefinitions, controller.dm_.defaults,
+				controller.dm_.is_primary);
 		decorator = new SortingTableModelDecorator(controller.fstm_);
 		features_table = new JTable(decorator);
 
@@ -420,6 +496,7 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 		// add handler for sorting panel
 		JTableHeader header = (JTableHeader) features_table.getTableHeader();
 		header.addMouseListener(new MouseAdapter() {
+
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 1) {
 					TableColumnModel tcm = features_table.getColumnModel();
@@ -448,12 +525,12 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 	}
 
 	/**
-	 * Makes it so that if a row is double clicked on, a description of the
-	 * corresponding feature is displayed along with its dependencies. Daniel
-	 * McEnnis 05-07-05 Replaced message box with editDialog frame.
+	 * Makes it so that if a row is double clicked on, a description of the corresponding feature is displayed along
+	 * with its dependencies. Daniel McEnnis 05-07-05 Replaced message box with editDialog frame.
 	 */
 	public void addTableMouseListener() {
 		features_table.addMouseListener(new MouseAdapter() {
+
 			public void mouseClicked(MouseEvent event) {
 				if (event.getClickCount() == 2) {
 					int[] row_clicked = new int[1];
@@ -487,17 +564,14 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 	// }
 
 	/**
-	 * Allows the user to select or enter a file path using a JFileChooser. If
-	 * the selected path does not have an extension of .XML, it is given this
-	 * extension. If the chosen path refers to a file that already exists, then
-	 * the user is asked if s/he wishes to overwrite the selected file.
+	 * Allows the user to select or enter a file path using a JFileChooser. If the selected path does not have an
+	 * extension of .XML, it is given this extension. If the chosen path refers to a file that already exists, then the
+	 * user is asked if s/he wishes to overwrite the selected file.
 	 * <p>
-	 * No file is actually saved or overwritten by this method. The selected
-	 * path is simply returned.
+	 * No file is actually saved or overwritten by this method. The selected path is simply returned.
 	 * 
-	 * @return The path of the selected or entered file. A value of null is
-	 *         returned if the user presses the cancel button or chooses not to
-	 *         overwrite a file.
+	 * @return The path of the selected or entered file. A value of null is returned if the user presses the cancel
+	 *         button or chooses not to overwrite a file.
 	 */
 
 	/**

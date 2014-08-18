@@ -1,5 +1,9 @@
 package jAudioFeatureExtractor.ACE.DataTypes;
 
+import jAudioFeatureExtractor.DataModel;
+import jAudioFeatureExtractor.Aggregators.Aggregator;
+import jAudioFeatureExtractor.DataTypes.RecordingInfo;
+
 import java.io.File;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -7,13 +11,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
-
-import javax.swing.JOptionPane;
-
-import jAudioFeatureExtractor.DataModel;
-import jAudioFeatureExtractor.Aggregators.Aggregator;
-import jAudioFeatureExtractor.DataTypes.RecordingInfo;
-import jAudioFeatureExtractor.jAudioTools.AudioSamples;
 
 
 /**
@@ -82,8 +79,8 @@ public class Batch implements Serializable {
 	 */
 	public void execute() throws Exception {
 		applyAttributes();
-		dm_.extract(windowSize, windowOverlap, samplingRate, normalise,
-				perWindow, overall, recording, outputType);
+		dm_.extractAndClassify(windowSize, windowOverlap, samplingRate, normalise,
+				perWindow, overall, recording, outputType, false);
 	}
 
 	/**

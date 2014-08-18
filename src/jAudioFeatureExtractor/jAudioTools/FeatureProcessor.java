@@ -24,24 +24,23 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 
 /**
- * This class is used to pre-process and extract features from audio recordings.
- * An object of this class should be instantiated with parameters indicating the
- * details of how features are to be extracted.
+ * This class is used to pre-process and extract features from audio recordings. An object of this class should be
+ * instantiated with parameters indicating the details of how features are to be extracted.
  * <p>
- * The extractFeatures method should be called whenever recordings are available
- * to be analyzed. This mehtod should be called once for each recording. It will
- * write the extracted feature values to an XML file after each call. This will
+ * The extractFeatures method should be called whenever recordings are available to be analyzed. This mehtod should be
+ * called once for each recording. It will write the extracted feature values to an XML file after each call. This will
  * also save feature definitions to another XML file.
  * <p>
- * The finalize method should be called when all features have been extracted.
- * this will finish writing the feature values to the XML file.
+ * The finalize method should be called when all features have been extracted. this will finish writing the feature
+ * values to the XML file.
  * <p>
- * Features are extracted for each window and, when appropriate, the average and
- * standard deviation of each of these features is extracted for each recording.
+ * Features are extracted for each window and, when appropriate, the average and standard deviation of each of these
+ * features is extracted for each recording.
  * 
  * @author Cory McKay
  */
 public class FeatureProcessor {
+
 	/* FIELDS ***************************************************************** */
 
 	// The window size used for dividing up the recordings to classify.
@@ -107,53 +106,37 @@ public class FeatureProcessor {
 
 	// hook for allowing visual updates of how far along the extraction is.
 	private Updater updater;
-	
+
 	// allows external entity to halt execution
 	private Cancel cancel;
-	
+
 	private AggregatorContainer aggregator;
-	
+
 	private boolean preEmphasis;
+
+	private boolean toClassify;
 
 	/* CONSTRUCTOR ************************************************************ */
 
 	/**
-	 * Validates and stores the configuration to use for extracting features
-	 * from audio recordings. Prepares the feature_vector_file and
-	 * feature_key_file XML files for saving.
+	 * Validates and stores the configuration to use for extracting features from audio recordings. Prepares the
+	 * feature_vector_file and feature_key_file XML files for saving.
 	 * 
-	 * @param window_size
-	 *            The size of the windows that the audio recordings are to be
-	 *            broken into.
-	 * @param window_overlap
-	 *            The fraction of overlap between adjacent windows. Must be
-	 *            between 0.0 and less than 1.0, with a value of 0.0 meaning no
-	 *            overlap.
-	 * @param sampling_rate
-	 *            The sampling rate that all recordings are to be converted to
-	 *            before feature extraction
-	 * @param normalise
-	 *            Whether or not to normalise recordings before feature
-	 *            extraction.
-	 * @param all_feature_extractors
-	 *            All features that can be extracted.
-	 * @param features_to_save_among_all
-	 *            Which features are to be saved. Entries correspond to the
+	 * @param window_size The size of the windows that the audio recordings are to be broken into.
+	 * @param window_overlap The fraction of overlap between adjacent windows. Must be between 0.0 and less than 1.0,
+	 *            with a value of 0.0 meaning no overlap.
+	 * @param sampling_rate The sampling rate that all recordings are to be converted to before feature extraction
+	 * @param normalise Whether or not to normalise recordings before feature extraction.
+	 * @param all_feature_extractors All features that can be extracted.
+	 * @param features_to_save_among_all Which features are to be saved. Entries correspond to the
 	 *            all_feature_extractors parameter.
-	 * @param save_features_for_each_window
-	 *            Whether or not to save features individually for each window.
-	 * @param save_overall_recording_features
-	 *            Whetehr or not to save the average and standard deviation of
-	 *            each feature accross all windows.
-	 * @param feature_values_save_path
-	 *            The path of the feature_vector_file XML file to save feature
-	 *            values to.
-	 * @param feature_definitions_save_path
-	 *            The path of the feature_key_file file to save feature
-	 *            definitions to.
-	 * @throws Exception
-	 *             Throws an informative exception if the input parameters are
-	 *             invalid.
+	 * @param save_features_for_each_window Whether or not to save features individually for each window.
+	 * @param save_overall_recording_features Whetehr or not to save the average and standard deviation of each feature
+	 *            accross all windows.
+	 * @param feature_values_save_path The path of the feature_vector_file XML file to save feature values to.
+	 * @param feature_definitions_save_path The path of the feature_key_file file to save feature definitions to.
+	 * @param toClassify
+	 * @throws Exception Throws an informative exception if the input parameters are invalid.
 	 */
 	public FeatureProcessor(int window_size, double window_overlap,
 			double sampling_rate, boolean normalise,
@@ -162,20 +145,20 @@ public class FeatureProcessor {
 			boolean save_features_for_each_window,
 			boolean save_overall_recording_features,
 			OutputStream feature_values_save_path,
-			OutputStream feature_definitions_save_path, 
+			OutputStream feature_definitions_save_path,
 			int outputType,
 			Cancel cancel,
-			AggregatorContainer container)
+			AggregatorContainer container, boolean toClassify)
 			throws Exception {
 		this.cancel = cancel;
-		if(container!=null){
-			if((container.getNumberOfAggregators()==0)&&(save_overall_recording_features)){
+		if (container != null) {
+			if ((container.getNumberOfAggregators() == 0) && (save_overall_recording_features)) {
 				throw new Exception(
 						"Saving aggregated values for each file without any aggregators specified");
 			}
-		}else if(save_overall_recording_features){
+		} else if (save_overall_recording_features) {
 			throw new Exception(
-				"Saving aggregators for each file but executed without setting a non-null AggregatorContainer object");
+					"Saving aggregators for each file but executed without setting a non-null AggregatorContainer object");
 		}
 		aggregator = container;
 		// Throw an exception if the control parameters are invalid
@@ -260,32 +243,30 @@ public class FeatureProcessor {
 		} else if (outputType == 1) {
 			writeValuesARFFHeader();
 		}
-		
+
 		preEmphasis = false;
+		this.toClassify = toClassify;
 	}
 
 	/* PUBLIC METHODS ********************************************************* */
 
 	/**
-	 * Extract the features from the provided audio file. This includes
-	 * pre-processing involving sample rate conversion, windowing and, possibly,
-	 * normalisation. The feature values are automatically saved to the
-	 * feature_vector_file XML file referred to by the values_writer field. The
-	 * definitions of the features that are saved are also saved to the
+	 * Extract the features from the provided audio file. This includes pre-processing involving sample rate conversion,
+	 * windowing and, possibly, normalisation. The feature values are automatically saved to the feature_vector_file XML
+	 * file referred to by the values_writer field. The definitions of the features that are saved are also saved to the
 	 * feature_key_file XML file referred to by the definitions_writer field.
 	 * 
-	 * @param recording_file
-	 *            The audio file to extract features from.
-	 * @param listFileNames 
+	 * @param recording_file The audio file to extract features from.
+	 * @param listFileNames
+	 * @return window_feature_values
 	 */
-	public void extractFeatures(File recording_file, Updater updater, ArrayList<String> listFileNames)
+	public double[][][] extractFeatures(File recording_file, Updater updater, ArrayList<String> listFileNames)
 			throws Exception {
 		// Pre-process the recording and extract the samples from the audio
 		this.updater = updater;
 		double[] samples = preProcessRecording(recording_file);
-		
-		
-		if(cancel.isCancel()){
+
+		if (cancel.isCancel()) {
 			throw new ExplicitCancel("Killed after loading data");
 		}
 		// Calculate the window start indices
@@ -307,79 +288,45 @@ public class FeatureProcessor {
 		for (int i = 0; i < window_start_indices.length; i++)
 			window_start_indices[i] = window_start_indices_I[i].intValue();
 
-		
-		
-		
 		// Extract the feature values from the samples
 		double[][][] window_feature_values = getFeatures(samples,
 				window_start_indices);
 
-		
-		
-		
-		// Find the feature averages and standard deviations if appropriate
-//		AggregatorContainer aggContainer = new AggregatorContainer();
-		// FeatureDefinition[][] overall_feature_definitions = new
-		// FeatureDefinition[1][];
-		// overall_feature_definitions[0] = null;
-		// double[][] overall_feature_values = null;
 		if (save_overall_recording_features) {
-//			Aggregator[] aggList = new Aggregator[10];
-//			aggList[0] = new Mean();
-//			aggList[1] = new StandardDeviation();
-//			aggList[2] = new AreaMoments();
-//			aggList[2].setParameters(new String[]{"MFCC"},new String[]{});
-//			aggList[3] = new AreaMoments();
-//			aggList[3].setParameters(new String[]{"LPC"},new String[]{});
-//			aggList[4] = new AreaMoments();
-//			aggList[4].setParameters(new String[]{"Derivative of MFCC"},new String[]{});
-//			aggList[5] = new AreaMoments();
-//			aggList[5].setParameters(new String[]{"Derivative of LPC"},new String[]{});
-//			aggList[6] = new AreaMoments();
-//			aggList[6].setParameters(new String[]{"Derivative of Method of Moments"},new String[]{});
-//			aggList[7] = new AreaMoments();
-//			aggList[7].setParameters(new String[]{"Method of Moments"},new String[]{});
-//			aggList[8] = new AreaMoments();
-//			aggList[8].setParameters(new String[]{"Area Method of Moments"},new String[]{});
-//			aggList[9] = new AreaMoments();
-//			aggList[9].setParameters(new String[]{"Derivative of Area Method of Moments"},new String[]{});
-//			aggList[2] = new MFCC();
-//			aggList[2] = new MultipleFeatureHistogram(new FeatureExtractor[]{new RMS(),new ZeroCrossings()},8);
-//			aggList[3] = new MultipleFeatureHistogram(new FeatureExtractor[]{new MFCC()},4);
-			
-//			aggContainer.add(aggList);
 			aggregator.add(feature_extractors, features_to_save);
 			aggregator.aggregate(window_feature_values);
 		}
-		// overall_feature_values = getOverallRecordingFeatures(
-		// window_feature_values, overall_feature_definitions);
-
-		// Save the feature values for this recording
-		if (outputType == 0) {
-			saveACEFeatureVectorsForARecording(window_feature_values,
-					window_start_indices, recording_file.getPath(),
-					aggregator);
-		} else if (outputType == 1) {
-			saveARFFFeatureVectorsForARecording(window_feature_values,
-					window_start_indices, recording_file.getPath(),
-					aggregator, listFileNames);
+		if (!toClassify) {
+			// Save the feature values for this recording
+			if (outputType == 0) {
+				saveACEFeatureVectorsForARecording(window_feature_values,
+						window_start_indices, recording_file.getPath(),
+						aggregator);
+			} else if (outputType == 1) {
+				saveARFFFeatureVectorsForARecording(window_feature_values,
+						window_start_indices, recording_file.getPath(),
+						aggregator, listFileNames);
+			}
 		}
-
 		// Save the feature definitions
 		if (!definitions_written && (outputType == 0)) {
 			saveFeatureDefinitions(window_feature_values, aggregator);
 		}
+
+		if (toClassify) {
+			return window_feature_values;
+		} else {
+			return null;
+		}
 	}
 
 	/**
-	 * Write the ending tags to the feature_vector_file XML file. Close the
-	 * DataOutputStreams that were used to write it.
+	 * Write the ending tags to the feature_vector_file XML file. Close the DataOutputStreams that were used to write
+	 * it.
 	 * <p>
 	 * This method should be called when all features have been extracted.
 	 * 
-	 * @throws Exception
-	 *             Throws an exception if cannot write or close the output
-	 *             streams.
+	 * @throws Exception Throws an exception if cannot write or close the output streams.
 	 */
 	public void finalize() throws Exception {
 		if (outputType == 0) {
@@ -391,18 +338,14 @@ public class FeatureProcessor {
 	/* PRIVATE METHODS ******************************************************** */
 
 	/**
-	 * Fills the feature_extractors, feature_extractor_dependencies,
-	 * max_feature_offsets and features_to_save fields. This involves finding
-	 * which features need to be extracted and in what order and finding the
-	 * indices of dependencies and the maximum offsets for each feature.
+	 * Fills the feature_extractors, feature_extractor_dependencies, max_feature_offsets and features_to_save fields.
+	 * This involves finding which features need to be extracted and in what order and finding the indices of
+	 * dependencies and the maximum offsets for each feature.
 	 * <p>
-	 * Daniel McEnnis 05-07-05 added feature offset of dependancies to
-	 * max_offset
+	 * Daniel McEnnis 05-07-05 added feature offset of dependancies to max_offset
 	 * 
-	 * @param all_feature_extractors
-	 *            All features that can be extracted.
-	 * @param features_to_save_among_all
-	 *            Which features are to be saved. Entries correspond to the
+	 * @param all_feature_extractors All features that can be extracted.
+	 * @param features_to_save_among_all Which features are to be saved. Entries correspond to the
 	 *            all_feature_extractors parameter.
 	 */
 	private void findAndOrderFeaturesToExtract(
@@ -575,17 +518,13 @@ public class FeatureProcessor {
 	/**
 	 * Returns the samples stored in the given audio file.
 	 * <p>
-	 * The samples are re-encoded using the sampling rate in the sampling_rate
-	 * field. All channels are projected into one channel. Samples are
-	 * normalised if the normalise field is true.
+	 * The samples are re-encoded using the sampling rate in the sampling_rate field. All channels are projected into
+	 * one channel. Samples are normalised if the normalise field is true.
 	 * 
-	 * @param recording_file
-	 *            The audio file to extract samples from.
-	 * @return The processed audio samples. Values will fall between a minimum
-	 *         of -1 and +1. The indice identifies the sample number.
-	 * @throws Exception
-	 *             An exception is thrown if a problem occurs during file
-	 *             reading or pre- processing.
+	 * @param recording_file The audio file to extract samples from.
+	 * @return The processed audio samples. Values will fall between a minimum of -1 and +1. The indice identifies the
+	 *         sample number.
+	 * @throws Exception An exception is thrown if a problem occurs during file reading or pre- processing.
 	 */
 	private double[] preProcessRecording(File recording_file) throws Exception {
 		// Get the original audio and its format
@@ -640,30 +579,22 @@ public class FeatureProcessor {
 
 		// Return all channels compressed into one
 		double[] samples = audio_data.getSamplesMixedDown();
-		
-		if(preEmphasis)
+
+		if (preEmphasis)
 			preEmphasis(samples);
 		return samples;
-		
+
 	}
 
 	/**
-	 * Breaks the given samples into the appropriate windows and extracts
-	 * features from each window.
+	 * Breaks the given samples into the appropriate windows and extracts features from each window.
 	 * 
-	 * @param samples
-	 *            The samples to extract features from. Sample values should
-	 *            generally be between -1 and +1.
-	 * @param window_start_indices
-	 *            The indices of samples that correspond to where each window
-	 *            should start.
-	 * @return The extracted feature values for this recording. The first indice
-	 *         identifies the window, the second identifies the feature and the
-	 *         third identifies the feature value. The third dimension will be
-	 *         null if the given feature could not be extracted for the given
-	 *         window.
-	 * @throws Exception
-	 *             Throws an exception if a problem occurs.
+	 * @param samples The samples to extract features from. Sample values should generally be between -1 and +1.
+	 * @param window_start_indices The indices of samples that correspond to where each window should start.
+	 * @return The extracted feature values for this recording. The first indice identifies the window, the second
+	 *         identifies the feature and the third identifies the feature value. The third dimension will be null if
+	 *         the given feature could not be extracted for the given window.
+	 * @throws Exception Throws an exception if a problem occurs.
 	 */
 	private double[][][] getFeatures(double[] samples,
 			int[] window_start_indices) throws Exception {
@@ -687,7 +618,7 @@ public class FeatureProcessor {
 			// Do we need to update the progress bar or not
 			if ((updater != null) && (win % updateThreshold == 0)) {
 				updater.announceUpdate(win);
-				if(cancel.isCancel()){
+				if (cancel.isCancel()) {
 					throw new ExplicitCancel("Killed while processing features");
 				}
 			}
@@ -739,7 +670,7 @@ public class FeatureProcessor {
 		// Return the results
 		return results;
 	}
-	
+
 	/**
 	 * Increases the highers frequencies of the input signal
 	 * 
@@ -756,31 +687,21 @@ public class FeatureProcessor {
 		outSignal[0] = rawSignal[0];
 		return outSignal;
 	}
-	
 
 	/**
-	 * Calculates the averages and standard deviations over a whole recording of
-	 * each of the windows-based features. Generates a feature definition for
-	 * each such feature.
+	 * Calculates the averages and standard deviations over a whole recording of each of the windows-based features.
+	 * Generates a feature definition for each such feature.
 	 * 
-	 * @param window_feature_values
-	 *            The extracted window feature values for this recording. The
-	 *            first indice identifies the window, the second identifies the
-	 *            feature and the third identifies the feature value. The third
-	 *            dimension will be null if the given feature could not be
-	 *            extracted for the given window.
-	 * @param overall_feature_definitions
-	 *            The feature definitions of the features that are returned by
-	 *            this method. This array will be filled by this method, and
-	 *            should be an empty FeatureDefintion[1][] when it is passed to
-	 *            this method. The first indice will be filled by this method
-	 *            with a single array of FeatureDefinitions, which have the same
-	 *            order as the returned feature values.
-	 * @return The extracted overall average and standard deviations of the
-	 *         window feature values that were passed to this method. The first
-	 *         indice identifies the feature and the second iddentifies the
-	 *         feature value. The order of the features correspond to the
-	 *         FeatureDefinitions that the overall_feature_definitions parameter
+	 * @param window_feature_values The extracted window feature values for this recording. The first indice identifies
+	 *            the window, the second identifies the feature and the third identifies the feature value. The third
+	 *            dimension will be null if the given feature could not be extracted for the given window.
+	 * @param overall_feature_definitions The feature definitions of the features that are returned by this method. This
+	 *            array will be filled by this method, and should be an empty FeatureDefintion[1][] when it is passed to
+	 *            this method. The first indice will be filled by this method with a single array of FeatureDefinitions,
+	 *            which have the same order as the returned feature values.
+	 * @return The extracted overall average and standard deviations of the window feature values that were passed to
+	 *         this method. The first indice identifies the feature and the second iddentifies the feature value. The
+	 *         order of the features correspond to the FeatureDefinitions that the overall_feature_definitions parameter
 	 *         is filled with.
 	 */
 	private double[][] getOverallRecordingFeatures(
@@ -850,11 +771,9 @@ public class FeatureProcessor {
 	}
 
 	/**
-	 * Writes the headers, consisting mainly of the DTD, to the
-	 * feature_vector_file..
+	 * Writes the headers, consisting mainly of the DTD, to the feature_vector_file..
 	 * 
-	 * @throws Exception
-	 *             Throws an exception if cannot write.
+	 * @throws Exception Throws an exception if cannot write.
 	 */
 	private void writeValuesXMLHeader() throws Exception {
 		String feature_vector_header = new String("<?xml version=\"1.0\"?>\n"
@@ -874,13 +793,11 @@ public class FeatureProcessor {
 	}
 
 	/**
-	 * Write headers for an ARFF file. If saving for overall features, this must
-	 * be postponed until the overall features have been calculated. If this a
-	 * perWindow arff file, then all the feature headers can be extracted now
-	 * and no hacks are needed.
+	 * Write headers for an ARFF file. If saving for overall features, this must be postponed until the overall features
+	 * have been calculated. If this a perWindow arff file, then all the feature headers can be extracted now and no
+	 * hacks are needed.
 	 * <p>
-	 * <b>NOTE</b>: This procedure breaks if a feature to be saved has a
-	 * variable number of dimensions
+	 * <b>NOTE</b>: This procedure breaks if a feature to be saved has a variable number of dimensions
 	 * 
 	 * @throws Exception
 	 */
@@ -906,37 +823,22 @@ public class FeatureProcessor {
 	}
 
 	/**
-	 * Writes the given feature values extracted from a recording to the
-	 * feature_vector_file ARFF file referred to by the values_writer field.
-	 * Writes either the individual window features or the overall recording
-	 * features to disk.
+	 * Writes the given feature values extracted from a recording to the feature_vector_file ARFF file referred to by
+	 * the values_writer field. Writes either the individual window features or the overall recording features to disk.
 	 * 
-	 * @param feature_values
-	 *            The extracted feature values for this recording. The first
-	 *            indice identifies the window, the second identifies the
-	 *            feature and the third identifies the feature value. The third
-	 *            dimension will be null if the given feature could not be
-	 *            extracted for the given window.
-	 * @param window_start_indices
-	 *            The indices of samples that correspond to where each window
-	 *            should start.
-	 * @param identifier
-	 *            A string to use for identifying this recording. Often a file
-	 *            path.
-	 * @param listFileNames 
-	 * @param overall_feature_values
-	 *            The extracted overall average and standard deviations of the
-	 *            window feature values. The first indice identifies the feature
-	 *            and the second identifies the feature value. The order of the
-	 *            features correspond to the overall_feature_definitions
-	 *            parameter. This value is null if overall feature values were
-	 *            not extracted.
-	 * @param overall_feature_definitions
-	 *            The feature definitions of the features that are in the
-	 *            overall_feature_values parameter. Will be null if no overall
-	 *            features were extracted.
-	 * @throws Exception
-	 *             Throws an exception if cannot write.
+	 * @param feature_values The extracted feature values for this recording. The first indice identifies the window,
+	 *            the second identifies the feature and the third identifies the feature value. The third dimension will
+	 *            be null if the given feature could not be extracted for the given window.
+	 * @param window_start_indices The indices of samples that correspond to where each window should start.
+	 * @param identifier A string to use for identifying this recording. Often a file path.
+	 * @param listFileNames
+	 * @param overall_feature_values The extracted overall average and standard deviations of the window feature values.
+	 *            The first indice identifies the feature and the second identifies the feature value. The order of the
+	 *            features correspond to the overall_feature_definitions parameter. This value is null if overall
+	 *            feature values were not extracted.
+	 * @param overall_feature_definitions The feature definitions of the features that are in the overall_feature_values
+	 *            parameter. Will be null if no overall features were extracted.
+	 * @throws Exception Throws an exception if cannot write.
 	 */
 	private void saveARFFFeatureVectorsForARecording(
 			double[][][] feature_values, int[] window_start_indices,
@@ -945,7 +847,8 @@ public class FeatureProcessor {
 		// Either output overall features or output all features
 		if (save_overall_recording_features) {
 			if (!isARFFOverallHeaderWritten) {
-				aggContainer.outputARFFHeaderEntries(values_writer, listFileNames.toArray(new String[listFileNames.size()]));
+				aggContainer.outputARFFHeaderEntries(values_writer, listFileNames.toArray(new String[listFileNames
+						.size()]));
 				isARFFOverallHeaderWritten = true;
 			}
 			aggContainer.outputARFFValueEntries(values_writer, identifier);
@@ -984,36 +887,21 @@ public class FeatureProcessor {
 	}
 
 	/**
-	 * Writes the given feature values extracted from a recording to the
-	 * feature_vector_file XML file referred to by the values_writer field.
-	 * Writes both the individual window features and the overall recording
-	 * features to disk.
+	 * Writes the given feature values extracted from a recording to the feature_vector_file XML file referred to by the
+	 * values_writer field. Writes both the individual window features and the overall recording features to disk.
 	 * 
-	 * @param feature_values
-	 *            The extracted feature values for this recording. The first
-	 *            indice identifies the window, the second identifies the
-	 *            feature and the third identifies the feature value. The third
-	 *            dimension will be null if the given feature could not be
-	 *            extracted for the given window.
-	 * @param window_start_indices
-	 *            The indices of samples that correspond to where each window
-	 *            should start.
-	 * @param identifier
-	 *            A string to use for identifying this recording. Often a file
-	 *            path.
-	 * @param overall_feature_values
-	 *            The extracted overall average and standard deviations of the
-	 *            window feature values. The first indice identifies the feature
-	 *            and the second identifies the feature value. The order of the
-	 *            features correspond to the overall_feature_definitions
-	 *            parameter. This value is null if overall feature values were
-	 *            not extracted.
-	 * @param overall_feature_definitions
-	 *            The feature definitions of the features that are in the
-	 *            overall_feature_values parameter. Will be null if no overall
-	 *            features were extracted.
-	 * @throws Exception
-	 *             Throws an exception if cannot write.
+	 * @param feature_values The extracted feature values for this recording. The first indice identifies the window,
+	 *            the second identifies the feature and the third identifies the feature value. The third dimension will
+	 *            be null if the given feature could not be extracted for the given window.
+	 * @param window_start_indices The indices of samples that correspond to where each window should start.
+	 * @param identifier A string to use for identifying this recording. Often a file path.
+	 * @param overall_feature_values The extracted overall average and standard deviations of the window feature values.
+	 *            The first indice identifies the feature and the second identifies the feature value. The order of the
+	 *            features correspond to the overall_feature_definitions parameter. This value is null if overall
+	 *            feature values were not extracted.
+	 * @param overall_feature_definitions The feature definitions of the features that are in the overall_feature_values
+	 *            parameter. Will be null if no overall features were extracted.
+	 * @throws Exception Throws an exception if cannot write.
 	 */
 	private void saveACEFeatureVectorsForARecording(
 			double[][][] feature_values, int[] window_start_indices,
@@ -1078,20 +966,14 @@ public class FeatureProcessor {
 	}
 
 	/**
-	 * Writes feature definitions to the XML file referred to by the
-	 * definitions_writer field. Writes both overall and individual feature
-	 * definitions.
+	 * Writes feature definitions to the XML file referred to by the definitions_writer field. Writes both overall and
+	 * individual feature definitions.
 	 * 
-	 * @param feature_values
-	 *            The extracted feature values for a recording. The first indice
-	 *            identifies the window, the second identifies the feature and
-	 *            the third identifies the feature value.
-	 * @param overall_feature_definitions
-	 *            The feature definitions of the features that are in the
-	 *            features for the recording. Will be null if no overallfeatures
-	 *            were extracted.
-	 * @throws Exception
-	 *             Throws an exception if cannot write.
+	 * @param feature_values The extracted feature values for a recording. The first indice identifies the window, the
+	 *            second identifies the feature and the third identifies the feature value.
+	 * @param overall_feature_definitions The feature definitions of the features that are in the features for the
+	 *            recording. Will be null if no overallfeatures were extracted.
+	 * @throws Exception Throws an exception if cannot write.
 	 */
 	private void saveFeatureDefinitions(double[][][] feature_values,
 			AggregatorContainer aggContainer) throws Exception {
@@ -1134,19 +1016,6 @@ public class FeatureProcessor {
 
 		// Write the overall file functions
 		if (save_overall_recording_features) {
-			// for (int feat = 0; feat < overall_feature_definitions.length;
-			// feat++) {
-			// FeatureDefinition def = overall_feature_definitions[feat];
-			// definitions_writer.writeBytes(" <feature>\n");
-			// definitions_writer.writeBytes(" <name>" + def.name
-			// + "</name>\n");
-			// definitions_writer.writeBytes(" <description>"
-			// + def.description + "</description>\n");
-			// definitions_writer.writeBytes(" <is_sequential>"
-			// + def.is_sequential + "</is_sequential>\n");
-			// definitions_writer.writeBytes(" <parallel_dimensions>"
-			// + def.dimensions + "</parallel_dimensions>\n");
-			// definitions_writer.writeBytes(" </feature>\n\n");
 			aggContainer.outputACEFeatureKeyEntries(definitions_writer);
 		}
 

@@ -23,9 +23,10 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Set;
 
+import com.srevueltas.datamining.WekaManager;
+
 /**
- * All components that are not tightly tied to GUI. Used by console interface as
- * well as the GUI interface.
+ * All components that are not tightly tied to GUI. Used by console interface as well as the GUI interface.
  * 
  * @author Daniel McEnnis
  */
@@ -59,14 +60,13 @@ public class DataModel {
 	/**
 	 * List of aggreggators to apply
 	 * <p>
-	 * Must be set externally. Duplicates of a class are permitted (hence not a
-	 * map) but each entry in the array must be fully initialized prior to
-	 * calling extract().
+	 * Must be set externally. Duplicates of a class are permitted (hence not a map) but each entry in the array must be
+	 * fully initialized prior to calling extract().
 	 */
 	public Aggregator[] aggregators;
-	
+
 	/**
-	 * wrapper object for the aggregators.  This reference is null until a file extraction has been performed.
+	 * wrapper object for the aggregators. This reference is null until a file extraction has been performed.
 	 */
 	public AggregatorContainer container = null;
 
@@ -96,12 +96,12 @@ public class DataModel {
 
 	public OutputStream featureValue = null;
 
+	public ArrayList<double[]> feature_values_per_file = null;
+
 	/**
-	 * Initializes each of the arrays with all available efeatures. Place to add
-	 * new features.
+	 * Initializes each of the arrays with all available efeatures. Place to add new features.
 	 * 
-	 * @param ml
-	 *            reference to a controller that will handle table updates.
+	 * @param ml reference to a controller that will handle table updates.
 	 */
 	public DataModel(String featureXMLLocation, ModelListener ml) {
 		ml_ = ml;
@@ -118,64 +118,6 @@ public class DataModel {
 		LinkedList<Boolean> def = new LinkedList<Boolean>();
 		aggregatorMap = new java.util.HashMap<String, Aggregator>();
 
-		// extractors.add(new AreaMoments());
-		// def.add(false);
-		// extractors.add(new BeatHistogram());
-		// def.add(false);
-		// extractors.add(new BeatHistogramLabels());
-		// def.add(false);
-		// extractors.add(new BeatSum());
-		// def.add(false);
-		// extractors.add(new Compactness());
-		// def.add(true);
-		// extractors.add(new FFTBinFrequencies());
-		// def.add(false);
-		// extractors.add(new FractionOfLowEnergyWindows());
-		// def.add(true);
-		// extractors.add(new HarmonicSpectralCentroid());
-		// def.add(false);
-		// extractors.add(new HarmonicSpectralFlux());
-		// def.add(false);
-		// extractors.add(new HarmonicSpectralSmoothness());
-		// def.add(false);
-		// extractors.add(new LPC());
-		// def.add(false);
-		// extractors.add(new MagnitudeSpectrum());
-		// def.add(false);
-		// extractors.add(new MFCC());
-		// def.add(true);
-		// extractors.add(new Moments());
-		// def.add(true);
-		// extractors.add(new PeakFinder());
-		// def.add(false);
-		// extractors.add(new PowerSpectrum());
-		// def.add(false);
-		// extractors.add(new RelativeDifferenceFunction());
-		// def.add(false);
-		// extractors.add(new RMS());
-		// def.add(true);
-		// extractors.add(new SpectralCentroid());
-		// def.add(true);
-		// extractors.add(new SpectralFlux());
-		// def.add(true);
-		// extractors.add(new SpectralRolloffPoint());
-		// def.add(true);
-		// extractors.add(new SpectralVariability());
-		// def.add(false);
-		// extractors.add(new StrengthOfStrongestBeat());
-		// def.add(false);
-		// extractors.add(new StrongestBeat());
-		// def.add(false);
-		// extractors.add(new StrongestFrequencyVariability());
-		// def.add(false);
-		// extractors.add(new StrongestFrequencyViaFFTMax());
-		// def.add(false);
-		// extractors.add(new StrongestFrequencyViaSpectralCentroid());
-		// def.add(false);
-		// extractors.add(new StrongestFrequencyViaZeroCrossings());
-		// def.add(false);
-		// extractors.add(new ZeroCrossings());
-		// def.add(true);
 		try {
 
 			Object[] lists = (Object[]) XMLDocumentParser.parseXMLDocument(
@@ -193,7 +135,7 @@ public class DataModel {
 			System.exit(1);
 		}
 		populateMetaFeatures(metaExtractors, extractors, def);
-
+		feature_values_per_file = new ArrayList<>();
 	}
 
 	void populateMetaFeatures(LinkedList<MetaFeatureFactory> listMFF,
@@ -240,9 +182,8 @@ public class DataModel {
 	}
 
 	/**
-	 * This is the function called when features change in such a way as the
-	 * main display becomes out of date. WHen executed from the consol, this
-	 * value is null.
+	 * This is the function called when features change in such a way as the main display becomes out of date. WHen
+	 * executed from the consol, this value is null.
 	 */
 	public void updateTable() {
 		if (ml_ != null) {
@@ -251,36 +192,25 @@ public class DataModel {
 	}
 
 	/**
-	 * Function for executing the feature extraction process against a set of
-	 * files.
+	 * Function for executing the feature extraction process against a set of files.
 	 * 
-	 * @param windowSize
-	 *            Size of the window in samples
-	 * @param windowOverlap
-	 *            Percent of the window to be overlapped - must be between 0 and
-	 *            1.
-	 * @param samplingRate
-	 *            Sample rate given in samples per second
-	 * @param normalise
-	 *            indicates whether or not the file should be normalised before
-	 *            feature extraction
-	 * @param perWindowStats
-	 *            should features be extracted for every window
-	 * @param overallStats
-	 *            should features be extracted over the entire window
-	 * @param destinationFV
-	 *            file where the extracted features should be stored
-	 * @param destinationFK
-	 *            file where descriptions of features extracted should be stored
-	 * @param info
-	 *            list of the files that are to be analyzed
-	 * @param arff
-	 *            output format of the data
+	 * @param windowSize Size of the window in samples
+	 * @param windowOverlap Percent of the window to be overlapped - must be between 0 and 1.
+	 * @param samplingRate Sample rate given in samples per second
+	 * @param normalise indicates whether or not the file should be normalised before feature extraction
+	 * @param perWindowStats should features be extracted for every window
+	 * @param overallStats should features be extracted over the entire window
+	 * @param destinationFV file where the extracted features should be stored
+	 * @param destinationFK file where descriptions of features extracted should be stored
+	 * @param info list of the files that are to be analyzed
+	 * @param arff output format of the data
+	 * @param toClassify
+	 * @return
 	 * @throws Exception
 	 */
-	public void extract(int windowSize, double windowOverlap,
+	public ArrayList<String> extractAndClassify(int windowSize, double windowOverlap,
 			double samplingRate, boolean normalise, boolean perWindowStats,
-			boolean overallStats, RecordingInfo[] info, int arff)
+			boolean overallStats, RecordingInfo[] info, int arff, boolean toClassify)
 			throws Exception {
 		// Get the control parameters
 		boolean save_features_for_each_window = perWindowStats;
@@ -296,24 +226,26 @@ public class DataModel {
 		if (recordings == null)
 			throw new Exception(
 					"No recordings available to extract features from.");
-
-		Set<String> setFileNames = new HashSet<String>();
-		for (RecordingInfo r : recordings) {
-			setFileNames.add(r.file_path.substring(r.file_path.lastIndexOf("\\")+1,r.file_path.lastIndexOf("_")));
+		ArrayList<String> listFileNames = null;
+		if (!toClassify) {
+			Set<String> setFileNames = new HashSet<String>();
+			for (RecordingInfo r : recordings) {
+				setFileNames
+						.add(r.file_path.substring(r.file_path.lastIndexOf("\\") + 1, r.file_path.lastIndexOf("_")));
+			}
+			listFileNames = new ArrayList<String>(setFileNames);
+			Collections.sort(listFileNames);
 		}
-		ArrayList<String> listFileNames = new ArrayList<String>(setFileNames);
-		Collections.sort(listFileNames);
 		if (updater != null) {
 			updater.setNumberOfFiles(recordings.length);
 		}
-
 		container = new AggregatorContainer();
-		if((aggregators==null)||(aggregators.length==0)){
+		if ((aggregators == null) || (aggregators.length == 0)) {
 			aggregators = new Aggregator[3];
-			aggregators[0]=new jAudioFeatureExtractor.Aggregators.Mean();
-			aggregators[1]=new jAudioFeatureExtractor.Aggregators.StandardDeviation();
-			aggregators[2]=new jAudioFeatureExtractor.Aggregators.AreaMoments();
-			aggregators[2].setParameters(new String[]{"Area Method of Moments of MFCCs"},new String[]{""});
+			aggregators[0] = new jAudioFeatureExtractor.Aggregators.Mean();
+			aggregators[1] = new jAudioFeatureExtractor.Aggregators.StandardDeviation();
+			aggregators[2] = new jAudioFeatureExtractor.Aggregators.AreaMoments();
+			aggregators[2].setParameters(new String[] { "Area Method of Moments of MFCCs" }, new String[] { "" });
 		}
 		container.add(aggregators);
 
@@ -322,22 +254,32 @@ public class DataModel {
 				window_overlap, sampling_rate, normalise, this.features,
 				this.defaults, save_features_for_each_window,
 				save_overall_recording_features, featureValue, featureKey,
-				outputType, cancel_, container);
+				outputType, cancel_, container, toClassify);
 
-		// Extract features from recordings one by one and save them in XML
-		// files
-//		AudioSamples recording_content;
+		// Extract features from recordings one by one and save them in XML files
 		for (int i = 0; i < recordings.length; i++) {
 			File load_file = new File(recordings[i].file_path);
+			// update progressbar
 			if (updater != null) {
 				updater.announceUpdate(i, 0);
 			}
 			processor.extractFeatures(load_file, updater, listFileNames);
+			if (toClassify) {
+				feature_values_per_file.add(container.getResultsToSingleArray());
+			}
 		}
-
+		ArrayList<String> classPerFile = null;
+		if (toClassify) {
+			classPerFile = new ArrayList<String>();
+			for (int i = 0; i < feature_values_per_file.size(); i++) {
+				classPerFile.add("File " + i + ": "
+						+ WekaManager.classify("AB_DBA_TestSuite", feature_values_per_file.get(i)) + "\n");
+			}
+		}
 		// Finalize saved XML files
-
 		processor.finalize();
+
+		return classPerFile;
 
 		// JOptionPane.showMessageDialog(null,
 		// "Features successfully extracted and saved.", "DONE",
@@ -345,8 +287,7 @@ public class DataModel {
 	}
 
 	/**
-	 * Establish a listener for periodic updates on the feature extraction
-	 * progress.
+	 * Establish a listener for periodic updates on the feature extraction progress.
 	 * 
 	 * @param u
 	 */
