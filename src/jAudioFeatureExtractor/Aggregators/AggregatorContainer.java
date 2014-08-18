@@ -221,10 +221,35 @@ public class AggregatorContainer {
 	 */
 	public double[][] getResults(){
 		LinkedList<double[]> ret = new LinkedList<double[]>();
-		for(int i=0;i<aggregatorList.size();++i){
+		for(int i=0;i<aggregatorList.size(); i++){
 			ret.add(aggregatorList.get(i).getResults());
 		}
 		return ret.toArray(new double[][]{});
 	}
+	
+	
+	public double[] getResultsToSingleArray(){
+		LinkedList<double[]> ret = new LinkedList<double[]>();
+		for(int i = 0; i < aggregatorList.size(); i++){
+			ret.add(aggregatorList.get(i).getResults());
+		}
+		double[][] results = ret.toArray(new double[][]{});
+		int size = 0;
+		for (int i = 0; i < results.length; i++) {
+			for (int j = 0; j < results[i].length; j++) {
+				size++;
+			}
+		}
+		double[] sol = new double[size];
+		int index = 0;
+		for (int i = 0; i < results.length; i++) {
+			for (int j = 0; j < results[i].length; j++) {
+				sol[index++] = results[i][j];
+			}
+		}
+		return sol;
+	}
+	
+	
 	
 }

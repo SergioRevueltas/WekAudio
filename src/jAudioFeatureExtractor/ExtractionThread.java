@@ -7,8 +7,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 /**
- * This is a thread for executing the DataModel.extractFeatures without tying up
- * the swing dispatch thread.
+ * This is a thread for executing the DataModel.extractFeatures without tying up the swing dispatch thread.
  * 
  * @author Daniel McEnnis
  */
@@ -40,34 +39,36 @@ public class ExtractionThread extends Thread implements Updater {
 
 	ProgressFrame progressFrame;
 
+	boolean toClassify;
+
 	/**
-	 * This constructor constructs the thread, partially preparing it for
-	 * execution
+	 * This constructor constructs the thread, partially preparing it for execution
 	 * 
-	 * @param c
-	 *            Near global container for numerous controller and model
-	 *            objects
-	 * @param of
-	 *            Link to outerframe of the gui. Used to disable the main frame
-	 *            to prevent race conditions in the feature settings.
+	 * @param c Near global container for numerous controller and model objects
+	 * @param of Link to outerframe of the gui. Used to disable the main frame to prevent race conditions in the feature
+	 *            settings.
 	 */
 	public ExtractionThread(Controller c, OuterFrame of) {
 
 		controller = c;
 		outerFrame = of;
 		suspendGUI = new Runnable() {
+
 			public void run() {
 				outerFrame.setEnabled(false);
 			}
 		};
 
 		resumeGUI = new Runnable() {
+
 			public void run() {
 				outerFrame.setEnabled(true);
 				progressFrame.setVisible(false);
-				JOptionPane.showMessageDialog(null,
-						"Features successfully extracted and saved.", "DONE",
-						JOptionPane.INFORMATION_MESSAGE);
+				if (!toClassify) {
+					JOptionPane.showMessageDialog(null,
+							"Features successfully extracted and saved.", "DONE",
+							JOptionPane.INFORMATION_MESSAGE);
+				}
 			}
 		};
 
@@ -81,39 +82,33 @@ public class ExtractionThread extends Thread implements Updater {
 	/**
 	 * This is the method to finish preparing the thread for execution
 	 * 
-	 * @param perFile
-	 *            Should features be extracted over the entire file
-	 * @param perWindow
-	 *            Should features be extracted on a window by window basis
-	 * @param valuesSavePath
-	 *            File to save extracted features
-	 * @param definitionSavePath
-	 *            File to save descriptions of the features extracted
-	 * @param windowSize
-	 *            Size of the analysis window in samples
-	 * @param windowOverlap
-	 *            Percent of the window that is duplicated between analysis
-	 *            windows
+	 * @param perFile Should features be extracted over the entire file
+	 * @param perWindow Should features be extracted on a window by window basis
+	 * @param valuesSavePath File to save extracted features
+	 * @param definitionSavePath File to save descriptions of the features extracted
+	 * @param windowSize Size of the analysis window in samples
+	 * @param windowOverlap Percent of the window that is duplicated between analysis windows
+	 * @param toClassify
 	 */
 	public void setup(boolean perFile, boolean perWindow,
 			String valuesSavePath, String definitionSavePath, int windowSize,
-			double windowOverlap) {
+			double windowOverlap, boolean toClassify) {
 		this.perFile = perFile;
 		this.perWindow = perWindow;
 		this.valuesSavePath = valuesSavePath;
 		this.definitionSavePath = definitionSavePath;
 		this.windowSize = windowSize;
 		this.windowOverlap = windowOverlap;
+		this.toClassify = toClassify;
 	}
 
 	/**
-	 * Execute the thread, suspending the main frame, extracting the features,
-	 * then enabling the main frame.
+	 * Execute the thread, suspending the main frame, extracting the features, then enabling the main frame.
 	 */
 	public void run() {
 		try {
 			SwingUtilities.invokeAndWait(suspendGUI);
-			controller.dm_.validateFile(definitionSavePath,valuesSavePath);
+			controller.dm_.validateFile(definitionSavePath, valuesSavePath);
 			File feature_values_save_file = new File(valuesSavePath);
 			File feature_definitions_save_file = new File(definitionSavePath);
 
@@ -129,7 +124,7 @@ public class ExtractionThread extends Thread implements Updater {
 					controller.samplingRateAction.getSamplingRate(),
 					controller.normalise.isSelected(), perWindow, perFile,
 					controller.dm_.recordingInfo, controller.outputTypeAction
-							.getSelected());
+							.getSelected(), toClassify);
 			SwingUtilities.invokeLater(resumeGUI);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -141,6 +136,7 @@ public class ExtractionThread extends Thread implements Updater {
 	}
 
 	class UpdateGUI implements Runnable {
+
 		int numberOfFiles;
 
 		int file;
@@ -176,8 +172,7 @@ public class ExtractionThread extends Thread implements Updater {
 	}
 
 	/**
-	 * This is part of the Updater interface. It notifies the gui that a file
-	 * has been completed.
+	 * This is part of the Updater interface. It notifies the gui that a file has been completed.
 	 */
 	public void announceUpdate(int fileNumber, int fileDone) {
 		updateGUI.setPos(fileNumber, fileDone);
@@ -185,8 +180,7 @@ public class ExtractionThread extends Thread implements Updater {
 	}
 
 	/**
-	 * This is part of the Updater interface. It notifies the gui of an increase
-	 * in the amount of the file processed.
+	 * This is part of the Updater interface. It notifies the gui of an increase in the amount of the file processed.
 	 */
 	public void announceUpdate(int fileDone) {
 		updateGUI.setPos(fileDone);
@@ -194,16 +188,15 @@ public class ExtractionThread extends Thread implements Updater {
 	}
 
 	/**
-	 * This is part of the Updater interface. It is used to set the total number
-	 * of files to be processed.
+	 * This is part of the Updater interface. It is used to set the total number of files to be processed.
 	 */
 	public void setNumberOfFiles(int files) {
 		updateGUI.setLengths(files);
 	}
 
 	/**
-	 * This is part of the Updater interface. It is used to notify the gui of
-	 * the total size of the file (in windows of data).
+	 * This is part of the Updater interface. It is used to notify the gui of the total size of the file (in windows of
+	 * data).
 	 */
 	public void setFileLength(int window) {
 		updateGUI.setMaxWindows(window);
