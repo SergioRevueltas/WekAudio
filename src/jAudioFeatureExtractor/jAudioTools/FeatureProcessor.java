@@ -1016,19 +1016,6 @@ public class FeatureProcessor {
 
 		// Write the overall file functions
 		if (save_overall_recording_features) {
-			// for (int feat = 0; feat < overall_feature_definitions.length;
-			// feat++) {
-			// FeatureDefinition def = overall_feature_definitions[feat];
-			// definitions_writer.writeBytes(" <feature>\n");
-			// definitions_writer.writeBytes(" <name>" + def.name
-			// + "</name>\n");
-			// definitions_writer.writeBytes(" <description>"
-			// + def.description + "</description>\n");
-			// definitions_writer.writeBytes(" <is_sequential>"
-			// + def.is_sequential + "</is_sequential>\n");
-			// definitions_writer.writeBytes(" <parallel_dimensions>"
-			// + def.dimensions + "</parallel_dimensions>\n");
-			// definitions_writer.writeBytes(" </feature>\n\n");
 			aggContainer.outputACEFeatureKeyEntries(definitions_writer);
 		}
 
