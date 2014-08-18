@@ -205,7 +205,7 @@ public class DataModel {
 	 * @param info list of the files that are to be analyzed
 	 * @param arff output format of the data
 	 * @param toClassify
-	 * @return 
+	 * @return
 	 * @throws Exception
 	 */
 	public ArrayList<String> extractAndClassify(int windowSize, double windowOverlap,
@@ -226,17 +226,19 @@ public class DataModel {
 		if (recordings == null)
 			throw new Exception(
 					"No recordings available to extract features from.");
-
-		Set<String> setFileNames = new HashSet<String>();
-		for (RecordingInfo r : recordings) {
-			setFileNames.add(r.file_path.substring(r.file_path.lastIndexOf("\\") + 1, r.file_path.lastIndexOf("_")));
+		ArrayList<String> listFileNames = null;
+		if (!toClassify) {
+			Set<String> setFileNames = new HashSet<String>();
+			for (RecordingInfo r : recordings) {
+				setFileNames
+						.add(r.file_path.substring(r.file_path.lastIndexOf("\\") + 1, r.file_path.lastIndexOf("_")));
+			}
+			listFileNames = new ArrayList<String>(setFileNames);
+			Collections.sort(listFileNames);
 		}
-		ArrayList<String> listFileNames = new ArrayList<String>(setFileNames);
-		Collections.sort(listFileNames);
 		if (updater != null) {
 			updater.setNumberOfFiles(recordings.length);
 		}
-
 		container = new AggregatorContainer();
 		if ((aggregators == null) || (aggregators.length == 0)) {
 			aggregators = new Aggregator[3];
@@ -270,14 +272,15 @@ public class DataModel {
 		if (toClassify) {
 			classPerFile = new ArrayList<String>();
 			for (int i = 0; i < feature_values_per_file.size(); i++) {
-				classPerFile.add("File " + i + ": " + WekaManager.classify("AB_DBA", feature_values_per_file.get(i))+ "\n");
+				classPerFile.add("File " + i + ": "
+						+ WekaManager.classify("AB_DBA_TestSuite", feature_values_per_file.get(i)) + "\n");
 			}
 		}
 		// Finalize saved XML files
 		processor.finalize();
-		
+
 		return classPerFile;
-		
+
 		// JOptionPane.showMessageDialog(null,
 		// "Features successfully extracted and saved.", "DONE",
 		// JOptionPane.INFORMATION_MESSAGE);
