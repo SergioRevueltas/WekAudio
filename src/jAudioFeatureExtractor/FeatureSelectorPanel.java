@@ -215,13 +215,13 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 		set_aggregators_button.addActionListener(this);
 		control_panel.add(set_aggregators_button);
 
-		classify_button = new JButton("Classify");
-		classify_button.addActionListener(this);
-		control_panel.add(classify_button);
-
 		extract_features_button = new JButton("Extract Features");
 		extract_features_button.addActionListener(this);
 		control_panel.add(extract_features_button);
+
+		classify_button = new JButton("Classify");
+		classify_button.addActionListener(this);
+		control_panel.add(classify_button);
 
 		control_panel.setBackground(blue);
 
@@ -436,12 +436,7 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 			}
 
 			// Find which features are selected to be saved
-			// boolean[] features_to_save = new
-			// boolean[controller.dm_.features.length];
 			for (int i = 0; i < controller.dm_.defaults.length; i++) {
-				// features_to_save[i] = ((Boolean)
-				// controller.fstm_.getValueAt(i,
-				// 0)).booleanValue();
 				controller.dm_.defaults[i] = ((Boolean) controller.fstm_
 						.getValueAt(i, 0)).booleanValue();
 			}
@@ -449,7 +444,7 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 			// threads can only execute once. Rebuild the thread here
 			controller.extractionThread = new ExtractionThread(controller,
 					outer_frame);
-
+			// setup thread
 			controller.extractionThread.setup(save_overall_recording_features,
 					save_features_for_each_window, feature_values_save_path,
 					feature_definitions_save_path, window_size, window_overlap, toClassify);

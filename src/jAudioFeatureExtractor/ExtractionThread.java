@@ -2,6 +2,7 @@ package jAudioFeatureExtractor;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -40,6 +41,8 @@ public class ExtractionThread extends Thread implements Updater {
 	ProgressFrame progressFrame;
 
 	boolean toClassify;
+	
+	ArrayList<String> classificationResults = null;
 
 	/**
 	 * This constructor constructs the thread, partially preparing it for execution
@@ -67,6 +70,10 @@ public class ExtractionThread extends Thread implements Updater {
 				if (!toClassify) {
 					JOptionPane.showMessageDialog(null,
 							"Features successfully extracted and saved.", "DONE",
+							JOptionPane.INFORMATION_MESSAGE);
+				} else {
+					JOptionPane.showMessageDialog(null,
+							classificationResults.toString(), "Classification done",
 							JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
@@ -120,7 +127,7 @@ public class ExtractionThread extends Thread implements Updater {
 
 			controller.dm_.featureKey = definitions_to;
 			controller.dm_.featureValue = values_to;
-			controller.dm_.extract(windowSize, windowOverlap,
+			classificationResults = controller.dm_.extractAndClassify(windowSize, windowOverlap,
 					controller.samplingRateAction.getSamplingRate(),
 					controller.normalise.isSelected(), perWindow, perFile,
 					controller.dm_.recordingInfo, controller.outputTypeAction

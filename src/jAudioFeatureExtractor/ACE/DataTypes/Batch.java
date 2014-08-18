@@ -79,7 +79,7 @@ public class Batch implements Serializable {
 	 */
 	public void execute() throws Exception {
 		applyAttributes();
-		dm_.extract(windowSize, windowOverlap, samplingRate, normalise,
+		dm_.extractAndClassify(windowSize, windowOverlap, samplingRate, normalise,
 				perWindow, overall, recording, outputType, false);
 	}
 

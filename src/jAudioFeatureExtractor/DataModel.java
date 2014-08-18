@@ -23,8 +23,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Set;
 
-import javax.swing.JOptionPane;
-
 import com.srevueltas.datamining.WekaManager;
 
 /**
@@ -207,9 +205,10 @@ public class DataModel {
 	 * @param info list of the files that are to be analyzed
 	 * @param arff output format of the data
 	 * @param toClassify
+	 * @return 
 	 * @throws Exception
 	 */
-	public void extract(int windowSize, double windowOverlap,
+	public ArrayList<String> extractAndClassify(int windowSize, double windowOverlap,
 			double samplingRate, boolean normalise, boolean perWindowStats,
 			boolean overallStats, RecordingInfo[] info, int arff, boolean toClassify)
 			throws Exception {
@@ -267,18 +266,18 @@ public class DataModel {
 				feature_values_per_file.add(container.getResultsToSingleArray());
 			}
 		}
+		ArrayList<String> classPerFile = null;
 		if (toClassify) {
-			ArrayList<String> classPerFile = new ArrayList<String>();
+			classPerFile = new ArrayList<String>();
 			for (int i = 0; i < feature_values_per_file.size(); i++) {
 				classPerFile.add("File " + i + ": " + WekaManager.classify("AB_DBA", feature_values_per_file.get(i))+ "\n");
 			}
-			JOptionPane.showMessageDialog(null,
-					classPerFile.toString(), "Classification done",
-					JOptionPane.INFORMATION_MESSAGE);
 		}
 		// Finalize saved XML files
 		processor.finalize();
-
+		
+		return classPerFile;
+		
 		// JOptionPane.showMessageDialog(null,
 		// "Features successfully extracted and saved.", "DONE",
 		// JOptionPane.INFORMATION_MESSAGE);
