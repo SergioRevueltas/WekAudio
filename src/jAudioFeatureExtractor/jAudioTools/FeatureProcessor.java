@@ -90,11 +90,11 @@ public class FeatureProcessor {
 
 	// Used to write to the feature_key_file file to save feature definitions
 	// to.
-	private DataOutputStream definitions_writer;
+	//private DataOutputStream definitions_writer;
 
 	// Indicates whether the feature definitions have been written by the
 	// definitions_writer yet.
-	private boolean definitions_written;
+	//private boolean definitions_written;
 
 	// Indicates what the type of the output format is
 	private int outputType;
@@ -166,11 +166,6 @@ public class FeatureProcessor {
 			throw new Exception(
 					"You must save at least one of the windows-based\n"
 							+ "features and the overall file-based features.");
-		// if (feature_values_save_path.equals(""))
-		// throw new Exception("No save path specified for feature values.");
-		// if (feature_definitions_save_path.equals(""))
-		// throw new Exception(
-		// "No save path specified for feature definitions.");
 		if (window_overlap < 0.0 || window_overlap >= 1.0)
 			throw new Exception("Window overlap fraction is " + window_overlap
 					+ ".\n"
@@ -191,36 +186,9 @@ public class FeatureProcessor {
 					"INTERNAL ERROR - only ARFF and ACE output files are supported");
 		}
 
-		// Prepare the files for writing
-		// File feature_values_save_file = new File(feature_values_save_path);
-		// File feature_definitions_save_file = new File(
-		// feature_definitions_save_path);
-		//
-		// // Throw an exception if the given file paths are not writable.
-		// Involves
-		// // creating a blank file if one does not already exist.
-		// if (feature_values_save_file.exists())
-		// if (!feature_values_save_file.canWrite())
-		// throw new Exception("Cannot write to "
-		// + feature_values_save_path + ".");
-		// if (feature_definitions_save_file.exists())
-		// if (!feature_definitions_save_file.canWrite())
-		// throw new Exception("Cannot write to "
-		// + feature_definitions_save_path + ".");
-		// if (!feature_values_save_file.exists())
-		// feature_values_save_file.createNewFile();
-		// if (!feature_definitions_save_file.exists() && (outputType == 0)) {
-		// feature_definitions_save_file.createNewFile();
-		// }
-		//
-		// // Prepare stream writers
-		// FileOutputStream values_to = new FileOutputStream(
-		// feature_values_save_file);
-		// FileOutputStream definitions_to = new FileOutputStream(
-		// feature_definitions_save_file);
 		values_writer = new DataOutputStream(feature_values_save_path);
-		definitions_writer = new DataOutputStream(feature_definitions_save_path);
-		definitions_written = false;
+		//definitions_writer = new DataOutputStream(feature_definitions_save_path);
+		//definitions_written = false;
 
 		// Save parameters as fields
 		this.window_size = window_size;
@@ -309,10 +277,11 @@ public class FeatureProcessor {
 			}
 		}
 		// Save the feature definitions
+		/*
 		if (!definitions_written && (outputType == 0)) {
 			saveFeatureDefinitions(window_feature_values, aggregator);
 		}
-
+		 */
 		if (toClassify) {
 			return window_feature_values;
 		} else {
@@ -965,6 +934,8 @@ public class FeatureProcessor {
 		values_writer.writeBytes("\t</data_set>\n\n");
 	}
 
+	
+	
 	/**
 	 * Writes feature definitions to the XML file referred to by the definitions_writer field. Writes both overall and
 	 * individual feature definitions.
@@ -975,6 +946,7 @@ public class FeatureProcessor {
 	 *            recording. Will be null if no overallfeatures were extracted.
 	 * @throws Exception Throws an exception if cannot write.
 	 */
+	/*
 	private void saveFeatureDefinitions(double[][][] feature_values,
 			AggregatorContainer aggContainer) throws Exception {
 		String feature_key_header = new String(
@@ -1025,4 +997,5 @@ public class FeatureProcessor {
 
 		definitions_written = true;
 	}
+	*/
 }
