@@ -314,25 +314,19 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 			String feature_values_save_path =
 					"exportedFeatureValues/"
 							+ outer_frame.recording_selector_panel.values_save_path_text_field.getText();
-			String feature_definitions_save_path =
-					outer_frame.recording_selector_panel.definitions_save_path_text_field.getText();
 			int window_size = Integer.parseInt(window_length_text_field.getText());
 			double window_overlap = Double.parseDouble(window_overlap_fraction_text_field.getText());
 			boolean normalise = controller.normalise.isSelected();
 			double sampling_rate = controller.samplingRateAction.getSamplingRate();
 			int outputType = controller.outputTypeAction.getSelected();
 
-			// Get the audio recordings to extract features from and throw an
-			// exception
-			// if there are none
+			// Get the audio recordings to extract features from and throw an exception if there are none
 			RecordingInfo[] recordings = controller.dm_.recordingInfo;
 			if (recordings == null)
 				throw new Exception(
 						"No recordings available to extract features from.");
 
-			// Ask user if s/he wishes to change window size to a power of 2 if
-			// it
-			// is not already.
+			// Ask user if s/he wishes to change window size to a power of 2 if it is not already.
 			if (window_size >= 0) {
 				int pow_2_size = jAudioFeatureExtractor.GeneralTools.Statistics
 						.ensureIsPowerOfN(window_size, 2);
@@ -351,7 +345,6 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 					}
 				}
 			}
-
 			// Find which features are selected to be saved
 			for (int i = 0; i < controller.dm_.defaults.length; i++) {
 				controller.dm_.defaults[i] = ((Boolean) controller.fstm_
@@ -363,7 +356,7 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 
 			controller.extractionThread.setup(save_overall_recording_features,
 					save_features_for_each_window, feature_values_save_path,
-					feature_definitions_save_path, window_size, window_overlap, toClassify);
+					"", window_size, window_overlap, toClassify);
 			// extract the features
 			controller.extractionThread.start();
 
@@ -397,8 +390,7 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 			String feature_values_save_path =
 					"exportedFeatureValues/"
 							+ outer_frame.recording_selector_panel.values_save_path_text_field.getText();
-			String feature_definitions_save_path =
-					outer_frame.recording_selector_panel.definitions_save_path_text_field.getText();
+			//String feature_definitions_save_path = outer_frame.recording_selector_panel.definitions_save_path_text_field.getText();
 			int window_size = Integer.parseInt(window_length_text_field.getText());
 			double window_overlap = Double.parseDouble(window_overlap_fraction_text_field.getText());
 			boolean normalise = controller.normalise.isSelected();
@@ -447,7 +439,7 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 			// setup thread
 			controller.extractionThread.setup(save_overall_recording_features,
 					save_features_for_each_window, feature_values_save_path,
-					feature_definitions_save_path, window_size, window_overlap, toClassify);
+					"", window_size, window_overlap, toClassify);
 			// extract the features
 			controller.extractionThread.start();
 

@@ -30,7 +30,7 @@ public class ExtractionThread extends Thread implements Updater {
 
 	String valuesSavePath;
 
-	String definitionSavePath;
+	//String definitionSavePath;
 
 	int windowSize;
 
@@ -42,7 +42,7 @@ public class ExtractionThread extends Thread implements Updater {
 
 	boolean toClassify;
 	
-	ArrayList<String> classificationResults = null;
+	ArrayList<String> classificationResults;
 
 	/**
 	 * This constructor constructs the thread, partially preparing it for execution
@@ -71,7 +71,7 @@ public class ExtractionThread extends Thread implements Updater {
 					JOptionPane.showMessageDialog(null,
 							"Features successfully extracted and saved.", "DONE",
 							JOptionPane.INFORMATION_MESSAGE);
-				} else {
+				} else if (classificationResults != null){
 					JOptionPane.showMessageDialog(null,
 							classificationResults.toString(), "Classification done",
 							JOptionPane.INFORMATION_MESSAGE);
@@ -84,6 +84,7 @@ public class ExtractionThread extends Thread implements Updater {
 		c.dm_.setUpdater(this);
 		progressFrame = new ProgressFrame();
 		errorGUI = new ErrorGUI(progressFrame);
+		classificationResults = null;
 	}
 
 	/**
@@ -103,7 +104,7 @@ public class ExtractionThread extends Thread implements Updater {
 		this.perFile = perFile;
 		this.perWindow = perWindow;
 		this.valuesSavePath = valuesSavePath;
-		this.definitionSavePath = definitionSavePath;
+		//this.definitionSavePath = definitionSavePath;
 		this.windowSize = windowSize;
 		this.windowOverlap = windowOverlap;
 		this.toClassify = toClassify;
@@ -115,23 +116,23 @@ public class ExtractionThread extends Thread implements Updater {
 	public void run() {
 		try {
 			SwingUtilities.invokeAndWait(suspendGUI);
-			controller.dm_.validateFile(definitionSavePath, valuesSavePath);
+			
+			//controller.dm_.validateFile(definitionSavePath);
+			//File feature_definitions_save_file = new File(definitionSavePath);
+			//FileOutputStream definitions_to = new FileOutputStream(feature_definitions_save_file);
+			//controller.dm_.featureKey = definitions_to;
+			
+			controller.dm_.validateFile(valuesSavePath);
 			File feature_values_save_file = new File(valuesSavePath);
-			File feature_definitions_save_file = new File(definitionSavePath);
-
-			// Prepare stream writers
-			FileOutputStream values_to = new FileOutputStream(
-					feature_values_save_file);
-			FileOutputStream definitions_to = new FileOutputStream(
-					feature_definitions_save_file);
-
-			controller.dm_.featureKey = definitions_to;
+			FileOutputStream values_to = new FileOutputStream(feature_values_save_file);
 			controller.dm_.featureValue = values_to;
+			
 			classificationResults = controller.dm_.extractAndClassify(windowSize, windowOverlap,
 					controller.samplingRateAction.getSamplingRate(),
 					controller.normalise.isSelected(), perWindow, perFile,
 					controller.dm_.recordingInfo, controller.outputTypeAction
 							.getSelected(), toClassify);
+			
 			SwingUtilities.invokeLater(resumeGUI);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -145,11 +146,8 @@ public class ExtractionThread extends Thread implements Updater {
 	class UpdateGUI implements Runnable {
 
 		int numberOfFiles;
-
 		int file;
-
 		int thisFileLength = 0;
-
 		int pos;
 
 		public void setLengths(int file) {

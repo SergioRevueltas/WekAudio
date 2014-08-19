@@ -295,20 +295,13 @@ public class DataModel {
 		this.updater = u;
 	}
 
-	public void validateFile(String definitions, String values)
-			throws Exception {
+	public void validateFile(String values)	throws Exception {
 		File feature_values_save_file = new File(values);
-		File feature_definitions_save_file = new File(definitions);
-
 		// Throw an exception if the given file paths are not writable. Involves
 		// creating a blank file if one does not already exist.
 		if (feature_values_save_file.exists())
 			if (!feature_values_save_file.canWrite())
 				throw new Exception("Cannot write to " + values + ".");
-		if (feature_definitions_save_file.exists())
-			if (!feature_definitions_save_file.canWrite())
-				throw new Exception("Cannot write to " + definitions + ".");
-
 	}
 
 }

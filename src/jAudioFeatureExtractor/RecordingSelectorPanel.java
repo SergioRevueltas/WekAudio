@@ -114,7 +114,7 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 	 */
 	JButton values_save_path_button;
 
-	JButton definitions_save_path_button;
+	//JButton definitions_save_path_button;
 
 	private JButton add_recordings_button;
 
@@ -153,7 +153,7 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 	 */
 	JTextArea values_save_path_text_field;
 
-	JTextArea definitions_save_path_text_field;
+	//JTextArea definitions_save_path_text_field;
 
 	// /**
 	// * File to save to when save button pressed
@@ -229,13 +229,11 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 				20);
 		button_panel.add(values_save_path_text_field);
 
-		definitions_save_path_button = new JButton(
-				"Feature Definitions Save Path:");
-		button_panel.add(definitions_save_path_button);
-		definitions_save_path_button.addActionListener(this);
-		definitions_save_path_text_field = new JTextArea(
-				"feature_definitions_1.xml", 1, 20);
-		button_panel.add(definitions_save_path_text_field);
+		//definitions_save_path_button = new JButton("Feature Definitions Save Path:");
+		//button_panel.add(definitions_save_path_button);
+		//definitions_save_path_button.addActionListener(this);
+		//definitions_save_path_text_field = new JTextArea("feature_definitions_1.xml", 1, 20);	
+		//button_panel.add(definitions_save_path_text_field);
 
 		button_panel.add(new JLabel(""));
 
@@ -248,10 +246,12 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 		controller.playNowAction.setTable(recordings_table);
 		controller.editRecordingsAction.setTable(recordings_table, outer_frame);
 		controller.viewFileInfoAction.setTable(recordings_table);
+		/*
 		controller.addBatchAction.setFilePath(values_save_path_text_field,
 				definitions_save_path_text_field);
 		controller.viewBatchAction.setRecordingFields(
 				definitions_save_path_text_field, values_save_path_text_field);
+				*/
 
 	}
 
@@ -388,9 +388,10 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 			viewRecordingInformation();
 		else if (event.getSource().equals(values_save_path_button)) {
 			browseFeatureValuesSavePath();
-		} else if (event.getSource().equals(definitions_save_path_button)) {
+		}/* else if (event.getSource().equals(definitions_save_path_button)) {
 			browseFeatureDefinitionsSavePath();
 		}
+		*/
 	}
 
 	/* PRIVATE METHODS ******************************************************** */
@@ -658,12 +659,13 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 	 * where feature values are to be saved. The selected path is entered in the
 	 * definitions_save_path_text_field.
 	 */
+	/*
 	private void browseFeatureDefinitionsSavePath() {
 		String path = chooseSavePath();
 		if (path != null)
 			definitions_save_path_text_field.setText(path);
 	}
-
+	*/
 	/**
 	 * Allows the user to select or enter a file path using a JFileChooser. If
 	 * the selected path does not have an extension of .XML, it is given this
