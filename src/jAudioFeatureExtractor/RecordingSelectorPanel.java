@@ -241,13 +241,12 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 
 		add(button_panel, "cell 0 1,growx,aligny top");
 		
-				controller.removeRecordingsAction
-						.setModel(controller, recordings_table);
+		recordings_table = new JTable(controller.rtm_);
+				controller.removeRecordingsAction.setModel(controller, recordings_table);
 				controller.playSamplesAction.setTable(recordings_table);
 				controller.playNowAction.setTable(recordings_table);
 				controller.editRecordingsAction.setTable(recordings_table, outer_frame);
 				controller.viewFileInfoAction.setTable(recordings_table);
-				recordings_table = new JTable(controller.rtm_);
 				
 						// Set up and display the table
 						recordings_scroll_pane = new JScrollPane(recordings_table);
@@ -631,7 +630,10 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 			remove(recordings_table);
 
 		// Initialize recordings_table_model and recordings_table
-		Object[] column_names = { new String("Name"), new String("Path") };
+		Object[] column_names = { 
+				new String("#"), 
+				new String("Name"), 
+				new String("Path") };
 		int number_recordings = 0;
 		if (controller.dm_.recordingInfo != null)
 			number_recordings = controller.dm_.recordingInfo.length;

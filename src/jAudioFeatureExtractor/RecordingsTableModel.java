@@ -6,8 +6,9 @@
 
 package jAudioFeatureExtractor;
 
-import javax.swing.table.DefaultTableModel;
 import jAudioFeatureExtractor.DataTypes.RecordingInfo;
+
+import javax.swing.table.DefaultTableModel;
 
 
 /**
@@ -55,9 +56,10 @@ public class RecordingsTableModel
 		if (recording_list != null)
 			for (int i = 0; i < recording_list.length; i++)
 			{
-				Object[] row_contents = new Object[2];
-				row_contents[0] = recording_list[i].identifier;
-				row_contents[1] = recording_list[i].file_path;
+				Object[] row_contents = new Object[3];
+				row_contents[0] = i;
+				row_contents[1] = recording_list[i].identifier;
+				row_contents[2] = recording_list[i].file_path;
 				addRow(row_contents);
 			}
 	}
