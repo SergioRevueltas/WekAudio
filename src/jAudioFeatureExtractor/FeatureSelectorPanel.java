@@ -73,7 +73,9 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 	/* FIELDS ***************************************************************** */
 
 	static final long serialVersionUID = 1;
-
+	
+	public static final Color BLUE = new Color((float) 0.75, (float) 0.85, (float) 1.0);
+	public static final Color GREY = Color.GRAY;
 	/**
 	 * Holds a reference to the JPanel that holds objects of this class.
 	 */
@@ -170,10 +172,7 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 		this.controller = c;
 		// Set the file chooser to null initially
 		save_file_chooser = null;
-
-		// Set the global color
-		Color blue = new Color((float) 0.75, (float) 0.85, (float) 1.0);
-
+	
 		// General container preparations containers
 		int horizontal_gap = 6; // horizontal space between GUI elements
 		int vertical_gap = 11; // horizontal space between GUI elements
@@ -191,13 +190,13 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 
 		save_window_features_check_box = new JCheckBox(
 				"Save Features For Each Window", false);
-		save_window_features_check_box.setBackground(blue);
+		save_window_features_check_box.setBackground(GREY);
 		save_window_features_check_box.addActionListener(this);
 		control_panel.add(save_window_features_check_box);
 
 		save_overall_file_featurese_check_box = new JCheckBox(
 				"Save For Overall Recordings", true);
-		save_overall_file_featurese_check_box.setBackground(blue);
+		save_overall_file_featurese_check_box.setBackground(GREY);
 		save_overall_file_featurese_check_box.addActionListener(this);
 
 		control_panel.add(save_overall_file_featurese_check_box);
@@ -223,7 +222,7 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 		classify_button.addActionListener(this);
 		control_panel.add(classify_button);
 
-		control_panel.setBackground(blue);
+		control_panel.setBackground(GREY);
 
 		add(control_panel, BorderLayout.SOUTH);
 

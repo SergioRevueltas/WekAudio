@@ -41,6 +41,8 @@ public class OuterFrame extends JFrame {
 	/* FIELDS ***************************************************************** */
 
 	static final long serialVersionUID = 1;
+	public static final Color BLUE = new Color((float) 0.75, (float) 0.85, (float) 1.0);
+	public static final Color GREY = Color.GRAY;
 
 	/**
 	 * A panel allowing the user to select files to extract features from.
@@ -118,10 +120,9 @@ public class OuterFrame extends JFrame {
 		controller.normalise = new JCheckBoxMenuItem("Normalise Recordings",
 				true);
 
-		Color blue = new Color((float) 0.75, (float) 0.85, (float) 1.0);
-		this.getContentPane().setBackground(blue);
-		feature_selector_panel.setBackground(blue);
-		recording_selector_panel.setBackground(blue);
+		this.getContentPane().setBackground(GREY);
+		feature_selector_panel.setBackground(GREY);
+		recording_selector_panel.setBackground(GREY);
 
 		arff.setSelected(true);
 		ace.addActionListener(controller.outputTypeAction);
@@ -156,7 +157,7 @@ public class OuterFrame extends JFrame {
 		JMenuItem helpTopics = new JMenuItem("Help Topics");
 
 		menu = new JMenuBar();
-		menu.setBackground(blue);
+		menu.setBackground(GREY);
 		JMenu fileMenu = new JMenu("File");
 		fileMenu.add(c.saveAction);
 		fileMenu.add(c.saveBatchAction);

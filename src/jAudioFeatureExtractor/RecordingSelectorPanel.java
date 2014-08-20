@@ -12,7 +12,6 @@ import jAudioFeatureExtractor.jAudioTools.AudioMethods;
 import jAudioFeatureExtractor.jAudioTools.AudioMethodsPlayback;
 import jAudioFeatureExtractor.jAudioTools.AudioSamples;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -33,6 +32,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+
+import net.miginfocom.swing.MigLayout;
 
 /**
  * A window that allows users to select audio files to extract features from,
@@ -85,6 +86,8 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 	/* FIELDS ***************************************************************** */
 
 	static final long serialVersionUID = 1;
+	public static final Color BLUE = new Color((float) 0.75, (float) 0.85, (float) 1.0);
+	public static final Color GREY = Color.GRAY;
 
 	/**
 	 * Holds a reference to the JPanel that holds objects of this class.
@@ -185,7 +188,6 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 		// Store containing panel
 		this.outer_frame = outer_frame;
 		this.controller = c;
-		Color blue = new Color((float) 0.75, (float) 0.85, (float) 1.0);
 
 		// Initialize some fields to null
 		controller.dm_.recordingInfo = null;
@@ -199,11 +201,11 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 
 		// General container preparations containers
 		int horizontal_gap = 6; // horizontal space between GUI elements
-		int vertical_gap = 11; // horizontal space between GUI elements
-		setLayout(new BorderLayout(horizontal_gap, vertical_gap));
+		int vertical_gap = 11;
+		setLayout(new MigLayout("", "[450px]", "[14px][125px][]"));
 
 		// Add an overall title for this panel
-		add(new JLabel("RECORDINGS:"), BorderLayout.NORTH);
+		add(new JLabel("RECORDINGS:"), "cell 0 0,growx,aligny top");
 
 		// Set up the list of recordings (initially blank)
 		recordings_panel = null;
@@ -212,7 +214,7 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 		// Set up buttons and check boxes
 		JPanel button_panel = new JPanel(new GridLayout(4, 2, horizontal_gap,
 				vertical_gap));
-		button_panel.setBackground(blue);
+		button_panel.setBackground(GREY);
 		add_recordings_button = new JButton("Add Recordings");
 		add_recordings_button.addActionListener(controller.addRecordingsAction);
 		button_panel.add(add_recordings_button);
@@ -237,15 +239,20 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 
 		button_panel.add(new JLabel(""));
 
-		add(button_panel, BorderLayout.SOUTH);
-		addTableMouseListener();
-
-		controller.removeRecordingsAction
-				.setModel(controller, recordings_table);
-		controller.playSamplesAction.setTable(recordings_table);
-		controller.playNowAction.setTable(recordings_table);
-		controller.editRecordingsAction.setTable(recordings_table, outer_frame);
-		controller.viewFileInfoAction.setTable(recordings_table);
+		add(button_panel, "cell 0 1,growx,aligny top");
+		
+				controller.removeRecordingsAction
+						.setModel(controller, recordings_table);
+				controller.playSamplesAction.setTable(recordings_table);
+				controller.playNowAction.setTable(recordings_table);
+				controller.editRecordingsAction.setTable(recordings_table, outer_frame);
+				controller.viewFileInfoAction.setTable(recordings_table);
+				recordings_table = new JTable(controller.rtm_);
+				
+						// Set up and display the table
+						recordings_scroll_pane = new JScrollPane(recordings_table);
+						add(recordings_scroll_pane, "cell 0 2");
+						addTableMouseListener();
 		/*
 		controller.addBatchAction.setFilePath(values_save_path_text_field,
 				definitions_save_path_text_field);
@@ -631,13 +638,6 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 		controller.rtm_ = new RecordingsTableModel(column_names,
 				number_recordings);
 		controller.rtm_.fillTable(controller.dm_.recordingInfo);
-		recordings_table = new JTable(controller.rtm_);
-
-		// Set up and display the table
-		recordings_scroll_pane = new JScrollPane(recordings_table);
-		recordings_panel = new JPanel(new GridLayout(1, 1));
-		recordings_panel.add(recordings_scroll_pane);
-		add(recordings_panel, BorderLayout.CENTER);
 		controller.rtm_.fireTableDataChanged();
 		repaint();
 		outer_frame.repaint();
