@@ -20,9 +20,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Cory McKay
  */
-public class RecordingsTableModel
-	extends DefaultTableModel
-{
+public class RecordingsTableModel extends DefaultTableModel {
 	
 	static final long serialVersionUID = 1;
 
@@ -32,8 +30,7 @@ public class RecordingsTableModel
 	/**
 	 * Same constructor as DefaultTableModel
 	 */
-	RecordingsTableModel(Object[] columnNames, int rows)
-	{
+	RecordingsTableModel(Object[] columnNames, int rows) {
 		super(columnNames, rows);
 	}
 

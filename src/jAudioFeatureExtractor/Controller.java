@@ -272,10 +272,14 @@ public class Controller implements ModelListener {
 	public Controller() {
 		dm_ = new DataModel("features.xml",this);
 		fstm_ = new FeatureSelectorTableModel(new Object[] {
-				new String("Save"), new String("Feature"),
-				new String("Dimensions"), new String("IsPrimary") },
+				new String("Save"), 
+				new String("Feature"),
+				new String("Dimensions"), 
+				new String("IsPrimary") },
 				dm_.features.length);
-		rtm_ = new RecordingsTableModel(new Object[] { new String("Name"),
+		rtm_ = new RecordingsTableModel(new Object[] { 
+				new String("#"),
+				new String("Name"),
 				new String("Path") }, 0);
 		aggList_ = new AggListTableModel();
 		activeAgg_ = new ActiveAggTableModel();
