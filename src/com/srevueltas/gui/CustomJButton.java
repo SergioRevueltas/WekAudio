@@ -10,7 +10,7 @@ public class CustomJButton extends JButton{
 	
 	public CustomJButton(String name) {
 		super(name);
-		setFont(new Font("Arial", Font.BOLD, 12));
+		setFont(new Font("Arial", Font.BOLD, 14));
 		setBackground(Color.GRAY);
 		setForeground(Color.WHITE);
 		setFocusPainted(false);

@@ -6,7 +6,6 @@
 
 package jAudioFeatureExtractor;
 
-import jAudioFeatureExtractor.ACE.XMLParsers.FileFilterXML;
 import jAudioFeatureExtractor.DataTypes.RecordingInfo;
 import jAudioFeatureExtractor.jAudioTools.AudioMethods;
 import jAudioFeatureExtractor.jAudioTools.AudioMethodsPlayback;
@@ -14,7 +13,6 @@ import jAudioFeatureExtractor.jAudioTools.AudioSamples;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -32,7 +30,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -109,10 +106,6 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 	/**
 	 * GUI buttons
 	 */
-	JButton values_save_path_button;
-
-	// JButton definitions_save_path_button;
-
 	private JButton add_recordings_button;
 
 	private JButton delete_recordings_button;
@@ -150,7 +143,6 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 	/**
 	 * GUI Text boxes
 	 */
-	JTextArea values_save_path_text_field;
 
 	// JTextArea definitions_save_path_text_field;
 
@@ -241,27 +233,6 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 		recordings_scroll_pane.setBackground(GREY);
 		recordings_scroll_pane.getViewport().setBackground(GREY);
 
-		// Set up buttons and check boxes
-		JPanel button_panel = new JPanel(new GridLayout(4, 2, horizontal_gap,
-				vertical_gap));
-		button_panel.setBackground(GREY);
-
-		values_save_path_button = new JButton("Feature Values Save Path:");
-		button_panel.add(values_save_path_button);
-		values_save_path_button.addActionListener(this);
-		values_save_path_text_field = new JTextArea("default.arff", 1,
-				20);
-		button_panel.add(values_save_path_text_field);
-
-		// definitions_save_path_button = new JButton("Feature Definitions Save Path:");
-		// button_panel.add(definitions_save_path_button);
-		// definitions_save_path_button.addActionListener(this);
-		// definitions_save_path_text_field = new JTextArea("feature_definitions_1.xml", 1, 20);
-		// button_panel.add(definitions_save_path_text_field);
-
-		button_panel.add(new JLabel(""));
-
-		add(button_panel, "cell 0 3,growx,aligny top");
 		
 		delete_recordings_button = new CustomJButton("Delete Recordings");
 		add(delete_recordings_button, "cell 0 1,grow");
@@ -405,12 +376,6 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 		// React to the view_recording_information_button
 		else if (event.getSource().equals(view_recording_information_button))
 			viewRecordingInformation();
-		else if (event.getSource().equals(values_save_path_button)) {
-			browseFeatureValuesSavePath();
-		}/* else if (event.getSource().equals(definitions_save_path_button)) {
-			browseFeatureDefinitionsSavePath();
-			}
-			*/
 	}
 
 	/* PRIVATE METHODS ******************************************************** */
@@ -654,15 +619,7 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 		outer_frame.repaint();
 	}
 
-	/**
-	 * Allow the user to choose a save path for the feature_vector_file XML file where feature values are to be saved.
-	 * The selected path is entered in the values_save_path_text_field.
-	 */
-	private void browseFeatureValuesSavePath() {
-		String path = chooseSavePath();
-		if (path != null)
-			values_save_path_text_field.setText(path);
-	}
+	
 
 	/**
 	 * Allow the user to choose a save path for the feature_key_file XML file where feature values are to be saved. The
@@ -675,62 +632,7 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 			definitions_save_path_text_field.setText(path);
 	}
 	*/
-	/**
-	 * Allows the user to select or enter a file path using a JFileChooser. If the selected path does not have an
-	 * extension of .XML, it is given this extension. If the chosen path refers to a file that already exists, then the
-	 * user is asked if s/he wishes to overwrite the selected file.
-	 * <p>
-	 * No file is actually saved or overwritten by this method. The selected path is simply returned.
-	 * 
-	 * @return The path of the selected or entered file. A value of null is returned if the user presses the cancel
-	 *         button or chooses not to overwrite a file.
-	 */
-	private String chooseSavePath() {
-		// Create the JFileChooser if it does not already exist
-		if (save_file_chooser == null) {
-			save_file_chooser = new JFileChooser();
-			save_file_chooser.setCurrentDirectory(new File("exportedFeatureValues/"));
-			save_file_chooser.setFileFilter(new FileFilterXML());
-		}
-
-		// Process the user's entry
-		String path = null;
-		int dialog_result = save_file_chooser.showSaveDialog(this);
-		if (dialog_result == JFileChooser.APPROVE_OPTION) // only do if OK
-		// chosen
-		{
-			// Get the file the user chose
-			File to_save_to = save_file_chooser.getSelectedFile();
-
-			// Make sure has .xml extension
-			path = to_save_to.getPath();
-			String ext = jAudioFeatureExtractor.GeneralTools.StringMethods
-					.getExtension(path);
-			if (ext == null) {
-				path += ".xml";
-				to_save_to = new File(path);
-			} else if (!ext.equals(".xml")) {
-				path = jAudioFeatureExtractor.GeneralTools.StringMethods
-						.removeExtension(path)
-						+ ".xml";
-				to_save_to = new File(path);
-			}
-
-			// See if user wishes to overwrite if a file with the same name
-			// exists
-			if (to_save_to.exists()) {
-				int overwrite = JOptionPane
-						.showConfirmDialog(
-								null,
-								"This file already exists.\nDo you wish to overwrite it?",
-								"WARNING", JOptionPane.YES_NO_OPTION);
-				if (overwrite != JOptionPane.YES_OPTION)
-					path = null;
-			}
-		}
-
-		// Return the selected file path
-		return path;
-	}
+	
+	
 
 }

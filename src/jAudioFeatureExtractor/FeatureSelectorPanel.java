@@ -8,7 +8,6 @@ package jAudioFeatureExtractor;
 
 import jAudioFeatureExtractor.Aggregators.Aggregator;
 import jAudioFeatureExtractor.AudioFeatures.FeatureExtractor;
-import jAudioFeatureExtractor.DataTypes.RecordingInfo;
 import jAudioFeatureExtractor.GeneralTools.FeatureDisplay;
 import jAudioFeatureExtractor.actions.MultipleToggleAction;
 
@@ -24,7 +23,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -264,43 +262,8 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 	 * @param event The event that is to be reacted to.
 	 */
 	public void actionPerformed(ActionEvent event) {
-		// React to the extract_features_button
-		if (event.getSource().equals(extract_features_button))
-			extractFeatures(false);
-		else if (event.getSource()
-				.equals(save_overall_file_featurese_check_box)) {
-			JCheckBox tmp = (JCheckBox) event.getSource();
-			if (tmp.isSelected()) {
-				if (save_window_features_check_box.isSelected()) {
-					if (controller.outputTypeAction.getSelected() == 1) {
-						JOptionPane
-								.showMessageDialog(
-										null,
-										"Weka format only supports one type of output - either output per file or output per window.",
-										"ERROR", JOptionPane.ERROR_MESSAGE);
-						tmp.setSelected(false);
-
-					}
-				}
-			}
-		} else if (event.getSource().equals(save_window_features_check_box)) {
-			JCheckBox tmp = (JCheckBox) event.getSource();
-			if (tmp.isSelected()) {
-				if (save_overall_file_featurese_check_box.isSelected()) {
-					if (controller.outputTypeAction.getSelected() == 1) {
-						JOptionPane
-								.showMessageDialog(
-										null,
-										"Weka format only supports one type of output - either output per file or output per window.",
-										"ERROR", JOptionPane.ERROR_MESSAGE);
-						tmp.setSelected(false);
-					}
-				}
-			}
-		} else if (event.getSource().equals(set_aggregators_button)) {
+		if (event.getSource().equals(set_aggregators_button)) {
 			launchAggEditTable();
-		} else if (event.getSource().equals(classify_button)) {
-			classifyInstances(true);
 		} else if(event.getSource().equals(config_button)) {
 			launchOptionsFrame();
 		}
@@ -315,168 +278,6 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 	}
 
 	/* PRIVATE METHODS ******************************************************** */
-	/**
-	 * Extract the features from all of the files added in the GUI. Use the features and feature settings entered in the
-	 * GUI. Save the results in a feature_vector_file and the features used in a feature_key_file. Daniel McEnnis
-	 * 05-09-05 Moved guts into FeatureModel
-	 */
-	private void classifyInstances(boolean toClassify) {
-		try {
-			// Get the control parameters
-			boolean save_features_for_each_window = save_window_features_check_box.isSelected();
-			boolean save_overall_recording_features = save_overall_file_featurese_check_box.isSelected();
-			String feature_values_save_path = "exportedFeatureValues/" + outer_frame.recording_selector_panel.values_save_path_text_field.getText();
-			int window_size = (int) analysis_options.getWindow_size_combo().getSelectedItem();
-			double window_overlap = Double.parseDouble(analysis_options.getSlider_TextField().getText()) / 100;
-			
-			boolean normalise = controller.normalise.isSelected();
-			double sampling_rate = controller.samplingRateAction.getSamplingRate();
-			int outputType = controller.outputTypeAction.getSelected();
-
-			// Get the audio recordings to extract features from and throw an exception if there are none
-			RecordingInfo[] recordings = controller.dm_.recordingInfo;
-			if (recordings == null)
-				throw new Exception(
-						"No recordings available to extract features from.");
-
-			// Ask user if s/he wishes to change window size to a power of 2 if it is not already.
-			/*
-			if (window_size >= 0) {
-				int pow_2_size = jAudioFeatureExtractor.GeneralTools.Statistics
-						.ensureIsPowerOfN(window_size, 2);
-				if (window_size != pow_2_size) {
-					String message = "Given window size is " + window_size
-							+ ", which is not a power\n"
-							+ "of 2. Would you like to increase this to the\n"
-							+ "next highest power of 2 (" + pow_2_size + ")?";
-					int convert = JOptionPane.showConfirmDialog(null, message,
-							"WARNING", JOptionPane.YES_NO_OPTION);
-					if (convert == JOptionPane.YES_OPTION) {
-						window_length_text_field.setText(String
-								.valueOf(pow_2_size));
-						window_size = Integer.parseInt(window_length_text_field
-								.getText());
-					}
-				}
-			}
-			*/
-			// Find which features are selected to be saved
-			for (int i = 0; i < controller.dm_.defaults.length; i++) {
-				controller.dm_.defaults[i] = ((Boolean) controller.fstm_
-						.getValueAt(i, 0)).booleanValue();
-			}
-
-			// threads can only execute once. Rebuild the thread here
-			controller.extractionThread = new ExtractionThread(controller, outer_frame);
-
-			controller.extractionThread.setup(save_overall_recording_features,
-					save_features_for_each_window, feature_values_save_path,
-					"", window_size, window_overlap, toClassify);
-			// extract the features
-			controller.extractionThread.start();
-
-		} catch (Throwable t) {
-			// React to the Java Runtime running out of memory
-			if (t.toString().equals("java.lang.OutOfMemoryError"))
-				JOptionPane
-						.showMessageDialog(
-								null,
-								"The Java Runtime ran out of memory. Please rerun this program\n"
-										+ "with a higher amount of memory assigned to the Java Runtime heap.",
-								"ERROR", JOptionPane.ERROR_MESSAGE);
-			else if (t instanceof Exception) {
-				Exception e = (Exception) t;
-				JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR",
-						JOptionPane.ERROR_MESSAGE);
-			}
-		}
-	}
-
-	/**
-	 * Extract the features from all of the files added in the GUI. Use the features and feature settings entered in the
-	 * GUI. Save the results in a feature_vector_file and the features used in a feature_key_file. Daniel McEnnis
-	 * 05-09-05 Moved guts into FeatureModel
-	 */
-	private void extractFeatures(boolean toClassify) {
-		try {
-			// Get the control parameters
-			boolean save_features_for_each_window = save_window_features_check_box.isSelected();
-			boolean save_overall_recording_features = save_overall_file_featurese_check_box.isSelected();
-			String feature_values_save_path =
-					"exportedFeatureValues/"
-							+ outer_frame.recording_selector_panel.values_save_path_text_field.getText();
-			// String feature_definitions_save_path =
-			// outer_frame.recording_selector_panel.definitions_save_path_text_field.getText();
-			int window_size = (int) analysis_options.getWindow_size_combo().getSelectedItem();
-			double window_overlap = Double.parseDouble(analysis_options.getSlider_TextField().getText()) / 100;
-			boolean normalise = controller.normalise.isSelected();
-			double sampling_rate = controller.samplingRateAction.getSamplingRate();
-			int outputType = controller.outputTypeAction.getSelected();
-
-			// Get the audio recordings to extract features from and throw an
-			// exception
-			// if there are none
-			RecordingInfo[] recordings = controller.dm_.recordingInfo;
-			if (recordings == null)
-				throw new Exception(
-						"No recordings available to extract features from.");
-
-			// Ask user if s/he wishes to change window size to a power of 2 if
-			// it
-			// is not already.
-			/*
-			if (window_size >= 0) {
-				int pow_2_size = jAudioFeatureExtractor.GeneralTools.Statistics
-						.ensureIsPowerOfN(window_size, 2);
-				if (window_size != pow_2_size) {
-					String message = "Given window size is " + window_size
-							+ ", which is not a power\n"
-							+ "of 2. Would you like to increase this to the\n"
-							+ "next highest power of 2 (" + pow_2_size + ")?";
-					int convert = JOptionPane.showConfirmDialog(null, message,
-							"WARNING", JOptionPane.YES_NO_OPTION);
-					if (convert == JOptionPane.YES_OPTION) {
-						window_length_text_field.setText(String
-								.valueOf(pow_2_size));
-						window_size = Integer.parseInt(window_length_text_field
-								.getText());
-					}
-				}
-			}
-			*/
-			// Find which features are selected to be saved
-			for (int i = 0; i < controller.dm_.defaults.length; i++) {
-				controller.dm_.defaults[i] = ((Boolean) controller.fstm_
-						.getValueAt(i, 0)).booleanValue();
-			}
-
-			// threads can only execute once. Rebuild the thread here
-			controller.extractionThread = new ExtractionThread(controller,
-					outer_frame);
-			// setup thread
-			controller.extractionThread.setup(save_overall_recording_features,
-					save_features_for_each_window, feature_values_save_path,
-					"", window_size, window_overlap, toClassify);
-			// extract the features
-			controller.extractionThread.start();
-
-		} catch (Throwable t) {
-			// React to the Java Runtime running out of memory
-			if (t.toString().equals("java.lang.OutOfMemoryError"))
-				JOptionPane
-						.showMessageDialog(
-								null,
-								"The Java Runtime ran out of memory. Please rerun this program\n"
-										+ "with a higher amount of memory assigned to the Java Runtime heap.",
-								"ERROR", JOptionPane.ERROR_MESSAGE);
-			else if (t instanceof Exception) {
-				Exception e = (Exception) t;
-				JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR",
-						JOptionPane.ERROR_MESSAGE);
-			}
-		}
-	}
-
 	/**
 	 * Initialize the table displaying the features which can be extracted.
 	 */
@@ -557,26 +358,6 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 		});
 	}
 
-	// /**
-	// * Returns the types of feature extractors that are currently available.
-	// * <p>
-	// * Daniel McEnnis 05-04-05 Added MFCC,Moments and Area Moments to list of
-	// * features
-	// * <p>
-	// * Daniel McEnnis 05-05-05 Added LPC to list of features
-	// * <p>
-	// * Daniel McEnnis 05-06-05 Added code to handle meta-features. Added Mean,
-	// * derivative, and StandardDeviation to meta features. Daniel McEnnis
-	// * 05-09-05 Moved contents into featureModel
-	// * <p>
-	// * Daniel McEnnis 05-13-05 Shifted code into Controller class
-	// *
-	// * @return The available feature extractors.
-	// */
-	// private void populateFeatureExtractors() {
-	// //;
-	// }
-
 	/**
 	 * Allows the user to select or enter a file path using a JFileChooser. If the selected path does not have an
 	 * extension of .XML, it is given this extension. If the chosen path refers to a file that already exists, then the
@@ -595,20 +376,6 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 		ef_ = new EditFeatures(this, fe);
 		ef_.setVisible(true);
 	}
-
-	// private void outputFormatAction(ActionEvent event) {
-	// if (output_format.getSelectedIndex() == 1) {
-	// definitions_save_path_button.setEnabled(false);
-	// definitions_save_path_text_field.setEnabled(false);
-	// if (save_window_features_check_box.isSelected()
-	// && save_overall_file_featurese_check_box.isSelected()) {
-	// save_overall_file_featurese_check_box.setSelected(false);
-	// }
-	// } else if (output_format.getSelectedIndex() == 0) {
-	// definitions_save_path_button.setEnabled(true);
-	// definitions_save_path_text_field.setEnabled(true);
-	// }
-	// }
 
 	private void launchAggEditTable() {
 		aggregator_editor = new AggregatorFrame(controller);

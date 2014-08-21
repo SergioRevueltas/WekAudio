@@ -10,7 +10,6 @@ package jAudioFeatureExtractor;
 
 import jAudioFeatureExtractor.actions.ExecuteBatchAction;
 
-import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -29,8 +28,10 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 
-import org.multihelp.HelpWindow;
+import net.miginfocom.swing.MigLayout;
 //import javax.help.*;
+
+import org.multihelp.HelpWindow;
 
 /**
  * A panel holding various components of the jAudio Feature Extractor GUI
@@ -58,6 +59,11 @@ public class OuterFrame extends JFrame {
 	 * values and definitions can be saved to disk.
 	 */
 	public FeatureSelectorPanel feature_selector_panel;
+	
+	/**
+	 * A panel allowing the user to train and classify.
+	 */
+	public DataMiningPanel dataMiningPanel;
 
 	/**
 	 * A class that contains all the logic for handling events fired from this
@@ -117,8 +123,7 @@ public class OuterFrame extends JFrame {
 		recording_selector_panel = new RecordingSelectorPanel(this, c);
 		feature_selector_panel = new FeatureSelectorPanel(this, c);
 
-		controller.normalise = new JCheckBoxMenuItem("Normalise Recordings",
-				true);
+		controller.normalise = new JCheckBoxMenuItem("Normalise Recordings", true);
 
 		this.getContentPane().setBackground(GREY);
 		feature_selector_panel.setBackground(GREY);
@@ -235,11 +240,14 @@ public class OuterFrame extends JFrame {
 		menu.add(analysisMenu);
 		menu.add(playbackMenu);
 		menu.add(helpMenu);
-		// Add items to GUI
-		setLayout(new BorderLayout(8, 8));
-		add(recording_selector_panel, BorderLayout.WEST);
-		add(feature_selector_panel, BorderLayout.EAST);
-		add(menu, BorderLayout.NORTH);
+		getContentPane().setLayout(new MigLayout("", "[104px][50px][104px][]", "[21px][74px]"));
+		getContentPane().add(recording_selector_panel, "cell 0 1,grow");
+		getContentPane().add(feature_selector_panel, "cell 2 1,grow");
+		getContentPane().add(menu, "cell 0 0 4 1,alignx left,aligny top");
+		dataMiningPanel = new DataMiningPanel(this, c);
+		dataMiningPanel.setBackground(GREY);
+		getContentPane().add(dataMiningPanel,"cell 3 1,grow");
+		//TODO change icon
 		this.setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage("jAudioLogo3-16.bmp"));
 		// Display GUI
 		pack();

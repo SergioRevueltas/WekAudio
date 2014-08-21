@@ -12,7 +12,7 @@ public class CustomLabel extends JLabel{
 	public CustomLabel(String name) {
 		super(name);
 		setForeground(Color.WHITE);
-		setFont(new Font("Arial", Font.BOLD, 12));
+		setFont(new Font("Arial", Font.PLAIN, 12));
 	}
 	
 }

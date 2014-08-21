@@ -335,8 +335,14 @@ public class Controller implements ModelListener {
 	public void setObjectReferences(JComboBox<Integer> windowSizeCombo,
 			JTextField overlapSliderTextField) {
 		this.window_size_index = windowSizeCombo.getSelectedIndex();
-		this.window_overlap_value = Integer.parseInt(overlapSliderTextField.getText());		
 		this.windowSizeCombo = windowSizeCombo;
+		this.window_overlap_value = Integer.parseInt(overlapSliderTextField.getText());		
+	}
+
+	
+	public int getWindow_overlap_value() {
+		return window_overlap_value;
 	}	
 
+	
 }
