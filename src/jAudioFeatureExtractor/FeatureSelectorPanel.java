@@ -28,7 +28,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
@@ -117,13 +116,10 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 	/**
 	 * GUI text areas
 	 */
-	private JTextArea window_length_text_field;
+	//private JTextArea window_length_text_field;
 
-	private JTextArea window_overlap_fraction_text_field;
+	//private JTextArea window_overlap_fraction_text_field;
 
-	// private JTextArea values_save_path_text_field;
-	//
-	// private JTextArea definitions_save_path_text_field;
 
 	/**
 	 * GUI check boxes
@@ -135,9 +131,6 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 	/**
 	 * GUI buttons
 	 */
-	// private JButton values_save_path_button;
-	//
-	// private JButton definitions_save_path_button;
 	private JButton extract_features_button;
 
 	private JButton classify_button;
@@ -211,14 +204,13 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 
 		control_panel.add(save_overall_file_featurese_check_box);
 
-		control_panel.add(new JLabel("Window Size (samples):"));
+		//control_panel.add(new JLabel("Window Size (samples):"));
+		//window_length_text_field = new JTextArea("1024", 1, 20);
+		//control_panel.add(window_length_text_field);
 
-		window_length_text_field = new JTextArea("1024", 1, 20);
-		control_panel.add(window_length_text_field);
-
-		control_panel.add(new JLabel("Window Overlap (fraction):"));
-		window_overlap_fraction_text_field = new JTextArea("0.5", 1, 20);
-		control_panel.add(window_overlap_fraction_text_field);
+		//control_panel.add(new JLabel("Window Overlap (fraction):"));
+		//window_overlap_fraction_text_field = new JTextArea("0.5", 1, 20);
+		//control_panel.add(window_overlap_fraction_text_field);
 
 		control_panel.setBackground(GREY);
 
@@ -226,17 +218,22 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 
 		// Cause the table to respond to double clicks
 		addTableMouseListener();
-		controller.saveAction.setObjectReferences(window_length_text_field,
-				window_overlap_fraction_text_field,
-				save_window_features_check_box,
-				save_overall_file_featurese_check_box);
+		analysis_options = new AnalysisOptionsFrame(controller);
+		
+		controller.setObjectReferences(
+				analysis_options.getWindow_size_combo(),
+				analysis_options.getSlider_TextField());
+		
+		/*
 		controller.loadAction.setObjectReferences(window_length_text_field,
 				window_overlap_fraction_text_field,
 				save_window_features_check_box,
 				save_overall_file_featurese_check_box);
+		*/
 		controller.outputTypeAction.setTarget(outer_frame.ace,
 				outer_frame.arff, save_window_features_check_box,
 				save_window_features_check_box);
+		/*
 		controller.addBatchAction.setSettings(save_window_features_check_box,
 				save_overall_file_featurese_check_box,
 				window_length_text_field, window_overlap_fraction_text_field);
@@ -244,7 +241,7 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 				save_window_features_check_box,
 				save_overall_file_featurese_check_box,
 				window_length_text_field, window_overlap_fraction_text_field);
-
+		*/
 		extract_features_button = new CustomJButton("Extract Features");
 		add(extract_features_button, "cell 0 1,grow");
 		extract_features_button.addActionListener(this);
@@ -313,7 +310,10 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 	}
 
 	private void launchOptionsFrame() {
-		analysis_options = new AnalysisOptionsFrame(controller);
+		if (analysis_options == null) {
+			analysis_options = new AnalysisOptionsFrame(controller);
+		}
+		analysis_options.loadDataFromController();
 		analysis_options.setVisible(true);
 	}
 
@@ -328,11 +328,10 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 			// Get the control parameters
 			boolean save_features_for_each_window = save_window_features_check_box.isSelected();
 			boolean save_overall_recording_features = save_overall_file_featurese_check_box.isSelected();
-			String feature_values_save_path =
-					"exportedFeatureValues/"
-							+ outer_frame.recording_selector_panel.values_save_path_text_field.getText();
-			int window_size = Integer.parseInt(window_length_text_field.getText());
-			double window_overlap = Double.parseDouble(window_overlap_fraction_text_field.getText());
+			String feature_values_save_path = "exportedFeatureValues/" + outer_frame.recording_selector_panel.values_save_path_text_field.getText();
+			int window_size = (int) analysis_options.getWindow_size_combo().getSelectedItem();
+			double window_overlap = Double.parseDouble(analysis_options.getSlider_TextField().getText()) / 100;
+			
 			boolean normalise = controller.normalise.isSelected();
 			double sampling_rate = controller.samplingRateAction.getSamplingRate();
 			int outputType = controller.outputTypeAction.getSelected();
@@ -344,6 +343,7 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 						"No recordings available to extract features from.");
 
 			// Ask user if s/he wishes to change window size to a power of 2 if it is not already.
+			/*
 			if (window_size >= 0) {
 				int pow_2_size = jAudioFeatureExtractor.GeneralTools.Statistics
 						.ensureIsPowerOfN(window_size, 2);
@@ -362,6 +362,7 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 					}
 				}
 			}
+			*/
 			// Find which features are selected to be saved
 			for (int i = 0; i < controller.dm_.defaults.length; i++) {
 				controller.dm_.defaults[i] = ((Boolean) controller.fstm_
@@ -409,8 +410,8 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 							+ outer_frame.recording_selector_panel.values_save_path_text_field.getText();
 			// String feature_definitions_save_path =
 			// outer_frame.recording_selector_panel.definitions_save_path_text_field.getText();
-			int window_size = Integer.parseInt(window_length_text_field.getText());
-			double window_overlap = Double.parseDouble(window_overlap_fraction_text_field.getText());
+			int window_size = (int) analysis_options.getWindow_size_combo().getSelectedItem();
+			double window_overlap = Double.parseDouble(analysis_options.getSlider_TextField().getText()) / 100;
 			boolean normalise = controller.normalise.isSelected();
 			double sampling_rate = controller.samplingRateAction.getSamplingRate();
 			int outputType = controller.outputTypeAction.getSelected();
@@ -426,6 +427,7 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 			// Ask user if s/he wishes to change window size to a power of 2 if
 			// it
 			// is not already.
+			/*
 			if (window_size >= 0) {
 				int pow_2_size = jAudioFeatureExtractor.GeneralTools.Statistics
 						.ensureIsPowerOfN(window_size, 2);
@@ -444,7 +446,7 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 					}
 				}
 			}
-
+			*/
 			// Find which features are selected to be saved
 			for (int i = 0; i < controller.dm_.defaults.length; i++) {
 				controller.dm_.defaults[i] = ((Boolean) controller.fstm_

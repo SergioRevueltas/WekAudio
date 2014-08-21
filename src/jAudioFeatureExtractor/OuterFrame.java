@@ -131,6 +131,7 @@ public class OuterFrame extends JFrame {
 
 		controller.executeBatchAction = new ExecuteBatchAction(controller, this);
 
+		/*
 		JRadioButtonMenuItem sample8 = new JRadioButtonMenuItem("8");
 		JRadioButtonMenuItem sample11 = new JRadioButtonMenuItem("11.025");
 		JRadioButtonMenuItem sample16 = new JRadioButtonMenuItem("16");
@@ -150,7 +151,7 @@ public class OuterFrame extends JFrame {
 		sample44.addActionListener(controller.samplingRateAction);
 		controller.samplingRateAction.setTarget(new JRadioButtonMenuItem[] {
 				sample8, sample11, sample16, sample22, sample44 });
-
+		*/
 		controller.removeBatch = new JMenu();
 		controller.viewBatch = new JMenu();
 
@@ -194,11 +195,13 @@ public class OuterFrame extends JFrame {
 		c.outputType.add(arff);
 		analysisMenu.add(c.outputType);
 		c.sampleRate = new JMenu("Sample Rate (kHz)");
+		/*
 		c.sampleRate.add(sample8);
 		c.sampleRate.add(sample11);
 		c.sampleRate.add(sample16);
 		c.sampleRate.add(sample22);
 		c.sampleRate.add(sample44);
+		*/
 		analysisMenu.add(c.sampleRate);
 		analysisMenu.add(controller.normalise);
 		JMenu playbackMenu = new JMenu("Playback");

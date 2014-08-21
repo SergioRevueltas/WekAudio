@@ -33,7 +33,9 @@ import java.util.Vector;
 
 import javax.swing.AbstractAction;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JComboBox;
 import javax.swing.JMenu;
+import javax.swing.JTextField;
 
 /**
  * Controller is a master location for all actions and non-gui components. Not
@@ -263,6 +265,13 @@ public class Controller implements ModelListener {
 	 * holds all currently defined batches.
 	 */
 	public Vector<Batch> batches;
+	
+	public JComboBox<Integer> windowSizeCombo = null;
+		
+	public int window_size_index = -1;
+	
+	public int window_overlap_value = -1;
+	
 
 	/**
 	 * Initial creation and configuration of most controller and model data.
@@ -322,5 +331,12 @@ public class Controller implements ModelListener {
 		fstm_.fillTable(feature_definitions, features_selected, is_primary);
 		fstm_.fireTableDataChanged();
 	}
+	
+	public void setObjectReferences(JComboBox<Integer> windowSizeCombo,
+			JTextField overlapSliderTextField) {
+		this.window_size_index = windowSizeCombo.getSelectedIndex();
+		this.window_overlap_value = Integer.parseInt(overlapSliderTextField.getText());		
+		this.windowSizeCombo = windowSizeCombo;
+	}	
 
 }
