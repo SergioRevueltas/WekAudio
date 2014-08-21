@@ -121,8 +121,7 @@ public class OuterFrame extends JFrame {
 		bg.add(ace);
 
 		getContentPane().setBackground(GREY);
-		//Border border = BorderFactory.createEtchedBorder();
-		Border border = BorderFactory.createLineBorder(Color.WHITE, 1);
+		Border border = BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1);
 		
 		// Instantiate panels
 		recording_selector_panel = new RecordingSelectorPanel(this, c);
