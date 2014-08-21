@@ -3,21 +3,21 @@
  */
 package jAudioFeatureExtractor;
 
+import jAudioFeatureExtractor.Aggregators.Aggregator;
+import jAudioFeatureExtractor.Aggregators.Mean;
+
 import java.awt.BorderLayout;
-import javax.swing.JPanel;
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import java.awt.Dimension;
-import java.awt.Rectangle;
-import java.awt.GridBagLayout;
-import javax.swing.JButton;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import jAudioFeatureExtractor.Aggregators.Aggregator;
-import jAudioFeatureExtractor.Aggregators.Mean;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
 /**
  * AggregatorFrame
@@ -75,7 +75,7 @@ public class AggregatorFrame extends JFrame implements ActionListener {
 	private void initialize() {
 		this.setContentPane(getJContentPane());
 		this.setTitle("Aggregators");
-		this.setBounds(new Rectangle(0, 22, 1000, 1000));
+		this.setBounds(new Rectangle(0, 22, 500, 500));
 	}
 
 	/**

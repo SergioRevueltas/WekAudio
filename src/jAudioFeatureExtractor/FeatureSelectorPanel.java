@@ -12,8 +12,8 @@ import jAudioFeatureExtractor.DataTypes.RecordingInfo;
 import jAudioFeatureExtractor.GeneralTools.FeatureDisplay;
 import jAudioFeatureExtractor.actions.MultipleToggleAction;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,6 +33,10 @@ import javax.swing.KeyStroke;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+
+import net.miginfocom.swing.MigLayout;
+
+import com.srevueltas.gui.CustomJButton;
 
 /**
  * A window that allows users to select which features to save as well as some basic parameters relating to these
@@ -73,7 +77,7 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 	/* FIELDS ***************************************************************** */
 
 	static final long serialVersionUID = 1;
-	
+
 	public static final Color BLUE = new Color((float) 0.75, (float) 0.85, (float) 1.0);
 	public static final Color GREY = Color.GRAY;
 	/**
@@ -139,6 +143,8 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 	private JButton classify_button;
 
 	private JButton set_aggregators_button;
+	
+	private JButton config_button;
 
 	/**
 	 * GUI dialog boxes
@@ -146,6 +152,8 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 	private JFileChooser save_file_chooser;
 
 	private AggregatorFrame aggregator_editor = null;
+	
+	private AnalysisOptionsFrame analysis_options = null;
 
 	/**
 	 * Children Windows
@@ -172,17 +180,19 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 		this.controller = c;
 		// Set the file chooser to null initially
 		save_file_chooser = null;
-	
+
 		// General container preparations containers
 		int horizontal_gap = 6; // horizontal space between GUI elements
-		int vertical_gap = 11; // horizontal space between GUI elements
-		setLayout(new BorderLayout(horizontal_gap, vertical_gap));
+		int vertical_gap = 11;
 
 		// Set up the list of feature extractors
 		setUpFeatureTable();
 
 		// Add an overall title for this panel
-		add(new JLabel("FEATURES:"), BorderLayout.NORTH);
+		JLabel label = new JLabel("FEATURES:");
+		label.setForeground(Color.WHITE);
+		label.setFont(new Font("Arial", Font.BOLD, 14));
+		add(label, "cell 0 0,growx,aligny top");
 
 		// Set up buttons and text area
 		JPanel control_panel = new JPanel(new GridLayout(4, 2, horizontal_gap,
@@ -210,21 +220,9 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 		window_overlap_fraction_text_field = new JTextArea("0.5", 1, 20);
 		control_panel.add(window_overlap_fraction_text_field);
 
-		set_aggregators_button = new JButton("Alter Aggregators");
-		set_aggregators_button.addActionListener(this);
-		control_panel.add(set_aggregators_button);
-
-		extract_features_button = new JButton("Extract Features");
-		extract_features_button.addActionListener(this);
-		control_panel.add(extract_features_button);
-
-		classify_button = new JButton("Classify");
-		classify_button.addActionListener(this);
-		control_panel.add(classify_button);
-
 		control_panel.setBackground(GREY);
 
-		add(control_panel, BorderLayout.SOUTH);
+		add(control_panel, "cell 0 3,growx,aligny top");
 
 		// Cause the table to respond to double clicks
 		addTableMouseListener();
@@ -246,8 +244,21 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 				save_window_features_check_box,
 				save_overall_file_featurese_check_box,
 				window_length_text_field, window_overlap_fraction_text_field);
+
+		extract_features_button = new CustomJButton("Extract Features");
+		add(extract_features_button, "cell 0 1,grow");
+		extract_features_button.addActionListener(this);
+
+		classify_button = new CustomJButton("Classify");
+		add(classify_button, "cell 0 1,grow");
+		classify_button.addActionListener(this);
+		
+		config_button = new CustomJButton("Analysis Options");
+		add(config_button, "cell 0 1,grow");
+		config_button.addActionListener(this);
+		
 		controller.dm_.aggregators = new Aggregator[] {
-				//(Aggregator) (controller.dm_.aggregatorMap.get("Mean").clone()),
+				// (Aggregator) (controller.dm_.aggregatorMap.get("Mean").clone()),
 				(Aggregator) (controller.dm_.aggregatorMap.get("Density Based Average").clone()) };
 	}
 
@@ -296,7 +307,14 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 			launchAggEditTable();
 		} else if (event.getSource().equals(classify_button)) {
 			classifyInstances(true);
+		} else if(event.getSource().equals(config_button)) {
+			launchOptionsFrame();
 		}
+	}
+
+	private void launchOptionsFrame() {
+		analysis_options = new AnalysisOptionsFrame(controller);
+		analysis_options.setVisible(true);
 	}
 
 	/* PRIVATE METHODS ******************************************************** */
@@ -389,7 +407,8 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 			String feature_values_save_path =
 					"exportedFeatureValues/"
 							+ outer_frame.recording_selector_panel.values_save_path_text_field.getText();
-			//String feature_definitions_save_path = outer_frame.recording_selector_panel.definitions_save_path_text_field.getText();
+			// String feature_definitions_save_path =
+			// outer_frame.recording_selector_panel.definitions_save_path_text_field.getText();
 			int window_size = Integer.parseInt(window_length_text_field.getText());
 			double window_overlap = Double.parseDouble(window_overlap_fraction_text_field.getText());
 			boolean normalise = controller.normalise.isSelected();
@@ -499,12 +518,17 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 				}
 			}
 		});
+		setLayout(new MigLayout("", "[450px]", "[17px][60.00:51.00:60.00][400.00px:315.00px][125px]"));
+
+		set_aggregators_button = new CustomJButton("Alter Aggregators");
+		add(set_aggregators_button, "flowx,cell 0 1,grow");
+		set_aggregators_button.addActionListener(this);
 
 		// Set up and display the table
 		features_scroll_pane = new JScrollPane(features_table);
 		features_panel = new JPanel(new GridLayout(1, 1));
 		features_panel.add(features_scroll_pane);
-		add(features_panel, BorderLayout.CENTER);
+		add(features_panel, "cell 0 2,grow");
 		controller.fstm_.fireTableDataChanged();
 		TableColumn tableColumn = features_table.getColumn(features_table
 				.getColumnName(1));
