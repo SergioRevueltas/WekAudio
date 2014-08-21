@@ -188,17 +188,14 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 		add(label, "cell 0 0,growx,aligny top");
 
 		// Set up buttons and text area
-		JPanel control_panel = new JPanel(new GridLayout(4, 2, horizontal_gap,
-				vertical_gap));
+		JPanel control_panel = new JPanel(new GridLayout(4, 2, horizontal_gap, vertical_gap));
 
-		save_window_features_check_box = new JCheckBox(
-				"Save Features For Each Window", false);
+		save_window_features_check_box = new JCheckBox("Save Features For Each Window", false);
 		save_window_features_check_box.setBackground(GREY);
 		save_window_features_check_box.addActionListener(this);
 		control_panel.add(save_window_features_check_box);
 
-		save_overall_file_featurese_check_box = new JCheckBox(
-				"Save For Overall Recordings", true);
+		save_overall_file_featurese_check_box = new JCheckBox("Save For Overall Recordings", true);
 		save_overall_file_featurese_check_box.setBackground(GREY);
 		save_overall_file_featurese_check_box.addActionListener(this);
 
@@ -213,8 +210,8 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 		//control_panel.add(window_overlap_fraction_text_field);
 
 		control_panel.setBackground(GREY);
-
 		add(control_panel, "cell 0 3,growx,aligny top");
+		control_panel.setVisible(false);
 
 		// Cause the table to respond to double clicks
 		addTableMouseListener();

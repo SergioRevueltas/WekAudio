@@ -38,13 +38,14 @@ public class AnalysisOptionsFrame extends JFrame implements ActionListener{
 	private JSlider window_overlap_slider;
 	private JTextField window_overlap_textField;
 	private JCheckBox normalise_checkbox;
-	private JButton accept_button;
+	private JButton save_button;
 	private JButton cancel_button;
 
 	public AnalysisOptionsFrame(Controller controller) {
 		super("Analysis options");
 		this.controller = controller;
-		setBounds(new Rectangle(0, 22, 500, 500));
+		setBounds(new Rectangle(50, 50, 400, 300));
+		setResizable(false);
 		getContentPane().setBackground(Color.GRAY);
 		getContentPane().setLayout(
 				new MigLayout("", "[150.00:n:355.00][100.00:n][44.00][]", "[50.00:50.00][50.00:n][50.00:n][:462px:50.00px][][]"));
@@ -74,6 +75,7 @@ public class AnalysisOptionsFrame extends JFrame implements ActionListener{
 
 		window_overlap_label = new CustomLabel("Window Overlap (%)");
 		window_overlap_slider = new JSlider();
+		window_overlap_slider.setBackground(Color.GRAY);
 		window_overlap_slider.setValue(50);
 		window_overlap_textField = new JTextField();
 		window_overlap_textField.setText("50");
@@ -102,9 +104,9 @@ public class AnalysisOptionsFrame extends JFrame implements ActionListener{
 		getContentPane().add(normalise_label, "cell 0 3");
 		getContentPane().add(normalise_checkbox, "cell 1 3 2 1,alignx center,aligny center");
 
-		accept_button = new CustomJButton("Accept");
-		getContentPane().add(accept_button, "flowx,cell 1 5");
-		accept_button.addActionListener(this);
+		save_button = new CustomJButton("Save");
+		getContentPane().add(save_button, "flowx,cell 1 5");
+		save_button.addActionListener(this);
 
 		cancel_button = new CustomJButton("Cancel");
 		getContentPane().add(cancel_button, "cell 1 5,alignx right");
@@ -113,7 +115,7 @@ public class AnalysisOptionsFrame extends JFrame implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == accept_button) {
+		if (e.getSource() == save_button) {
 			controller.samplingRateAction.setSelected(sample_rate_combo.getSelectedIndex());
 			controller.window_size_index = window_size_combo.getSelectedIndex();
 			controller.window_overlap_value = Integer.parseInt(window_overlap_textField.getText());
@@ -239,12 +241,12 @@ public class AnalysisOptionsFrame extends JFrame implements ActionListener{
 
 	
 	public JButton getAccept_button() {
-		return accept_button;
+		return save_button;
 	}
 
 	
 	public void setAccept_button(JButton accept_button) {
-		this.accept_button = accept_button;
+		this.save_button = accept_button;
 	}
 
 	
