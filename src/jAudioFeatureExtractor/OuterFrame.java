@@ -20,6 +20,7 @@ import java.awt.MediaTracker;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
+import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
@@ -27,6 +28,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.border.Border;
 
 import net.miginfocom.swing.MigLayout;
 //import javax.help.*;
@@ -118,17 +120,22 @@ public class OuterFrame extends JFrame {
 		bg.add(arff);
 		bg.add(ace);
 
+		getContentPane().setBackground(GREY);
+		//Border border = BorderFactory.createEtchedBorder();
+		Border border = BorderFactory.createLineBorder(Color.WHITE, 1);
 		
 		// Instantiate panels
 		recording_selector_panel = new RecordingSelectorPanel(this, c);
 		feature_selector_panel = new FeatureSelectorPanel(this, c);
+		dataMiningPanel = new DataMiningPanel(this, c);
+		feature_selector_panel.setBackground(GREY);
+		feature_selector_panel.setBorder(border);
+		recording_selector_panel.setBackground(GREY);
+		recording_selector_panel.setBorder(border);
+		dataMiningPanel.setBackground(GREY);
+		dataMiningPanel.setBorder(border);
 
 		controller.normalise = new JCheckBoxMenuItem("Normalise Recordings", true);
-
-		this.getContentPane().setBackground(GREY);
-		feature_selector_panel.setBackground(GREY);
-		recording_selector_panel.setBackground(GREY);
-
 		arff.setSelected(true);
 		ace.addActionListener(controller.outputTypeAction);
 		arff.addActionListener(controller.outputTypeAction);
@@ -240,13 +247,12 @@ public class OuterFrame extends JFrame {
 		menu.add(analysisMenu);
 		menu.add(playbackMenu);
 		menu.add(helpMenu);
-		getContentPane().setLayout(new MigLayout("", "[104px][50px][104px][]", "[21px][74px]"));
+		getContentPane().setLayout(new MigLayout("", "[104px][104px][]", "[21px][74px]"));
 		getContentPane().add(recording_selector_panel, "cell 0 1,grow");
-		getContentPane().add(feature_selector_panel, "cell 2 1,grow");
-		getContentPane().add(menu, "cell 0 0 4 1,alignx left,aligny top");
-		dataMiningPanel = new DataMiningPanel(this, c);
-		dataMiningPanel.setBackground(GREY);
-		getContentPane().add(dataMiningPanel,"cell 3 1,grow");
+		getContentPane().add(feature_selector_panel, "cell 1 1,grow");
+		getContentPane().add(dataMiningPanel,"cell 2 1,grow");
+		getContentPane().add(menu, "cell 0 0 3 1,alignx left,aligny top");
+	
 		//TODO change icon
 		this.setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage("jAudioLogo3-16.bmp"));
 		// Display GUI
