@@ -7,13 +7,34 @@
 
 package jAudioFeatureExtractor;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import java.io.*;
-import javax.sound.sampled.*;
-import jAudioFeatureExtractor.jAudioTools.*;
 import jAudioFeatureExtractor.GeneralTools.StringMethods;
+import jAudioFeatureExtractor.jAudioTools.AudioFormatJFrame;
+import jAudioFeatureExtractor.jAudioTools.AudioMethods;
+import jAudioFeatureExtractor.jAudioTools.AudioMethodsPlayback;
+import jAudioFeatureExtractor.jAudioTools.AudioMethodsRecording;
+import jAudioFeatureExtractor.jAudioTools.FileFilterAudio;
+
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+
+import javax.sound.sampled.AudioFileFormat;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.SourceDataLine;
+import javax.sound.sampled.TargetDataLine;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import net.miginfocom.swing.MigLayout;
 
 
 /**
@@ -91,7 +112,6 @@ public class RecordingFrame
 	private JButton								record_button;
 	private JButton								stop_recording_button;
 	private JButton								play_recording_button;
-	private JButton								stop_playback_button;
 	private JButton								cancel_button;
 	private JButton								save_button;
 
@@ -99,6 +119,8 @@ public class RecordingFrame
 	 * GUI combo box
 	 */
 	private JComboBox							choose_file_format_combo_box;
+	private JLabel lblAudioFormat;
+	private JLabel lblCurrentformat;
 
 
 	/* CONSTRUCTOR *************************************************************/
@@ -140,41 +162,45 @@ public class RecordingFrame
 
 		// Set up buttons and combo boxes
 		int horizontal_gap = 6; // horizontal space between GUI elements
-		int vertical_gap = 11; // horizontal space between GUI elements
-		setLayout(new GridLayout(6, 2, horizontal_gap, vertical_gap));
-		choose_encoding_format_button = new JButton("Change Encoding Format");
-		choose_encoding_format_button.addActionListener(this);
-		add(choose_encoding_format_button);
-		display_current_audio_format_button = new JButton("Display Current Encoding");
-		display_current_audio_format_button.addActionListener(this);
-		add(display_current_audio_format_button);
+		int vertical_gap = 11;
+		getContentPane().setLayout(new MigLayout("", "[153px][153px][]", "[23px][25.00:n][23px][23px][23px][23px]"));
 		record_button = new JButton("Record");
 		record_button.addActionListener(this);
-		add(record_button);
-		stop_recording_button = new JButton("Stop Recording");
+		choose_encoding_format_button = new JButton("Change Encoding Format");
+		choose_encoding_format_button.addActionListener(this);
+		display_current_audio_format_button = new JButton("Display Current Encoding");
+		display_current_audio_format_button.addActionListener(this);
+		
+		lblAudioFormat = new JLabel("Audio Format:");
+		getContentPane().add(lblAudioFormat, "cell 0 0");
+		
+		lblCurrentformat = new JLabel("currentFormat");
+		lblCurrentformat.setText(displayCurrentAudioFormat());
+		getContentPane().add(lblCurrentformat, "cell 1 0 2 1");
+		getContentPane().add(display_current_audio_format_button, "cell 1 1,grow");
+		getContentPane().add(choose_encoding_format_button, "cell 2 1,grow");
+		getContentPane().add(record_button, "cell 0 2,grow");
+		stop_recording_button = new JButton("Stop");
 		stop_recording_button.addActionListener(this);
-		add(stop_recording_button);
-		play_recording_button = new JButton("Play Last Recording");
-		play_recording_button.addActionListener(this);
-		add(play_recording_button);
-		stop_playback_button = new JButton("Stop Playback");
-		stop_playback_button.addActionListener(this);
-		add(stop_playback_button);
+		getContentPane().add(stop_recording_button, "cell 1 2,grow");
 		choose_file_format_combo_box = new JComboBox();
 		String file_types[] = AudioMethods.getAvailableFileFormatTypes();
 		for (int i = 0; i < file_types.length; i++)
 			choose_file_format_combo_box.addItem(file_types[i]);
 		choose_file_format_combo_box.setBackground(this.getContentPane().getBackground());
-		add(new JLabel("File Format For Saving:"));
-		add(choose_file_format_combo_box);
-		add(new JLabel(""));
-		add(new JLabel(""));
-		cancel_button = new JButton("Cancel");
-		cancel_button.addActionListener(this);
-		add(cancel_button);
+		play_recording_button = new JButton("Play");
+		play_recording_button.addActionListener(this);
+		getContentPane().add(play_recording_button, "cell 2 2,grow");
+		getContentPane().add(new JLabel("File Format For Saving:"), "cell 0 4,grow");
+		getContentPane().add(choose_file_format_combo_box, "cell 1 4,grow");
+		getContentPane().add(new JLabel(""), "cell 0 5,grow");
 		save_button = new JButton("Save");
 		save_button.addActionListener(this);
-		add(save_button);
+		getContentPane().add(save_button, "flowy,cell 1 5,grow");
+		getContentPane().add(new JLabel(""), "cell 1 5,grow");
+		cancel_button = new JButton("Cancel");
+		cancel_button.addActionListener(this);
+		getContentPane().add(cancel_button, "cell 2 5,grow");
 
 		// Display GUI
 		pack();
@@ -212,10 +238,6 @@ public class RecordingFrame
 		else if (event.getSource().equals(play_recording_button))
 			play();
 
-		// React to the stop_playback_button
-		else if (event.getSource().equals(stop_playback_button))
-			stopPlayback();
-
 		// React to the cancel_button
 		else if (event.getSource().equals(cancel_button))
 			cancel();
@@ -241,15 +263,16 @@ public class RecordingFrame
 	/**
 	 * Display the encoding details for the last recorded audio.
 	 */
-	private void displayCurrentAudioFormat()
-	{
+	private String displayCurrentAudioFormat() {
+		String data = "";
 		if (last_recorded_audio != null)
 		{
-			String data = AudioMethods.getAudioFormatData(last_recorded_audio.getFormat());
+			data = AudioMethods.getAudioFormatData(last_recorded_audio.getFormat());
 			JOptionPane.showMessageDialog(null, data, "Current Audio Encoding", JOptionPane.INFORMATION_MESSAGE);							
 		}
 		else
-			JOptionPane.showMessageDialog(null, "No audio has been stored.", "WARNING", JOptionPane.ERROR_MESSAGE);							
+			JOptionPane.showMessageDialog(null, "No audio has been stored.", "WARNING", JOptionPane.ERROR_MESSAGE);
+		return data;
 	}
 
 
@@ -269,7 +292,7 @@ public class RecordingFrame
 		try
 		{
 			stopRecording();
-			stopPlayback();
+			//stopPlayback();
 			AudioFormat audio_format = audio_format_selector.getAudioFormat(true);
 			TargetDataLine target_data_line = AudioMethods.getTargetDataLine(audio_format, null);
 			record_thread = AudioMethodsRecording.recordByteArrayOutputStream(target_data_line);
@@ -295,6 +318,19 @@ public class RecordingFrame
 			last_recorded_audio = AudioMethods.getInputStream(audio_buffer, audio_buffer_format);
 			record_thread = null;
 		}
+		if (playback_thread != null)
+		{
+			playback_thread.stopPlaying();
+			try
+			{
+				last_recorded_audio.reset();
+			}
+			catch (Exception e)
+			{
+				JOptionPane.showMessageDialog(null, "Could not reset playback position:\n" + e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		playback_thread = null;
 	}
 
 	
@@ -307,7 +343,7 @@ public class RecordingFrame
 		if (last_recorded_audio != null)
 		{
 			stopRecording();
-			stopPlayback();
+			//stopPlayback();
 			SourceDataLine source_data_line = AudioMethods.getSourceDataLine( last_recorded_audio.getFormat(),
 																			  null);
 			try
@@ -328,6 +364,8 @@ public class RecordingFrame
 	 * in last_recorded_audio so that it will start from the beginning
 	 * the next time that play is invoked.
 	 */
+	
+	/*
 	private void stopPlayback()
 	{
 		if (playback_thread != null)
@@ -344,7 +382,7 @@ public class RecordingFrame
 		}
 		playback_thread = null;
 	}
-
+	*/
 
 	/**
 	 * Hides this window and clears any stored recording. Ends any recording
@@ -353,7 +391,7 @@ public class RecordingFrame
 	private void cancel()
 	{
 		stopRecording();
-		stopPlayback();
+		//stopPlayback();
 		last_recorded_audio = null;
 		this.setVisible(false);
 	}
@@ -388,7 +426,7 @@ public class RecordingFrame
 		{
 			// Stop any recording or playback in progress
 			stopRecording();
-			stopPlayback();
+			//stopPlayback();
 
 			// Initialize the save_file_chooser if it has not been opened yet
 			if (save_file_chooser == null)
