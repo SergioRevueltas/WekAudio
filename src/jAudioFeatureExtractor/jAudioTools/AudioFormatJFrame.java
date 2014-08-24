@@ -1,9 +1,3 @@
-/*
- * @(#)AudioFormatJFrame.java	1.0	April 5, 2005.
- *
- * McGill Univarsity
- */
-
 package jAudioFeatureExtractor.jAudioTools;
 
 import jAudioFeatureExtractor.OuterFrame;
@@ -53,7 +47,7 @@ import com.srevueltas.gui.CustomJLabel;
  * corresponding to the buttons with similar names. The <code>defineAudioFormat</code> static method does the same thing
  * as the basic PCM <code>AudioFormat</code> constructor, but is better documented.
  *
- * @author Cory McKay
+ * @author Cory McKay edited by Sergio Revueltas
  */
 public class AudioFormatJFrame extends JFrame implements ActionListener {
 
@@ -92,7 +86,7 @@ public class AudioFormatJFrame extends JFrame implements ActionListener {
 	private CustomJButton high_quality_button;
 	private CustomJButton cancel_button;
 	private CustomJButton ok_button;
-	private JPanel panel;
+	private JPanel quality_panel;
 
 	/* CONSTRUCTOR *************************************************************/
 
@@ -101,6 +95,11 @@ public class AudioFormatJFrame extends JFrame implements ActionListener {
 	 * but does not show it. The <code>setVisible</code> method must be called externally to show this.
 	 */
 	public AudioFormatJFrame() {
+		// Configure overall window settings
+		setTitle("PCM Audio Format Selector");
+		content_pane = getContentPane();
+		content_pane.setBackground(OuterFrame.GRAY);
+
 		settings_panel = new JPanel();
 		settings_panel.setBackground(OuterFrame.GRAY);
 		button_panel = new JPanel();
@@ -166,11 +165,6 @@ public class AudioFormatJFrame extends JFrame implements ActionListener {
 			}
 		});
 
-		// Configure overall window settings
-		setTitle("PCM Audio Format Selector");
-		content_pane = getContentPane();
-		content_pane.setBackground(OuterFrame.GRAY);
-
 		// Add items to settings panel (with labels)
 
 		CustomJLabel bitDepthLabel = new CustomJLabel("Bit Depth (bits):");
@@ -186,17 +180,17 @@ public class AudioFormatJFrame extends JFrame implements ActionListener {
 		button_panel.add(cancel_button);
 		getContentPane().setLayout(new MigLayout("", "[538px,grow]", "[grow][253px][33px]"));
 
-		panel = new JPanel();
-		panel.setBackground(OuterFrame.GRAY);
-		getContentPane().add(panel, "cell 0 0,grow");
+		quality_panel = new JPanel();
+		quality_panel.setBackground(OuterFrame.GRAY);
+		getContentPane().add(quality_panel, "cell 0 0,grow");
 
 		// Instantiate buttons
 		low_quality_button = new CustomJButton("Low Quality Settings");
-		panel.add(low_quality_button);
+		quality_panel.add(low_quality_button);
 		mid_quality_button = new CustomJButton("Mid Quality Settings");
-		panel.add(mid_quality_button);
+		quality_panel.add(mid_quality_button);
 		high_quality_button = new CustomJButton("High Quality Settings");
-		panel.add(high_quality_button);
+		quality_panel.add(high_quality_button);
 		high_quality_button.addActionListener(this);
 		mid_quality_button.addActionListener(this);
 
