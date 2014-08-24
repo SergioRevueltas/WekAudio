@@ -129,10 +129,6 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 	/**
 	 * GUI buttons
 	 */
-	private JButton extract_features_button;
-
-	private JButton classify_button;
-
 	private JButton set_aggregators_button;
 	
 	private JButton config_button;
@@ -208,7 +204,7 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 		//control_panel.add(window_overlap_fraction_text_field);
 
 		control_panel.setBackground(GREY);
-		add(control_panel, "cell 0 3,growx,aligny top");
+		//add(control_panel, "cell 0 3,growx,aligny top");
 		control_panel.setVisible(false);
 
 		// Cause the table to respond to double clicks
@@ -237,17 +233,6 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 				save_overall_file_featurese_check_box,
 				window_length_text_field, window_overlap_fraction_text_field);
 		*/
-		extract_features_button = new CustomJButton("Extract Features");
-		add(extract_features_button, "cell 0 1,grow");
-		extract_features_button.addActionListener(this);
-
-		classify_button = new CustomJButton("Classify");
-		add(classify_button, "cell 0 1,grow");
-		classify_button.addActionListener(this);
-		
-		config_button = new CustomJButton("Analysis Options");
-		add(config_button, "cell 0 1,grow");
-		config_button.addActionListener(this);
 		
 		controller.dm_.aggregators = new Aggregator[] {
 				// (Aggregator) (controller.dm_.aggregatorMap.get("Mean").clone()),
@@ -291,7 +276,7 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 		String key = "MultipleToggleAction";
 		features_table.getInputMap().put(KeyStroke.getKeyStroke(' '), key);
 		features_table.getActionMap().put(key, multipleToggleAction);
-
+		/*
 		int[] width = new int[3];
 		width[0] = decorator.getRealPrefferedWidth(features_table, 0);
 		width[1] = decorator.getRealPrefferedWidth(features_table, 1);
@@ -302,6 +287,14 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 			features_table.getColumnModel().getColumn(i).setPreferredWidth(
 					width[i]);
 		}
+		*/
+		features_table.getColumnModel().getColumn(0).setPreferredWidth(45);
+		features_table.getColumnModel().getColumn(1).setPreferredWidth(350);
+		features_table.getColumnModel().getColumn(2).setPreferredWidth(50);
+		
+		features_table.getColumnModel().getColumn(0).setMinWidth(45);
+		features_table.getColumnModel().getColumn(1).setMinWidth(350);
+		features_table.getColumnModel().getColumn(2).setMinWidth(50);
 
 		// add handler for sorting panel
 		JTableHeader header = (JTableHeader) features_table.getTableHeader();
@@ -318,17 +311,20 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 				}
 			}
 		});
-		setLayout(new MigLayout("", "[450px]", "[17px][60.00:51.00:60.00][400.00px:315.00px][125px]"));
+		setLayout(new MigLayout("", "[450px][]", "[17px][60.00:51.00:60.00][400.00px:315.00px][125px]"));
 
 		set_aggregators_button = new CustomJButton("Alter Aggregators");
 		add(set_aggregators_button, "flowx,cell 0 1,grow");
 		set_aggregators_button.addActionListener(this);
+		config_button = new CustomJButton("Analysis Options");
+		add(config_button, "cell 1 1,grow");
+		config_button.addActionListener(this);
 
 		// Set up and display the table
 		features_scroll_pane = new JScrollPane(features_table);
 		features_panel = new JPanel(new GridLayout(1, 1));
 		features_panel.add(features_scroll_pane);
-		add(features_panel, "cell 0 2,grow");
+		add(features_panel, "cell 0 2 2 1,grow");
 		controller.fstm_.fireTableDataChanged();
 		TableColumn tableColumn = features_table.getColumn(features_table
 				.getColumnName(1));

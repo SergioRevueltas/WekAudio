@@ -25,15 +25,18 @@ import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
-import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.Border;
 
 import net.miginfocom.swing.MigLayout;
 //import javax.help.*;
 
 import org.multihelp.HelpWindow;
+
+import com.srevueltas.gui.CustomJMenuBar;
 
 /**
  * A panel holding various components of the jAudio Feature Extractor GUI
@@ -45,7 +48,9 @@ public class OuterFrame extends JFrame {
 
 	static final long serialVersionUID = 1;
 	public static final Color BLUE = new Color((float) 0.75, (float) 0.85, (float) 1.0);
-	public static final Color GREY = Color.GRAY;
+	public static final Color BLACK_BACKGROUND = UIManager.getColor("inactiveCaptionText");
+	public static final Color GRAY_BOXES_LINE = Color.LIGHT_GRAY;
+	public static final Color GRAY = Color.GRAY;
 
 	/**
 	 * A panel allowing the user to select files to extract features from.
@@ -77,7 +82,7 @@ public class OuterFrame extends JFrame {
 	/**
 	 * Global menu bar for this application
 	 */
-	public JMenuBar menu;
+	public CustomJMenuBar menu;
 
 	/**
 	 * Radio button for choosing the ACE data format
@@ -104,6 +109,22 @@ public class OuterFrame extends JFrame {
 		SplashFrame splash = new SplashFrame();
 
 		splash.loadSplash();		
+		
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (InstantiationException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IllegalAccessException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (UnsupportedLookAndFeelException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 			
 		// Set window title
 		setTitle("Sergio Revueltas PFC");
@@ -120,18 +141,18 @@ public class OuterFrame extends JFrame {
 		bg.add(arff);
 		bg.add(ace);
 
-		getContentPane().setBackground(GREY);
-		Border border = BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1);
+		getContentPane().setBackground(BLACK_BACKGROUND);
+		Border border = BorderFactory.createLineBorder(GRAY_BOXES_LINE, 1);
 		
 		// Instantiate panels
 		recording_selector_panel = new RecordingSelectorPanel(this, c);
 		feature_selector_panel = new FeatureSelectorPanel(this, c);
 		dataMiningPanel = new DataMiningPanel(this, c);
-		feature_selector_panel.setBackground(GREY);
+		feature_selector_panel.setBackground(GRAY);
 		feature_selector_panel.setBorder(border);
-		recording_selector_panel.setBackground(GREY);
+		recording_selector_panel.setBackground(GRAY);
 		recording_selector_panel.setBorder(border);
-		dataMiningPanel.setBackground(GREY);
+		dataMiningPanel.setBackground(GRAY);
 		dataMiningPanel.setBorder(border);
 
 		controller.normalise = new JCheckBoxMenuItem("Normalise Recordings", true);
@@ -168,9 +189,11 @@ public class OuterFrame extends JFrame {
 
 		JMenuItem helpTopics = new JMenuItem("Help Topics");
 
-		menu = new JMenuBar();
-		menu.setBackground(GREY);
+		menu = new CustomJMenuBar();
+		
 		JMenu fileMenu = new JMenu("File");
+		fileMenu.setForeground(UIManager.getColor("controlLtHighlight"));
+		fileMenu.setBackground(UIManager.getColor("desktop"));
 		fileMenu.add(c.saveAction);
 		fileMenu.add(c.saveBatchAction);
 		fileMenu.add(c.loadAction);
@@ -246,7 +269,7 @@ public class OuterFrame extends JFrame {
 		menu.add(analysisMenu);
 		menu.add(playbackMenu);
 		menu.add(helpMenu);
-		getContentPane().setLayout(new MigLayout("", "[104px][104px][]", "[21px][74px]"));
+		getContentPane().setLayout(new MigLayout("", "[104px][503.00px:104px][502.00:n:450.00]", "[21px][74px]"));
 		getContentPane().add(recording_selector_panel, "cell 0 1,grow");
 		getContentPane().add(feature_selector_panel, "cell 1 1,grow");
 		getContentPane().add(dataMiningPanel,"cell 2 1,grow");
@@ -277,6 +300,7 @@ public class OuterFrame extends JFrame {
 	// helper class for creating a splashscreen from Graphic Java: Mastering the JFC: AWT
 	protected class SplashFrame extends Frame{
 			private java.awt.Window window = new java.awt.Window(this);
+			//TODO logo del pfc
 			private java.awt.Image image = java.awt.Toolkit.getDefaultToolkit().getImage("jAudioLogo3-400.jpg");
 			private ImageCanvas canvas;
 			
