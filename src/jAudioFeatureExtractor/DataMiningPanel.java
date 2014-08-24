@@ -26,7 +26,7 @@ import javax.swing.JTextField;
 import net.miginfocom.swing.MigLayout;
 
 import com.srevueltas.gui.CustomJButton;
-import com.srevueltas.gui.CustomLabel;
+import com.srevueltas.gui.CustomJLabel;
 
 /**
  * 
@@ -86,12 +86,12 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 		setLayout(new MigLayout("", "[][240.00px:271.00px:240.00px,grow][90.00px:92.00px:97.00px]", "[23px][][50.00:n:50.00][138.00:n][][50.00:n:50.00]"));
 
 		// Add an overall title for this panel
-		JLabel label = new CustomLabel("DATA MINING:");
+		JLabel label = new CustomJLabel("DATA MINING:");
 		label.setForeground(Color.WHITE);
 		label.setFont(new Font("Arial", Font.BOLD, 14));
 		add(label, "cell 0 0,alignx left,aligny center");
 
-		lblArffSavePath = new CustomLabel("ARFF Save Path");
+		lblArffSavePath = new CustomJLabel("ARFF Save Path");
 		add(lblArffSavePath, "cell 0 1,alignx trailing");
 
 		arffSavePathTextField = new JTextField();
@@ -108,7 +108,7 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 		add(extract_features_button, "cell 0 2 3 1,grow");
 		extract_features_button.addActionListener(this);
 
-		lblModelLoadPath = new CustomLabel("Model Load Path");
+		lblModelLoadPath = new CustomJLabel("Model Load Path");
 		add(lblModelLoadPath, "cell 0 4,alignx trailing");
 
 		loadModelTextField = new JTextField();

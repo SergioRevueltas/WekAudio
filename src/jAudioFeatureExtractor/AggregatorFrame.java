@@ -6,25 +6,29 @@ package jAudioFeatureExtractor;
 import jAudioFeatureExtractor.Aggregators.Aggregator;
 import jAudioFeatureExtractor.Aggregators.Mean;
 
-import java.awt.BorderLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+
+import net.miginfocom.swing.MigLayout;
+
+import com.srevueltas.gui.CustomJButton;
+import com.srevueltas.gui.CustomJLabel;
+import com.srevueltas.gui.CustomJTable;
 
 /**
  * AggregatorFrame
  *
  * Window for altering the available aggregators for per-file analysis.
  * 
- * @author Daniel McEnnis
+ * @author Daniel McEnnis edited by Sergio Revueltas
  *
  */
 public class AggregatorFrame extends JFrame implements ActionListener {
@@ -34,28 +38,28 @@ public class AggregatorFrame extends JFrame implements ActionListener {
 	private JPanel jContentPane = null;
 
 	private JScrollPane ActiveAggList = null;
-
-	private JTable ActiveAggTable = null;
+	
+	private CustomJTable ActiveAggTable = null;
 
 	private JScrollPane AggList = null;
-
-	private JTable AggListTable = null;
+	
+	private CustomJTable AggListTable = null;
 
 	private JPanel AggButtonPanel = null;
 
-	private JButton AggAdd = null;
+	private CustomJButton AggAdd = null;
 
-	private JButton AggRemove = null;
-
-	private JButton AggEdit = null;
+	private CustomJButton AggRemove = null;
 	
 	private AggEditorFrame aggEditorFrame = null;
 	
 	private Controller controller;
 
-	private JButton DoneButton = null;
+	private CustomJButton DoneButton = null;
 
-	private JButton Abort = null;
+	private CustomJButton Abort = null;
+	private CustomJLabel lblCurrentAggregators;
+	private CustomJLabel lblAggregatorsList;
 
 	/**
 	 * This is the default constructor
@@ -75,7 +79,8 @@ public class AggregatorFrame extends JFrame implements ActionListener {
 	private void initialize() {
 		this.setContentPane(getJContentPane());
 		this.setTitle("Aggregators");
-		this.setBounds(new Rectangle(0, 22, 500, 500));
+		this.setBounds(new Rectangle(25, 25, 750, 290));
+		this.setResizable(false);
 	}
 
 	/**
@@ -86,13 +91,19 @@ public class AggregatorFrame extends JFrame implements ActionListener {
 	private JPanel getJContentPane() {
 		if (jContentPane == null) {
 			jContentPane = new JPanel();
-			jContentPane.setLayout(new BorderLayout());
-			jContentPane.add(getActiveAggList(), BorderLayout.WEST);
-			jContentPane.add(getAggList(), BorderLayout.EAST);
-			jContentPane.add(getAggButtonPanel(), BorderLayout.CENTER);
+			jContentPane.setLayout(new MigLayout("", "[245.00px:452px][80.00:39.00][80.00px:32px][300.00:n]", "[][198.00px:462px:185.00px][::34.00]"));
+			jContentPane.add(getLblCurrentAggregators(), "cell 0 0");
+			jContentPane.add(getLblAggregatorsList(), "cell 3 0");
+			jContentPane.add(getActiveAggList(), "cell 0 1,alignx left,aligny bottom");
+			jContentPane.add(getAggButtonPanel(), "cell 1 1 2 1,alignx center,aligny center");
+			jContentPane.add(getAggList(), "cell 3 1,alignx right,growy");
+			jContentPane.add(getDoneButton(), "cell 1 2,growx");
+			jContentPane.setBackground(OuterFrame.BLACK_BACKGROUND);
+			jContentPane.add(getAbort(), "cell 2 2,growx");
 		}
 		return jContentPane;
 	}
+	
 
 	/**
 	 * This method initializes ActiveAggList	
@@ -103,6 +114,8 @@ public class AggregatorFrame extends JFrame implements ActionListener {
 		if (ActiveAggList == null) {
 			ActiveAggList = new JScrollPane();
 			ActiveAggList.setViewportView(getActiveAggTable());
+			ActiveAggList.setBackground(OuterFrame.GRAY);
+			ActiveAggList.getViewport().setBackground(OuterFrame.GRAY);
 		}
 		return ActiveAggList;
 	}
@@ -114,7 +127,7 @@ public class AggregatorFrame extends JFrame implements ActionListener {
 	 */
 	private JTable getActiveAggTable() {
 		if (ActiveAggTable == null) {
-			ActiveAggTable = new JTable();
+			ActiveAggTable = new CustomJTable();
 			controller.activeAgg_ = new ActiveAggTableModel();
 			controller.activeAgg_.init(controller);
 			ActiveAggTable.setModel(controller.activeAgg_);
@@ -143,6 +156,8 @@ public class AggregatorFrame extends JFrame implements ActionListener {
 		if (AggList == null) {
 			AggList = new JScrollPane();
 			AggList.setViewportView(getAggListTable());
+			AggList.setBackground(OuterFrame.GRAY);
+			AggList.getViewport().setBackground(OuterFrame.GRAY);
 		}
 		return AggList;
 	}
@@ -154,10 +169,13 @@ public class AggregatorFrame extends JFrame implements ActionListener {
 	 */
 	private JTable getAggListTable() {
 		if (AggListTable == null) {
-			AggListTable = new JTable();
+			AggListTable = new CustomJTable();
 			controller.aggList_ = new AggListTableModel();
 			controller.aggList_.init(controller.dm_.aggregatorMap);
 			AggListTable.setModel(controller.aggList_);
+			AggListTable.getColumnModel().getColumn(0).setPreferredWidth(60);
+			AggListTable.getColumnModel().getColumn(0).setMaxWidth(60);
+			AggListTable.getColumnModel().getColumn(1).setPreferredWidth(150);
 			AggListTable.addMouseListener(new java.awt.event.MouseAdapter() {
 				public void mouseClicked(java.awt.event.MouseEvent e) {
 					if(e.getClickCount()==2){
@@ -182,28 +200,11 @@ public class AggregatorFrame extends JFrame implements ActionListener {
 	 */
 	private JPanel getAggButtonPanel() {
 		if (AggButtonPanel == null) {
-			GridBagConstraints gridBagConstraints21 = new GridBagConstraints();
-			gridBagConstraints21.gridx = 0;
-			gridBagConstraints21.gridy = 4;
-			GridBagConstraints gridBagConstraints11 = new GridBagConstraints();
-			gridBagConstraints11.gridx = 0;
-			gridBagConstraints11.gridy = 3;
-			GridBagConstraints gridBagConstraints2 = new GridBagConstraints();
-			gridBagConstraints2.gridx = 0;
-			gridBagConstraints2.gridy = 2;
-			GridBagConstraints gridBagConstraints1 = new GridBagConstraints();
-			gridBagConstraints1.gridx = 0;
-			gridBagConstraints1.gridy = 1;
-			GridBagConstraints gridBagConstraints = new GridBagConstraints();
-			gridBagConstraints.gridx = 0;
-			gridBagConstraints.gridy = 0;
 			AggButtonPanel = new JPanel();
-			AggButtonPanel.setLayout(new GridBagLayout());
-			AggButtonPanel.add(getAggAdd(), gridBagConstraints);
-			AggButtonPanel.add(getAggRemove(), gridBagConstraints1);
-			AggButtonPanel.add(getAggEdit(), gridBagConstraints2);
-			AggButtonPanel.add(getDoneButton(), gridBagConstraints11);
-			AggButtonPanel.add(getAbort(), gridBagConstraints21);
+			AggButtonPanel.setLayout(new MigLayout("", "[144.00px:59px:150.00px]", "[25px][]"));
+			AggButtonPanel.add(getAggAdd(), "cell 0 0,growx,aligny top");
+			AggButtonPanel.setBackground(OuterFrame.BLACK_BACKGROUND);
+			AggButtonPanel.add(getAggRemove(), "cell 0 1,growx,aligny top");
 		}
 		return AggButtonPanel;
 	}
@@ -215,8 +216,7 @@ public class AggregatorFrame extends JFrame implements ActionListener {
 	 */
 	private JButton getAggAdd() {
 		if (AggAdd == null) {
-			AggAdd = new JButton();
-			AggAdd.setText("Add");
+			AggAdd = new CustomJButton("Add");
 			AggAdd.setToolTipText("Add a new Aggregator to be applied");
 			AggAdd.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -240,8 +240,7 @@ public class AggregatorFrame extends JFrame implements ActionListener {
 	 */
 	private JButton getAggRemove() {
 		if (AggRemove == null) {
-			AggRemove = new JButton();
-			AggRemove.setText("Remove");
+			AggRemove = new CustomJButton("Remove");
 			AggRemove.setToolTipText("Remove an aggregator that has been previously defined");
 			AggRemove.addActionListener(new java.awt.event.ActionListener() {
 				public void actionPerformed(java.awt.event.ActionEvent e) {
@@ -256,38 +255,13 @@ public class AggregatorFrame extends JFrame implements ActionListener {
 	}
 
 	/**
-	 * This method initializes AggEdit	
-	 * 	
-	 * @return javax.swing.JButton	
-	 */
-	private JButton getAggEdit() {
-		if (AggEdit == null) {
-			AggEdit = new JButton();
-			AggEdit.setText("Edit");
-			AggEdit.setToolTipText("Edit the properities of the defined aggregator");
-			AggEdit.addActionListener(new java.awt.event.ActionListener() {
-				public void actionPerformed(java.awt.event.ActionEvent e) {
-					int row = ActiveAggTable.getSelectedRow();
-					if(row != -1){
-						aggEditorFrame = new AggEditorFrame((jAudioFeatureExtractor.Aggregators.Aggregator)controller.activeAgg_.getAggregator(row),controller);
-						aggEditorFrame.setVisible(true);
-						((ActiveAggTableModel)ActiveAggTable.getModel()).setAggregator(row, aggEditorFrame.getAggregator(), aggEditorFrame.isEdited());
-					}
-				}
-			});
-		}
-		return AggEdit;
-	}
-
-	/**
 	 * This method initializes DoneButton	
 	 * 	
 	 * @return javax.swing.JButton	
 	 */
 	private JButton getDoneButton() {
 		if (DoneButton == null) {
-			DoneButton = new JButton();
-			DoneButton.setText("Save");
+			DoneButton = new CustomJButton("Save");
 			DoneButton.setToolTipText("Save and exit aggregator editing.");
 			DoneButton.addActionListener(this);
 		}
@@ -301,8 +275,7 @@ public class AggregatorFrame extends JFrame implements ActionListener {
 	 */
 	private JButton getAbort() {
 		if (Abort == null) {
-			Abort = new JButton();
-			Abort.setText("Cancel");
+			Abort = new CustomJButton("Cancel");
 			Abort.setToolTipText("Exit without saving.");
 			Abort.addActionListener(this);
 		}
@@ -325,4 +298,16 @@ public class AggregatorFrame extends JFrame implements ActionListener {
 		}
 	}
 
+	private JLabel getLblCurrentAggregators() {
+		if (lblCurrentAggregators == null) {
+			lblCurrentAggregators = new CustomJLabel("Current aggregators:");
+		}
+		return lblCurrentAggregators;
+	}
+	private JLabel getLblAggregatorsList() {
+		if (lblAggregatorsList == null) {
+			lblAggregatorsList = new CustomJLabel("Aggregators list:");
+		}
+		return lblAggregatorsList;
+	}
 }

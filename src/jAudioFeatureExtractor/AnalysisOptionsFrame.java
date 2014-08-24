@@ -18,7 +18,7 @@ import javax.swing.event.ChangeListener;
 import net.miginfocom.swing.MigLayout;
 
 import com.srevueltas.gui.CustomJButton;
-import com.srevueltas.gui.CustomLabel;
+import com.srevueltas.gui.CustomJLabel;
 
 /**
  * 
@@ -50,7 +50,7 @@ public class AnalysisOptionsFrame extends JFrame implements ActionListener{
 		getContentPane().setLayout(
 				new MigLayout("", "[150.00:n:355.00][100.00:n][44.00][]", "[50.00:50.00][50.00:n][50.00:n][:462px:50.00px][][]"));
 
-		sample_rate_label = new CustomLabel("Sample Rate (KHz)");
+		sample_rate_label = new CustomJLabel("Sample Rate (KHz)");
 		sample_rate_combo = new JComboBox<String>();
 		String[] sampleRateItems = new String[] { "8", "11.025", "16", "22.05", "44.1" };
 		for (String item : sampleRateItems) {
@@ -63,7 +63,7 @@ public class AnalysisOptionsFrame extends JFrame implements ActionListener{
 		getContentPane().add(sample_rate_label, "cell 0 0,grow");
 		getContentPane().add(sample_rate_combo, "cell 1 0 2 1,growx");
 
-		window_size_label = new CustomLabel("Window size (samlples)");
+		window_size_label = new CustomJLabel("Window size (samlples)");
 		window_size_combo = new JComboBox<Integer>();
 		Integer[] windowSizeItems = new Integer[] { 128, 256, 512, 1024, 2048, 4096 };
 		for (Integer item : windowSizeItems) {
@@ -73,7 +73,7 @@ public class AnalysisOptionsFrame extends JFrame implements ActionListener{
 		getContentPane().add(window_size_label, "cell 0 1,grow");
 		getContentPane().add(window_size_combo, "cell 1 1 2 1,growx");
 
-		window_overlap_label = new CustomLabel("Window Overlap (%)");
+		window_overlap_label = new CustomJLabel("Window Overlap (%)");
 		window_overlap_slider = new JSlider();
 		window_overlap_slider.setBackground(Color.GRAY);
 		window_overlap_slider.setValue(50);
@@ -97,7 +97,7 @@ public class AnalysisOptionsFrame extends JFrame implements ActionListener{
 			}
 		});
 
-		normalise_label = new CustomLabel("Normalise recordings");
+		normalise_label = new CustomJLabel("Normalise recordings");
 		normalise_checkbox = new JCheckBox();
 		normalise_checkbox.setSelected(true);
 		normalise_checkbox.setBackground(Color.GRAY);

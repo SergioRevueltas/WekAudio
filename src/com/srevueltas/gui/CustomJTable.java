@@ -23,6 +23,11 @@ public class CustomJTable extends JTable{
 		loadSettings();
 	}
 	
+	public CustomJTable() {
+		super();
+		loadSettings();
+	}
+
 	private void loadSettings(){
 		getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
 		getTableHeader().setOpaque(false);

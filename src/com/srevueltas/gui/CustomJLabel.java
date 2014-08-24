@@ -6,10 +6,10 @@ import java.awt.Font;
 import javax.swing.JLabel;
 
 
-public class CustomLabel extends JLabel{
+public class CustomJLabel extends JLabel{
 
 	
-	public CustomLabel(String name) {
+	public CustomJLabel(String name) {
 		super(name);
 		setForeground(Color.WHITE);
 		setFont(new Font("Arial", Font.PLAIN, 12));
