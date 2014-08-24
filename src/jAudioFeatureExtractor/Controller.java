@@ -283,7 +283,7 @@ public class Controller implements ModelListener {
 		fstm_ = new FeatureSelectorTableModel(new Object[] {
 				new String("Save"), 
 				new String("Feature"),
-				new String("Dimensions"), 
+				new String("Dim"), 
 				new String("IsPrimary") },
 				dm_.features.length);
 		rtm_ = new RecordingsTableModel(new Object[] { 

@@ -83,7 +83,7 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 		this.controller = c;
 		// Set the file chooser to null initially
 		save_file_chooser = null;
-		setLayout(new MigLayout("", "[][240.00px:271.00px:240.00px,grow][90.00px:92.00px:97.00px]", "[23px][][50.00:n:50.00][71.00:n][][50.00:n:50.00]"));
+		setLayout(new MigLayout("", "[][240.00px:271.00px:240.00px,grow][90.00px:92.00px:97.00px]", "[23px][][50.00:n:50.00][138.00:n][][50.00:n:50.00]"));
 
 		// Add an overall title for this panel
 		JLabel label = new CustomLabel("DATA MINING:");

@@ -29,11 +29,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 
 import net.miginfocom.swing.MigLayout;
 
 import com.srevueltas.gui.CustomJButton;
+import com.srevueltas.gui.CustomJTable;
 
 /**
  * A window that allows users to select audio files to extract features from, edit or play. Alos allows the user to
@@ -78,7 +78,7 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 
 	static final long serialVersionUID = 1;
 	public static final Color BLUE = new Color((float) 0.75, (float) 0.85, (float) 1.0);
-	public static final Color GREY = Color.GRAY;
+	public static final Color GRAY = OuterFrame.GRAY;
 
 	/**
 	 * Holds a reference to the JPanel that holds objects of this class.
@@ -99,7 +99,7 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 	/**
 	 * GUI table-related fields
 	 */
-	private JTable recordings_table;
+	private CustomJTable recordings_table;
 
 	// private RecordingsTableModel recordings_table_model;
 
@@ -199,14 +199,7 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 		// Set up the list of recordings (initially blank)
 		setUpRecordingListTable();
 
-		recordings_table = new JTable(controller.rtm_);
-		recordings_table.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
-		recordings_table.getTableHeader().setBackground(GREY);
-		recordings_table.getTableHeader().setForeground(Color.WHITE);
-		
-		recordings_table.setFont(new Font("Arial", Font.PLAIN, 12));
-		recordings_table.setBackground(GREY);
-		recordings_table.setForeground(Color.WHITE);
+		recordings_table = new CustomJTable(controller.rtm_);
 		
 		recordings_table.getColumnModel().getColumn(0).setPreferredWidth(25);
 		recordings_table.getColumnModel().getColumn(1).setPreferredWidth(150);
@@ -230,8 +223,8 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 		// Set up and display the table
 		recordings_scroll_pane = new JScrollPane(recordings_table);
 		add(recordings_scroll_pane, "cell 0 2,grow");
-		recordings_scroll_pane.setBackground(GREY);
-		recordings_scroll_pane.getViewport().setBackground(GREY);
+		recordings_scroll_pane.setBackground(OuterFrame.GRAY_BOXES_LINE);
+		recordings_scroll_pane.getViewport().setBackground(OuterFrame.GRAY);
 
 		
 		delete_recordings_button = new CustomJButton("Delete Recordings");

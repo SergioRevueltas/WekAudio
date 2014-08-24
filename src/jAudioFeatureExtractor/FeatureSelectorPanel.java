@@ -25,7 +25,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
@@ -34,6 +33,7 @@ import javax.swing.table.TableColumnModel;
 import net.miginfocom.swing.MigLayout;
 
 import com.srevueltas.gui.CustomJButton;
+import com.srevueltas.gui.CustomJTable;
 
 /**
  * A window that allows users to select which features to save as well as some basic parameters relating to these
@@ -107,7 +107,7 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 	/**
 	 * GUI table-related fields
 	 */
-	private JTable features_table;
+	private CustomJTable features_table;
 
 	private SortingTableModelDecorator decorator;
 
@@ -270,7 +270,7 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 		controller.fstm_.fillTable(controller.dm_.featureDefinitions, controller.dm_.defaults,
 				controller.dm_.is_primary);
 		decorator = new SortingTableModelDecorator(controller.fstm_);
-		features_table = new JTable(decorator);
+		features_table = new CustomJTable(decorator);
 
 		multipleToggleAction = new MultipleToggleAction(features_table);
 		String key = "MultipleToggleAction";
@@ -288,12 +288,12 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 					width[i]);
 		}
 		*/
-		features_table.getColumnModel().getColumn(0).setPreferredWidth(45);
-		features_table.getColumnModel().getColumn(1).setPreferredWidth(350);
+		features_table.getColumnModel().getColumn(0).setPreferredWidth(30);
+		features_table.getColumnModel().getColumn(1).setPreferredWidth(360);
 		features_table.getColumnModel().getColumn(2).setPreferredWidth(50);
 		
-		features_table.getColumnModel().getColumn(0).setMinWidth(45);
-		features_table.getColumnModel().getColumn(1).setMinWidth(350);
+		features_table.getColumnModel().getColumn(0).setMinWidth(30);
+		features_table.getColumnModel().getColumn(1).setMinWidth(360);
 		features_table.getColumnModel().getColumn(2).setMinWidth(50);
 
 		// add handler for sorting panel
@@ -311,7 +311,7 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 				}
 			}
 		});
-		setLayout(new MigLayout("", "[450px][]", "[17px][60.00:51.00:60.00][400.00px:315.00px][125px]"));
+		setLayout(new MigLayout("", "[:450px:250.00px][245.00:n]", "[17px][60.00:51.00:60.00][400.00px:315.00px][125px]"));
 
 		set_aggregators_button = new CustomJButton("Alter Aggregators");
 		add(set_aggregators_button, "flowx,cell 0 1,grow");
@@ -324,6 +324,8 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 		features_scroll_pane = new JScrollPane(features_table);
 		features_panel = new JPanel(new GridLayout(1, 1));
 		features_panel.add(features_scroll_pane);
+		features_scroll_pane.setBackground(OuterFrame.GRAY_BOXES_LINE);
+		features_scroll_pane.getViewport().setBackground(OuterFrame.GRAY);
 		add(features_panel, "cell 0 2 2 1,grow");
 		controller.fstm_.fireTableDataChanged();
 		TableColumn tableColumn = features_table.getColumn(features_table
