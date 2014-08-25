@@ -47,10 +47,13 @@ public class OuterFrame extends JFrame {
 	/* FIELDS ***************************************************************** */
 
 	static final long serialVersionUID = 1;
-	public static final Color BLUE = new Color((float) 0.75, (float) 0.85, (float) 1.0);
+	public static final Color BLUE = UIManager.getColor("MenuItem.selectionBackground");
 	public static final Color BLACK_BACKGROUND = UIManager.getColor("inactiveCaptionText");
 	public static final Color GRAY_BOXES_LINE = Color.LIGHT_GRAY;
 	public static final Color GRAY = Color.GRAY;
+	public static final Color GRAY2 = GRAY.brighter();
+	public static final Color GRAY3 = GRAY.darker();
+	public static final Color DARK_GRAY = Color.DARK_GRAY;
 
 	/**
 	 * A panel allowing the user to select files to extract features from.

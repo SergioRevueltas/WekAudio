@@ -1,9 +1,13 @@
 package jAudioFeatureExtractor.GeneralTools;
 
-import java.awt.Component;
-import javax.swing.*;
+import jAudioFeatureExtractor.OuterFrame;
 
+import java.awt.Component;
+import java.awt.Font;
+
+import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableCellRenderer;
 
 public class FeatureDisplay extends DefaultTableCellRenderer {
@@ -12,16 +16,25 @@ public class FeatureDisplay extends DefaultTableCellRenderer {
 	
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-		Boolean isPrimary = (Boolean)table.getModel().getValueAt(row,3);
+		JLabel tmp =  (JLabel)super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+		// if checked
+		if (((Boolean)table.getModel().getValueAt(row, 0)).booleanValue()) {
+			setBackground(OuterFrame.GRAY3);
+		} else {
+			setBackground(OuterFrame.GRAY);
+		}
+		// if selected
+		if (isSelected){
+			setBackground(UIManager.getColor("MenuItem.selectionBackground"));
+		}
+		// if primary feature
 		if(((Boolean)table.getModel().getValueAt(row,3)).booleanValue()){
-			JLabel tmp =  (JLabel)super.getTableCellRendererComponent(table, value, isSelected, hasFocus,
-					row, column);
-			tmp.setFont(tmp.getFont().deriveFont(java.awt.Font.BOLD));
+			tmp.setFont(tmp.getFont().deriveFont(Font.BOLD, 12));		
 			return tmp;
 		}else{
-			return super.getTableCellRendererComponent(table, value, isSelected, hasFocus,
-					row, column);
+			return tmp;
 		}
+		
 	}
 
 }

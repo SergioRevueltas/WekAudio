@@ -6,6 +6,7 @@ package jAudioFeatureExtractor;
 import jAudioFeatureExtractor.Aggregators.Aggregator;
 import jAudioFeatureExtractor.Aggregators.Mean;
 
+import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -79,7 +80,7 @@ public class AggregatorFrame extends JFrame implements ActionListener {
 	private void initialize() {
 		this.setContentPane(getJContentPane());
 		this.setTitle("Aggregators");
-		this.setBounds(new Rectangle(25, 25, 750, 290));
+		this.setBounds(new Rectangle(30, 30, 750, 290));
 		this.setResizable(false);
 	}
 
@@ -301,12 +302,14 @@ public class AggregatorFrame extends JFrame implements ActionListener {
 	private JLabel getLblCurrentAggregators() {
 		if (lblCurrentAggregators == null) {
 			lblCurrentAggregators = new CustomJLabel("Current aggregators:");
+			lblCurrentAggregators.setFont(new Font("Arial", Font.BOLD, 14));
 		}
 		return lblCurrentAggregators;
 	}
 	private JLabel getLblAggregatorsList() {
 		if (lblAggregatorsList == null) {
 			lblAggregatorsList = new CustomJLabel("Aggregators list:");
+			lblAggregatorsList.setFont(new Font("Arial", Font.BOLD, 14));
 		}
 		return lblAggregatorsList;
 	}

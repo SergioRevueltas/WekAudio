@@ -185,9 +185,6 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 		synthesis_frame = null;
 		midi_frame = null;
 
-		// General container preparations containers
-		int horizontal_gap = 6; // horizontal space between GUI elements
-		int vertical_gap = 11;
 		setLayout(new MigLayout("", "[266.00px]", "[14px][60.00px:125px:60.00px][400.00:n,fill][]"));
 
 		// Add an overall title for this panel

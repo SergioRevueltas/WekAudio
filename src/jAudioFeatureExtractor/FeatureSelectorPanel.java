@@ -276,6 +276,19 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 		String key = "MultipleToggleAction";
 		features_table.getInputMap().put(KeyStroke.getKeyStroke(' '), key);
 		features_table.getActionMap().put(key, multipleToggleAction);
+		
+		/*
+		features_table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer(){
+		    @Override
+		    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
+		    {
+		        final Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+		        c.setBackground(row % 2 == 0 ? OuterFrame.GRAY : OuterFrame.GRAY_BOXES_LINE);
+		        return c;
+		    }
+		});
+		*/
+		
 		/*
 		int[] width = new int[3];
 		width[0] = decorator.getRealPrefferedWidth(features_table, 0);
@@ -328,11 +341,13 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 		features_scroll_pane.getViewport().setBackground(OuterFrame.GRAY);
 		add(features_panel, "cell 0 2 2 1,grow");
 		controller.fstm_.fireTableDataChanged();
-		TableColumn tableColumn = features_table.getColumn(features_table
-				.getColumnName(1));
+		TableColumn tableColumn = features_table.getColumn(features_table.getColumnName(0));
+		//tableColumn.setCellRenderer(new FeatureDisplay());
+		tableColumn = features_table.getColumn(features_table.getColumnName(1));
 		tableColumn.setCellRenderer(new FeatureDisplay());
-		features_table.removeColumn(features_table.getColumn(features_table
-				.getColumnName(3)));
+		tableColumn = features_table.getColumn(features_table.getColumnName(2));
+		tableColumn.setCellRenderer(new FeatureDisplay());
+		features_table.removeColumn(features_table.getColumn(features_table.getColumnName(3)));
 		repaint();
 		outer_frame.repaint();
 	}
@@ -351,6 +366,8 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 							.rowAtPoint(event.getPoint());
 					editDialog(controller.dm_.features[row_clicked[0]]);
 
+				} else {
+					features_table.repaint();
 				}
 			}
 		});
