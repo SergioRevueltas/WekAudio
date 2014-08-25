@@ -6,27 +6,24 @@
 
 package jAudioFeatureExtractor;
 
-import javax.swing.table.DefaultTableModel;
 import jAudioFeatureExtractor.ACE.DataTypes.FeatureDefinition;
 
+import javax.swing.table.DefaultTableModel;
 
 /**
- * A table model used by the FeatureSelectorPanel to store references to feature
- * definitions.
+ * A table model used by the FeatureSelectorPanel to store references to feature definitions.
  *
- * <p>Provides methods to fill a table row by row. Makes all except the first
- * column non-editable. The first column is filled with check boxes.
+ * <p>
+ * Provides methods to fill a table row by row. Makes all except the first column non-editable. The first column is
+ * filled with check boxes.
  *
- * @author Cory McKay
+ * @author Cory McKay edited by Sergio Revueltas
  */
-public class FeatureSelectorTableModel
-	extends DefaultTableModel
-{
-	
-	static final long serialVersionUID = 1;
-	
-	/* CONSTRUCTOR *************************************************************/
+public class FeatureSelectorTableModel extends DefaultTableModel {
 
+	static final long serialVersionUID = 1;
+
+	/* CONSTRUCTOR *************************************************************/
 
 	/**
 	 * Same constructor as DefaultTableModel
@@ -36,18 +33,16 @@ public class FeatureSelectorTableModel
 		super(columnNames, rows);
 	}
 
-
 	/* PUBLIC METHODS **********************************************************/
 
-
 	/**
-	 * Deletes everything in the table and then fills it up one row at a time
-	 * based on the given FeatureDefinition array.
+	 * Deletes everything in the table and then fills it up one row at a time based on the given FeatureDefinition
+	 * array.
 	 *
-	 * @param	definitions				Data to place in the table.
-	 * @param	feature_save_defaults	The default save setting for each feature.
+	 * @param definitions Data to place in the table.
+	 * @param feature_save_defaults The default save setting for each feature.
 	 */
-	public void fillTable(FeatureDefinition[] definitions, boolean[] feature_save_defaults, boolean[] is_primary_feature)
+	public void	fillTable(FeatureDefinition[] definitions, boolean[] feature_save_defaults, boolean[] is_primary_feature)
 	{
 		while (getRowCount() != 0)
 			removeRow(0);
@@ -66,27 +61,24 @@ public class FeatureSelectorTableModel
 		}
 	}
 	
-	public void clearTable(){
+	public void clearTable() {
 		while (getRowCount() != 0)
 			removeRow(0);
 	}
 
-
 	/**
-	 * Returns the type of class used for each column.
-	 * Necessary in order for text boxes to be properly displayed.
+	 * Returns the type of class used for each column. Necessary in order for text boxes to be properly displayed.
 	 *
-	 * @param	column	Column to check.
+	 * @param column Column to check.
 	 */
 	public Class getColumnClass(int column)
 	{
 		return getValueAt(0, column).getClass();
 	}
 
-
 	/**
-	 * Returns false for all cells except those in the first column,
-	 * so that only cells in the first column are editable.
+	 * Returns false for all cells except those in the first column, so that only cells in the first column are
+	 * editable.
 	 */
 	public boolean isCellEditable(int row, int column)
 	{

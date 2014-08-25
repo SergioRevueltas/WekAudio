@@ -1,8 +1,6 @@
 package jAudioFeatureExtractor.actions;
 
 import jAudioFeatureExtractor.Controller;
-import jAudioFeatureExtractor.DataModel;
-import jAudioFeatureExtractor.FeatureSelectorPanel;
 import jAudioFeatureExtractor.FeatureSelectorTableModel;
 import jAudioFeatureExtractor.ACE.XMLParsers.FileFilterXML;
 import jAudioFeatureExtractor.Aggregators.Aggregator;
@@ -13,11 +11,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import javax.swing.AbstractAction;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.JTextArea;
 
 /**
  * Saves the settings of the system. Note that settings does not include the
@@ -30,16 +25,19 @@ public class SaveAction extends AbstractAction {
 
 	static final long serialVersionUID = 1;
 
+	/*
 	private JTextArea window_length_text_field;
 
 	private JTextArea window_overlap_fraction_text_field;
+	*/
+	
 
 	/**
 	 * GUI check boxes
 	 */
-	private JCheckBox save_window_features_check_box;
+	//private JCheckBox save_window_features_check_box;
 
-	private JCheckBox save_overall_file_featurese_check_box;
+	//private JCheckBox save_overall_file_featurese_check_box;
 
 	private FeatureSelectorTableModel fstm_;
 
@@ -111,15 +109,12 @@ public class SaveAction extends AbstractAction {
 			// Return the selected file path
 
 			File dest = new File(path);
-			String winSize = this.window_length_text_field.getText();
-			String winOverlap = this.window_overlap_fraction_text_field
-					.getText();
+			String winSize = controller.windowSizeCombo.getSelectedItem() + "";
+			String winOverlap = controller.window_overlap_value + "";
 			double sampleRate = controller.samplingRateAction.getSamplingRate();
 			boolean normalise = controller.normalise.isSelected();
-			boolean perWindow = this.save_window_features_check_box
-					.isSelected();
-			boolean overall = this.save_overall_file_featurese_check_box
-					.isSelected();
+			boolean perWindow = false;
+			boolean overall = true;
 			try {
 				FileWriter fw = new FileWriter(dest);
 				String sep = System.getProperty("line.separator");
@@ -218,10 +213,10 @@ public class SaveAction extends AbstractAction {
 	/**
 	 * Set the references needed to store the settings.
 	 * 
-	 * @param win_length
+	 * @param windowSizeCombo
 	 *            text box that holds the width of the analysis window in
 	 *            samples.
-	 * @param win_overlap
+	 * @param overlapSliderTextField
 	 *            text box that holds the percent overlap between windows
 	 * @param save_window
 	 *            checkbox indicating whether features should be saved per
@@ -229,12 +224,12 @@ public class SaveAction extends AbstractAction {
 	 * @param save_overall
 	 *            checkbox indicating whether global features should be saved. .
 	 */
-	public void setObjectReferences(JTextArea win_length,
-			JTextArea win_overlap, JCheckBox save_window, JCheckBox save_overall) {
-		window_length_text_field = win_length;
-		window_overlap_fraction_text_field = win_overlap;
-		save_window_features_check_box = save_window;
-		save_overall_file_featurese_check_box = save_overall;
+	/*
+	public void setObjectReferences(JComboBox<Integer> windowSizeCombo,
+			JTextField overlapSliderTextField) {
+		this.windowSizeCombo = windowSizeCombo;
+		this.overlapSliderTextField = overlapSliderTextField;
 	}
+	*/
 
 }

@@ -8,12 +8,11 @@ package jAudioFeatureExtractor;
 
 import jAudioFeatureExtractor.Aggregators.Aggregator;
 import jAudioFeatureExtractor.AudioFeatures.FeatureExtractor;
-import jAudioFeatureExtractor.DataTypes.RecordingInfo;
 import jAudioFeatureExtractor.GeneralTools.FeatureDisplay;
 import jAudioFeatureExtractor.actions.MultipleToggleAction;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,15 +23,17 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+
+import net.miginfocom.swing.MigLayout;
+
+import com.srevueltas.gui.CustomJButton;
+import com.srevueltas.gui.CustomJTable;
 
 /**
  * A window that allows users to select which features to save as well as some basic parameters relating to these
@@ -74,6 +75,7 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 
 	static final long serialVersionUID = 1;
 
+	public static final Color GRAY = OuterFrame.GRAY;
 	/**
 	 * Holds a reference to the JPanel that holds objects of this class.
 	 */
@@ -104,20 +106,17 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 	/**
 	 * GUI table-related fields
 	 */
-	private JTable features_table;
+	private CustomJTable features_table;
 
 	private SortingTableModelDecorator decorator;
 
 	/**
 	 * GUI text areas
 	 */
-	private JTextArea window_length_text_field;
+	//private JTextArea window_length_text_field;
 
-	private JTextArea window_overlap_fraction_text_field;
+	//private JTextArea window_overlap_fraction_text_field;
 
-	// private JTextArea values_save_path_text_field;
-	//
-	// private JTextArea definitions_save_path_text_field;
 
 	/**
 	 * GUI check boxes
@@ -129,14 +128,9 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 	/**
 	 * GUI buttons
 	 */
-	// private JButton values_save_path_button;
-	//
-	// private JButton definitions_save_path_button;
-	private JButton extract_features_button;
-
-	private JButton classify_button;
-
 	private JButton set_aggregators_button;
+	
+	private JButton config_button;
 
 	/**
 	 * GUI dialog boxes
@@ -144,11 +138,13 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 	private JFileChooser save_file_chooser;
 
 	private AggregatorFrame aggregator_editor = null;
+	
+	private AnalysisOptionsFrame analysis_options = null;
 
 	/**
 	 * Children Windows
 	 */
-	private EditFeatures ef_ = null;
+	private EditFeaturesFrame ef_ = null;
 
 	/**
 	 * Responsible for redistributing the control to another class
@@ -171,75 +167,63 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 		// Set the file chooser to null initially
 		save_file_chooser = null;
 
-		// Set the global color
-		Color blue = new Color((float) 0.75, (float) 0.85, (float) 1.0);
-
 		// General container preparations containers
 		int horizontal_gap = 6; // horizontal space between GUI elements
-		int vertical_gap = 11; // horizontal space between GUI elements
-		setLayout(new BorderLayout(horizontal_gap, vertical_gap));
+		int vertical_gap = 11;
 
 		// Set up the list of feature extractors
 		setUpFeatureTable();
 
 		// Add an overall title for this panel
-		add(new JLabel("FEATURES:"), BorderLayout.NORTH);
+		JLabel label = new JLabel("FEATURES:");
+		label.setForeground(Color.WHITE);
+		label.setFont(new Font("Arial", Font.BOLD, 14));
+		add(label, "cell 0 0,growx,aligny top");
 
 		// Set up buttons and text area
-		JPanel control_panel = new JPanel(new GridLayout(4, 2, horizontal_gap,
-				vertical_gap));
+		JPanel control_panel = new JPanel(new GridLayout(4, 2, horizontal_gap, vertical_gap));
 
-		save_window_features_check_box = new JCheckBox(
-				"Save Features For Each Window", false);
-		save_window_features_check_box.setBackground(blue);
+		save_window_features_check_box = new JCheckBox("Save Features For Each Window", false);
+		save_window_features_check_box.setBackground(GRAY);
 		save_window_features_check_box.addActionListener(this);
 		control_panel.add(save_window_features_check_box);
 
-		save_overall_file_featurese_check_box = new JCheckBox(
-				"Save For Overall Recordings", true);
-		save_overall_file_featurese_check_box.setBackground(blue);
+		save_overall_file_featurese_check_box = new JCheckBox("Save For Overall Recordings", true);
+		save_overall_file_featurese_check_box.setBackground(GRAY);
 		save_overall_file_featurese_check_box.addActionListener(this);
 
 		control_panel.add(save_overall_file_featurese_check_box);
 
-		control_panel.add(new JLabel("Window Size (samples):"));
+		//control_panel.add(new JLabel("Window Size (samples):"));
+		//window_length_text_field = new JTextArea("1024", 1, 20);
+		//control_panel.add(window_length_text_field);
 
-		window_length_text_field = new JTextArea("1024", 1, 20);
-		control_panel.add(window_length_text_field);
+		//control_panel.add(new JLabel("Window Overlap (fraction):"));
+		//window_overlap_fraction_text_field = new JTextArea("0.5", 1, 20);
+		//control_panel.add(window_overlap_fraction_text_field);
 
-		control_panel.add(new JLabel("Window Overlap (fraction):"));
-		window_overlap_fraction_text_field = new JTextArea("0.5", 1, 20);
-		control_panel.add(window_overlap_fraction_text_field);
-
-		set_aggregators_button = new JButton("Alter Aggregators");
-		set_aggregators_button.addActionListener(this);
-		control_panel.add(set_aggregators_button);
-
-		extract_features_button = new JButton("Extract Features");
-		extract_features_button.addActionListener(this);
-		control_panel.add(extract_features_button);
-
-		classify_button = new JButton("Classify");
-		classify_button.addActionListener(this);
-		control_panel.add(classify_button);
-
-		control_panel.setBackground(blue);
-
-		add(control_panel, BorderLayout.SOUTH);
+		control_panel.setBackground(GRAY);
+		//add(control_panel, "cell 0 3,growx,aligny top");
+		control_panel.setVisible(false);
 
 		// Cause the table to respond to double clicks
 		addTableMouseListener();
-		controller.saveAction.setObjectReferences(window_length_text_field,
-				window_overlap_fraction_text_field,
-				save_window_features_check_box,
-				save_overall_file_featurese_check_box);
+		analysis_options = new AnalysisOptionsFrame(controller);
+		
+		controller.setObjectReferences(
+				analysis_options.getWindow_size_combo(),
+				analysis_options.getSlider_TextField());
+		
+		/*
 		controller.loadAction.setObjectReferences(window_length_text_field,
 				window_overlap_fraction_text_field,
 				save_window_features_check_box,
 				save_overall_file_featurese_check_box);
+		*/
 		controller.outputTypeAction.setTarget(outer_frame.ace,
 				outer_frame.arff, save_window_features_check_box,
 				save_window_features_check_box);
+		/*
 		controller.addBatchAction.setSettings(save_window_features_check_box,
 				save_overall_file_featurese_check_box,
 				window_length_text_field, window_overlap_fraction_text_field);
@@ -247,8 +231,10 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 				save_window_features_check_box,
 				save_overall_file_featurese_check_box,
 				window_length_text_field, window_overlap_fraction_text_field);
+		*/
+		
 		controller.dm_.aggregators = new Aggregator[] {
-				//(Aggregator) (controller.dm_.aggregatorMap.get("Mean").clone()),
+				// (Aggregator) (controller.dm_.aggregatorMap.get("Mean").clone()),
 				(Aggregator) (controller.dm_.aggregatorMap.get("Density Based Average").clone()) };
 	}
 
@@ -260,206 +246,22 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 	 * @param event The event that is to be reacted to.
 	 */
 	public void actionPerformed(ActionEvent event) {
-		// React to the extract_features_button
-		if (event.getSource().equals(extract_features_button))
-			extractFeatures(false);
-		else if (event.getSource()
-				.equals(save_overall_file_featurese_check_box)) {
-			JCheckBox tmp = (JCheckBox) event.getSource();
-			if (tmp.isSelected()) {
-				if (save_window_features_check_box.isSelected()) {
-					if (controller.outputTypeAction.getSelected() == 1) {
-						JOptionPane
-								.showMessageDialog(
-										null,
-										"Weka format only supports one type of output - either output per file or output per window.",
-										"ERROR", JOptionPane.ERROR_MESSAGE);
-						tmp.setSelected(false);
-
-					}
-				}
-			}
-		} else if (event.getSource().equals(save_window_features_check_box)) {
-			JCheckBox tmp = (JCheckBox) event.getSource();
-			if (tmp.isSelected()) {
-				if (save_overall_file_featurese_check_box.isSelected()) {
-					if (controller.outputTypeAction.getSelected() == 1) {
-						JOptionPane
-								.showMessageDialog(
-										null,
-										"Weka format only supports one type of output - either output per file or output per window.",
-										"ERROR", JOptionPane.ERROR_MESSAGE);
-						tmp.setSelected(false);
-					}
-				}
-			}
-		} else if (event.getSource().equals(set_aggregators_button)) {
+		if (event.getSource().equals(set_aggregators_button)) {
 			launchAggEditTable();
-		} else if (event.getSource().equals(classify_button)) {
-			classifyInstances(true);
+		} else if(event.getSource().equals(config_button)) {
+			launchOptionsFrame();
 		}
+	}
+
+	private void launchOptionsFrame() {
+		if (analysis_options == null) {
+			analysis_options = new AnalysisOptionsFrame(controller);
+		}
+		analysis_options.loadDataFromController();
+		analysis_options.setVisible(true);
 	}
 
 	/* PRIVATE METHODS ******************************************************** */
-	/**
-	 * Extract the features from all of the files added in the GUI. Use the features and feature settings entered in the
-	 * GUI. Save the results in a feature_vector_file and the features used in a feature_key_file. Daniel McEnnis
-	 * 05-09-05 Moved guts into FeatureModel
-	 */
-	private void classifyInstances(boolean toClassify) {
-		try {
-			// Get the control parameters
-			boolean save_features_for_each_window = save_window_features_check_box.isSelected();
-			boolean save_overall_recording_features = save_overall_file_featurese_check_box.isSelected();
-			String feature_values_save_path =
-					"exportedFeatureValues/"
-							+ outer_frame.recording_selector_panel.values_save_path_text_field.getText();
-			int window_size = Integer.parseInt(window_length_text_field.getText());
-			double window_overlap = Double.parseDouble(window_overlap_fraction_text_field.getText());
-			boolean normalise = controller.normalise.isSelected();
-			double sampling_rate = controller.samplingRateAction.getSamplingRate();
-			int outputType = controller.outputTypeAction.getSelected();
-
-			// Get the audio recordings to extract features from and throw an exception if there are none
-			RecordingInfo[] recordings = controller.dm_.recordingInfo;
-			if (recordings == null)
-				throw new Exception(
-						"No recordings available to extract features from.");
-
-			// Ask user if s/he wishes to change window size to a power of 2 if it is not already.
-			if (window_size >= 0) {
-				int pow_2_size = jAudioFeatureExtractor.GeneralTools.Statistics
-						.ensureIsPowerOfN(window_size, 2);
-				if (window_size != pow_2_size) {
-					String message = "Given window size is " + window_size
-							+ ", which is not a power\n"
-							+ "of 2. Would you like to increase this to the\n"
-							+ "next highest power of 2 (" + pow_2_size + ")?";
-					int convert = JOptionPane.showConfirmDialog(null, message,
-							"WARNING", JOptionPane.YES_NO_OPTION);
-					if (convert == JOptionPane.YES_OPTION) {
-						window_length_text_field.setText(String
-								.valueOf(pow_2_size));
-						window_size = Integer.parseInt(window_length_text_field
-								.getText());
-					}
-				}
-			}
-			// Find which features are selected to be saved
-			for (int i = 0; i < controller.dm_.defaults.length; i++) {
-				controller.dm_.defaults[i] = ((Boolean) controller.fstm_
-						.getValueAt(i, 0)).booleanValue();
-			}
-
-			// threads can only execute once. Rebuild the thread here
-			controller.extractionThread = new ExtractionThread(controller, outer_frame);
-
-			controller.extractionThread.setup(save_overall_recording_features,
-					save_features_for_each_window, feature_values_save_path,
-					"", window_size, window_overlap, toClassify);
-			// extract the features
-			controller.extractionThread.start();
-
-		} catch (Throwable t) {
-			// React to the Java Runtime running out of memory
-			if (t.toString().equals("java.lang.OutOfMemoryError"))
-				JOptionPane
-						.showMessageDialog(
-								null,
-								"The Java Runtime ran out of memory. Please rerun this program\n"
-										+ "with a higher amount of memory assigned to the Java Runtime heap.",
-								"ERROR", JOptionPane.ERROR_MESSAGE);
-			else if (t instanceof Exception) {
-				Exception e = (Exception) t;
-				JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR",
-						JOptionPane.ERROR_MESSAGE);
-			}
-		}
-	}
-
-	/**
-	 * Extract the features from all of the files added in the GUI. Use the features and feature settings entered in the
-	 * GUI. Save the results in a feature_vector_file and the features used in a feature_key_file. Daniel McEnnis
-	 * 05-09-05 Moved guts into FeatureModel
-	 */
-	private void extractFeatures(boolean toClassify) {
-		try {
-			// Get the control parameters
-			boolean save_features_for_each_window = save_window_features_check_box.isSelected();
-			boolean save_overall_recording_features = save_overall_file_featurese_check_box.isSelected();
-			String feature_values_save_path =
-					"exportedFeatureValues/"
-							+ outer_frame.recording_selector_panel.values_save_path_text_field.getText();
-			//String feature_definitions_save_path = outer_frame.recording_selector_panel.definitions_save_path_text_field.getText();
-			int window_size = Integer.parseInt(window_length_text_field.getText());
-			double window_overlap = Double.parseDouble(window_overlap_fraction_text_field.getText());
-			boolean normalise = controller.normalise.isSelected();
-			double sampling_rate = controller.samplingRateAction.getSamplingRate();
-			int outputType = controller.outputTypeAction.getSelected();
-
-			// Get the audio recordings to extract features from and throw an
-			// exception
-			// if there are none
-			RecordingInfo[] recordings = controller.dm_.recordingInfo;
-			if (recordings == null)
-				throw new Exception(
-						"No recordings available to extract features from.");
-
-			// Ask user if s/he wishes to change window size to a power of 2 if
-			// it
-			// is not already.
-			if (window_size >= 0) {
-				int pow_2_size = jAudioFeatureExtractor.GeneralTools.Statistics
-						.ensureIsPowerOfN(window_size, 2);
-				if (window_size != pow_2_size) {
-					String message = "Given window size is " + window_size
-							+ ", which is not a power\n"
-							+ "of 2. Would you like to increase this to the\n"
-							+ "next highest power of 2 (" + pow_2_size + ")?";
-					int convert = JOptionPane.showConfirmDialog(null, message,
-							"WARNING", JOptionPane.YES_NO_OPTION);
-					if (convert == JOptionPane.YES_OPTION) {
-						window_length_text_field.setText(String
-								.valueOf(pow_2_size));
-						window_size = Integer.parseInt(window_length_text_field
-								.getText());
-					}
-				}
-			}
-
-			// Find which features are selected to be saved
-			for (int i = 0; i < controller.dm_.defaults.length; i++) {
-				controller.dm_.defaults[i] = ((Boolean) controller.fstm_
-						.getValueAt(i, 0)).booleanValue();
-			}
-
-			// threads can only execute once. Rebuild the thread here
-			controller.extractionThread = new ExtractionThread(controller,
-					outer_frame);
-			// setup thread
-			controller.extractionThread.setup(save_overall_recording_features,
-					save_features_for_each_window, feature_values_save_path,
-					"", window_size, window_overlap, toClassify);
-			// extract the features
-			controller.extractionThread.start();
-
-		} catch (Throwable t) {
-			// React to the Java Runtime running out of memory
-			if (t.toString().equals("java.lang.OutOfMemoryError"))
-				JOptionPane
-						.showMessageDialog(
-								null,
-								"The Java Runtime ran out of memory. Please rerun this program\n"
-										+ "with a higher amount of memory assigned to the Java Runtime heap.",
-								"ERROR", JOptionPane.ERROR_MESSAGE);
-			else if (t instanceof Exception) {
-				Exception e = (Exception) t;
-				JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR",
-						JOptionPane.ERROR_MESSAGE);
-			}
-		}
-	}
-
 	/**
 	 * Initialize the table displaying the features which can be extracted.
 	 */
@@ -467,13 +269,26 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 		controller.fstm_.fillTable(controller.dm_.featureDefinitions, controller.dm_.defaults,
 				controller.dm_.is_primary);
 		decorator = new SortingTableModelDecorator(controller.fstm_);
-		features_table = new JTable(decorator);
+		features_table = new CustomJTable(decorator);
 
 		multipleToggleAction = new MultipleToggleAction(features_table);
 		String key = "MultipleToggleAction";
 		features_table.getInputMap().put(KeyStroke.getKeyStroke(' '), key);
 		features_table.getActionMap().put(key, multipleToggleAction);
-
+		
+		/*
+		features_table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer(){
+		    @Override
+		    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column)
+		    {
+		        final Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+		        c.setBackground(row % 2 == 0 ? OuterFrame.GRAY : OuterFrame.GRAY_BOXES_LINE);
+		        return c;
+		    }
+		});
+		*/
+		
+		/*
 		int[] width = new int[3];
 		width[0] = decorator.getRealPrefferedWidth(features_table, 0);
 		width[1] = decorator.getRealPrefferedWidth(features_table, 1);
@@ -484,6 +299,14 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 			features_table.getColumnModel().getColumn(i).setPreferredWidth(
 					width[i]);
 		}
+		*/
+		features_table.getColumnModel().getColumn(0).setPreferredWidth(30);
+		features_table.getColumnModel().getColumn(1).setPreferredWidth(360);
+		features_table.getColumnModel().getColumn(2).setPreferredWidth(50);
+		
+		features_table.getColumnModel().getColumn(0).setMinWidth(30);
+		features_table.getColumnModel().getColumn(1).setMinWidth(360);
+		features_table.getColumnModel().getColumn(2).setMinWidth(50);
 
 		// add handler for sorting panel
 		JTableHeader header = (JTableHeader) features_table.getTableHeader();
@@ -500,18 +323,30 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 				}
 			}
 		});
+		setLayout(new MigLayout("", "[:450px:250.00px][245.00:n]", "[17px][60.00:51.00:60.00][400.00px:315.00px][125px]"));
+
+		set_aggregators_button = new CustomJButton("Alter Aggregators");
+		add(set_aggregators_button, "flowx,cell 0 1,grow");
+		set_aggregators_button.addActionListener(this);
+		config_button = new CustomJButton("Analysis Options");
+		add(config_button, "cell 1 1,grow");
+		config_button.addActionListener(this);
 
 		// Set up and display the table
 		features_scroll_pane = new JScrollPane(features_table);
 		features_panel = new JPanel(new GridLayout(1, 1));
 		features_panel.add(features_scroll_pane);
-		add(features_panel, BorderLayout.CENTER);
+		features_scroll_pane.setBackground(OuterFrame.GRAY_BOXES_LINE);
+		features_scroll_pane.getViewport().setBackground(OuterFrame.GRAY);
+		add(features_panel, "cell 0 2 2 1,grow");
 		controller.fstm_.fireTableDataChanged();
-		TableColumn tableColumn = features_table.getColumn(features_table
-				.getColumnName(1));
+		TableColumn tableColumn = features_table.getColumn(features_table.getColumnName(0));
+		//tableColumn.setCellRenderer(new FeatureDisplay());
+		tableColumn = features_table.getColumn(features_table.getColumnName(1));
 		tableColumn.setCellRenderer(new FeatureDisplay());
-		features_table.removeColumn(features_table.getColumn(features_table
-				.getColumnName(3)));
+		tableColumn = features_table.getColumn(features_table.getColumnName(2));
+		tableColumn.setCellRenderer(new FeatureDisplay());
+		features_table.removeColumn(features_table.getColumn(features_table.getColumnName(3)));
 		repaint();
 		outer_frame.repaint();
 	}
@@ -530,30 +365,12 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 							.rowAtPoint(event.getPoint());
 					editDialog(controller.dm_.features[row_clicked[0]]);
 
+				} else {
+					features_table.repaint();
 				}
 			}
 		});
 	}
-
-	// /**
-	// * Returns the types of feature extractors that are currently available.
-	// * <p>
-	// * Daniel McEnnis 05-04-05 Added MFCC,Moments and Area Moments to list of
-	// * features
-	// * <p>
-	// * Daniel McEnnis 05-05-05 Added LPC to list of features
-	// * <p>
-	// * Daniel McEnnis 05-06-05 Added code to handle meta-features. Added Mean,
-	// * derivative, and StandardDeviation to meta features. Daniel McEnnis
-	// * 05-09-05 Moved contents into featureModel
-	// * <p>
-	// * Daniel McEnnis 05-13-05 Shifted code into Controller class
-	// *
-	// * @return The available feature extractors.
-	// */
-	// private void populateFeatureExtractors() {
-	// //;
-	// }
 
 	/**
 	 * Allows the user to select or enter a file path using a JFileChooser. If the selected path does not have an
@@ -570,23 +387,9 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 	 * Creates and displays the Dialog for editing feature attributes.
 	 */
 	private void editDialog(FeatureExtractor fe) {
-		ef_ = new EditFeatures(this, fe);
+		ef_ = new EditFeaturesFrame(fe);
 		ef_.setVisible(true);
 	}
-
-	// private void outputFormatAction(ActionEvent event) {
-	// if (output_format.getSelectedIndex() == 1) {
-	// definitions_save_path_button.setEnabled(false);
-	// definitions_save_path_text_field.setEnabled(false);
-	// if (save_window_features_check_box.isSelected()
-	// && save_overall_file_featurese_check_box.isSelected()) {
-	// save_overall_file_featurese_check_box.setSelected(false);
-	// }
-	// } else if (output_format.getSelectedIndex() == 0) {
-	// definitions_save_path_button.setEnabled(true);
-	// definitions_save_path_text_field.setEnabled(true);
-	// }
-	// }
 
 	private void launchAggEditTable() {
 		aggregator_editor = new AggregatorFrame(controller);

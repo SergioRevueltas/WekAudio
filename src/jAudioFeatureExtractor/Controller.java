@@ -33,13 +33,15 @@ import java.util.Vector;
 
 import javax.swing.AbstractAction;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JComboBox;
 import javax.swing.JMenu;
+import javax.swing.JTextField;
 
 /**
  * Controller is a master location for all actions and non-gui components. Not
  * the best design, but it works.
  * 
- * @author Daniel McEnnis
+ * @author Daniel McEnnis edited by Sergio Revueltas
  */
 public class Controller implements ModelListener {
 
@@ -263,6 +265,13 @@ public class Controller implements ModelListener {
 	 * holds all currently defined batches.
 	 */
 	public Vector<Batch> batches;
+	
+	public JComboBox<Integer> windowSizeCombo = null;
+		
+	public int window_size_index = -1;
+	
+	public int window_overlap_value = -1;
+	
 
 	/**
 	 * Initial creation and configuration of most controller and model data.
@@ -272,10 +281,14 @@ public class Controller implements ModelListener {
 	public Controller() {
 		dm_ = new DataModel("features.xml",this);
 		fstm_ = new FeatureSelectorTableModel(new Object[] {
-				new String("Save"), new String("Feature"),
-				new String("Dimensions"), new String("IsPrimary") },
+				new String("Save"), 
+				new String("Feature"),
+				new String("Dim"), 
+				new String("IsPrimary") },
 				dm_.features.length);
-		rtm_ = new RecordingsTableModel(new Object[] { new String("Name"),
+		rtm_ = new RecordingsTableModel(new Object[] { 
+				new String("#"),
+				new String("Name"),
 				new String("Path") }, 0);
 		aggList_ = new AggListTableModel();
 		activeAgg_ = new ActiveAggTableModel();
@@ -318,5 +331,18 @@ public class Controller implements ModelListener {
 		fstm_.fillTable(feature_definitions, features_selected, is_primary);
 		fstm_.fireTableDataChanged();
 	}
+	
+	public void setObjectReferences(JComboBox<Integer> windowSizeCombo,
+			JTextField overlapSliderTextField) {
+		this.window_size_index = windowSizeCombo.getSelectedIndex();
+		this.windowSizeCombo = windowSizeCombo;
+		this.window_overlap_value = Integer.parseInt(overlapSliderTextField.getText());		
+	}
 
+	
+	public int getWindow_overlap_value() {
+		return window_overlap_value;
+	}	
+
+	
 }

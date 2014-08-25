@@ -3,12 +3,12 @@ package jAudioFeatureExtractor.actions;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
-import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JComboBox;
 
 /**
  * Action handling changes in the sample rate.
  * 
- * @author Daniel McEnnis
+ * @author Daniel McEnnis and edited by Sergio Revueltas
  */
 public class SamplingRateAction extends AbstractAction {
 
@@ -20,17 +20,25 @@ public class SamplingRateAction extends AbstractAction {
 	 * references to the radio buttons representing the range of possible sample
 	 * rates.
 	 */
-	public JRadioButtonMenuItem[] samplingRates;
+	//public JRadioButtonMenuItem[] samplingRates;
+	public JComboBox<String> sampling_rates = null;
 
 	/**
 	 * stores an index to the currently selected sampling rate.
 	 */
 	public void actionPerformed(ActionEvent e) {
+		for (int i = 0; i < sampling_rates.getItemCount(); i++) {
+			if (e.getSource().equals(sampling_rates.getItemAt(i))) {
+				sampleRateIndex = i;
+			}
+		}
+		/*
 		for (int i = 0; i < samplingRates.length; ++i) {
 			if (e.getSource().equals(samplingRates[i])) {
 				sampleRateIndex = i;
 			}
 		}
+		*/
 	}
 
 	/**
@@ -38,12 +46,20 @@ public class SamplingRateAction extends AbstractAction {
 	 * 
 	 * @param s
 	 */
+	public void setTarget(JComboBox<String> jcb) {
+		sampling_rates = jcb;
+	}
+	
+	/*
 	public void setTarget(JRadioButtonMenuItem[] s) {
 		samplingRates = new JRadioButtonMenuItem[s.length];
 		for (int i = 0; i < samplingRates.length; ++i) {
 			samplingRates[i] = s[i];
 		}
 	}
+	*/
+	
+	
 
 	/**
 	 * Return the integer index into the array of radio buttons that corresponds
@@ -60,8 +76,8 @@ public class SamplingRateAction extends AbstractAction {
 	 * @return sampling rate as a double
 	 */
 	public double getSamplingRate() {
-		double base = Double.parseDouble(samplingRates[sampleRateIndex]
-				.getText());
+		//double base = Double.parseDouble(samplingRates[sampleRateIndex].getText());
+		double base = Double.parseDouble(sampling_rates.getItemAt(sampleRateIndex));
 		return base * 1000;
 	}
 
@@ -70,11 +86,11 @@ public class SamplingRateAction extends AbstractAction {
 	 * @param i which button is to be selected.
 	 */
 	public void setSelected(int i) {
-		if ((i < 0) || (i >= samplingRates.length)) {
+		if ((i < 0) || (i >= sampling_rates.getItemCount())) {
 			System.err.println("INTERNAL ERROR: " + i
 					+ " does not correspond to any sampling rate index");
 		} else {
-			samplingRates[i].setSelected(true);
+			sampling_rates.setSelectedIndex(i);
 			sampleRateIndex = i;
 		}
 	}

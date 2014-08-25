@@ -10,10 +10,10 @@ package jAudioFeatureExtractor;
 
 import jAudioFeatureExtractor.actions.ExecuteBatchAction;
 
-import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -21,26 +21,42 @@ import java.awt.MediaTracker;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
+import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
-import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.border.Border;
+
+import net.miginfocom.swing.MigLayout;
+//import javax.help.*;
 
 import org.multihelp.HelpWindow;
-//import javax.help.*;
+
+import com.srevueltas.gui.CustomJMenuBar;
 
 /**
  * A panel holding various components of the jAudio Feature Extractor GUI
  * 
- * @author Cory McKay
+ * @author Cory McKay edited by Sergio Revueltas
  */
 public class OuterFrame extends JFrame {
 	/* FIELDS ***************************************************************** */
 
 	static final long serialVersionUID = 1;
+	public static final Color BLUE = UIManager.getColor("MenuItem.selectionBackground");
+	public static final Color BLACK_BACKGROUND = UIManager.getColor("inactiveCaptionText");
+	public static final Color GRAY_BOXES_LINE = Color.LIGHT_GRAY;
+	public static final Color GRAY = Color.GRAY;
+	public static final Color GRAY2 = GRAY.brighter();
+	public static final Color GRAY3 = GRAY.darker();
+	public static final Color DARK_GRAY = Color.DARK_GRAY;
+	public static final Font NORMAL_FONT = new Font("Arial", Font.PLAIN, 12);
+	public static final Font H1_FONT = new Font("Arial", Font.BOLD, 14);
 
 	/**
 	 * A panel allowing the user to select files to extract features from.
@@ -56,6 +72,11 @@ public class OuterFrame extends JFrame {
 	 * values and definitions can be saved to disk.
 	 */
 	public FeatureSelectorPanel feature_selector_panel;
+	
+	/**
+	 * A panel allowing the user to train and classify.
+	 */
+	public DataMiningPanel dataMiningPanel;
 
 	/**
 	 * A class that contains all the logic for handling events fired from this
@@ -67,7 +88,7 @@ public class OuterFrame extends JFrame {
 	/**
 	 * Global menu bar for this application
 	 */
-	public JMenuBar menu;
+	public CustomJMenuBar menu;
 
 	/**
 	 * Radio button for choosing the ACE data format
@@ -94,6 +115,22 @@ public class OuterFrame extends JFrame {
 		SplashFrame splash = new SplashFrame();
 
 		splash.loadSplash();		
+		
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (InstantiationException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IllegalAccessException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (UnsupportedLookAndFeelException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 			
 		// Set window title
 		setTitle("Sergio Revueltas PFC");
@@ -110,19 +147,21 @@ public class OuterFrame extends JFrame {
 		bg.add(arff);
 		bg.add(ace);
 
+		getContentPane().setBackground(BLACK_BACKGROUND);
+		Border border = BorderFactory.createLineBorder(GRAY_BOXES_LINE, 1);
 		
 		// Instantiate panels
 		recording_selector_panel = new RecordingSelectorPanel(this, c);
 		feature_selector_panel = new FeatureSelectorPanel(this, c);
+		dataMiningPanel = new DataMiningPanel(this, c);
+		feature_selector_panel.setBackground(GRAY);
+		feature_selector_panel.setBorder(border);
+		recording_selector_panel.setBackground(GRAY);
+		recording_selector_panel.setBorder(border);
+		dataMiningPanel.setBackground(GRAY);
+		dataMiningPanel.setBorder(border);
 
-		controller.normalise = new JCheckBoxMenuItem("Normalise Recordings",
-				true);
-
-		Color blue = new Color((float) 0.75, (float) 0.85, (float) 1.0);
-		this.getContentPane().setBackground(blue);
-		feature_selector_panel.setBackground(blue);
-		recording_selector_panel.setBackground(blue);
-
+		controller.normalise = new JCheckBoxMenuItem("Normalise Recordings", true);
 		arff.setSelected(true);
 		ace.addActionListener(controller.outputTypeAction);
 		arff.addActionListener(controller.outputTypeAction);
@@ -130,83 +169,80 @@ public class OuterFrame extends JFrame {
 
 		controller.executeBatchAction = new ExecuteBatchAction(controller, this);
 
-		JRadioButtonMenuItem sample8 = new JRadioButtonMenuItem("8");
-		JRadioButtonMenuItem sample11 = new JRadioButtonMenuItem("11.025");
-		JRadioButtonMenuItem sample16 = new JRadioButtonMenuItem("16");
-		JRadioButtonMenuItem sample22 = new JRadioButtonMenuItem("22.05");
-		JRadioButtonMenuItem sample44 = new JRadioButtonMenuItem("44.1");
-		ButtonGroup sr = new ButtonGroup();
-		sr.add(sample8);
-		sr.add(sample11);
-		sr.add(sample16);
-		sr.add(sample22);
-		sr.add(sample44);
-		sample16.setSelected(true);
-		sample8.addActionListener(controller.samplingRateAction);
-		sample11.addActionListener(controller.samplingRateAction);
-		sample16.addActionListener(controller.samplingRateAction);
-		sample22.addActionListener(controller.samplingRateAction);
-		sample44.addActionListener(controller.samplingRateAction);
-		controller.samplingRateAction.setTarget(new JRadioButtonMenuItem[] {
-				sample8, sample11, sample16, sample22, sample44 });
-
 		controller.removeBatch = new JMenu();
 		controller.viewBatch = new JMenu();
 
 		JMenuItem helpTopics = new JMenuItem("Help Topics");
 
-		menu = new JMenuBar();
-		menu.setBackground(blue);
+		menu = new CustomJMenuBar();
+		
 		JMenu fileMenu = new JMenu("File");
-		fileMenu.add(c.saveAction);
-		fileMenu.add(c.saveBatchAction);
-		fileMenu.add(c.loadAction);
-		fileMenu.add(c.loadBatchAction);
-		fileMenu.addSeparator();
-		fileMenu.add(c.addBatchAction);
-		fileMenu.add(c.executeBatchAction);
-		controller.removeBatch = new JMenu("Remove Batch");
-		controller.removeBatch.setEnabled(false);
-		fileMenu.add(c.removeBatch);
-		controller.viewBatch = new JMenu("View Batch");
-		controller.viewBatch.setEnabled(false);
-		fileMenu.add(c.viewBatch);
-		fileMenu.addSeparator();
+		fileMenu.setForeground(Color.WHITE);
+		fileMenu.setBackground(BLACK_BACKGROUND);
+		
+		//fileMenu.add(c.saveAction);
+		//fileMenu.add(c.saveBatchAction);
+		//fileMenu.add(c.loadAction);
+		//fileMenu.add(c.loadBatchAction);
+		//fileMenu.addSeparator();
+		//fileMenu.add(c.addBatchAction);
+		//fileMenu.add(c.executeBatchAction);
+		//controller.removeBatch = new JMenu("Remove Batch");
+		//controller.removeBatch.setEnabled(false);
+		//fileMenu.add(c.removeBatch);
+		//controller.viewBatch = new JMenu("View Batch");
+		//controller.viewBatch.setEnabled(false);
+		//fileMenu.add(c.viewBatch);
+		//fileMenu.addSeparator();
 		fileMenu.add(c.exitAction);
 		JMenu editMenu = new JMenu("Edit");
+		editMenu.setForeground(Color.WHITE);
+		editMenu.setBackground(BLACK_BACKGROUND);
 		editMenu.add(c.cutAction);
 		editMenu.add(c.copyAction);
 		editMenu.add(c.pasteAction);
+		
 		JMenu recordingMenu = new JMenu("Recording");
+		recordingMenu.setForeground(Color.WHITE);
+		recordingMenu.setBackground(BLACK_BACKGROUND);
 		recordingMenu.add(c.addRecordingsAction);
-		recordingMenu.add(c.editRecordingsAction);
-		recordingMenu.add(c.removeRecordingsAction);
+		//recordingMenu.add(c.editRecordingsAction);
 		recordingMenu.add(c.recordFromMicAction);
-		recordingMenu.add(c.synthesizeAction);
+		recordingMenu.add(c.removeRecordingsAction);
+		//recordingMenu.add(c.synthesizeAction);
 		recordingMenu.add(c.viewFileInfoAction);
-		recordingMenu.add(c.storeSamples);
-		recordingMenu.add(c.validate);
+		//recordingMenu.add(c.storeSamples);
+		//recordingMenu.add(c.validate);
+		
 		JMenu analysisMenu = new JMenu("Analysis");
-		analysisMenu.add(c.globalWindowChangeAction);
+		analysisMenu.setForeground(Color.WHITE);
+		analysisMenu.setBackground(BLACK_BACKGROUND);
+		//analysisMenu.add(c.globalWindowChangeAction);
 		c.outputType = new JMenu("Output Format");
 		c.outputType.add(ace);
 		c.outputType.add(arff);
-		analysisMenu.add(c.outputType);
+		//analysisMenu.add(c.outputType);
 		c.sampleRate = new JMenu("Sample Rate (kHz)");
+		/*
 		c.sampleRate.add(sample8);
 		c.sampleRate.add(sample11);
 		c.sampleRate.add(sample16);
 		c.sampleRate.add(sample22);
 		c.sampleRate.add(sample44);
-		analysisMenu.add(c.sampleRate);
+		*/
+		//analysisMenu.add(c.sampleRate);
 		analysisMenu.add(controller.normalise);
+		
 		JMenu playbackMenu = new JMenu("Playback");
 		playbackMenu.add(c.playNowAction);
 		playbackMenu.add(c.playSamplesAction);
 		playbackMenu.add(c.stopPlayBackAction);
 		playbackMenu.add(c.playMIDIAction);
+		
 		JMenu helpMenu = new JMenu("Help");
-		helpMenu.add(helpTopics);
+		helpMenu.setForeground(Color.WHITE);
+		helpMenu.setBackground(BLACK_BACKGROUND);
+		//helpMenu.add(helpTopics);
 		helpMenu.add(c.aboutAction);
 
 //		HelpSet hs = getHelpSet("Sample.hs");
@@ -229,13 +265,15 @@ public class OuterFrame extends JFrame {
 		menu.add(editMenu);
 		menu.add(recordingMenu);
 		menu.add(analysisMenu);
-		menu.add(playbackMenu);
+		//menu.add(playbackMenu);
 		menu.add(helpMenu);
-		// Add items to GUI
-		setLayout(new BorderLayout(8, 8));
-		add(recording_selector_panel, BorderLayout.WEST);
-		add(feature_selector_panel, BorderLayout.EAST);
-		add(menu, BorderLayout.NORTH);
+		getContentPane().setLayout(new MigLayout("", "[104px][503.00px:104px][502.00:n:450.00]", "[21px][74px]"));
+		getContentPane().add(recording_selector_panel, "cell 0 1,grow");
+		getContentPane().add(feature_selector_panel, "cell 1 1,grow");
+		getContentPane().add(dataMiningPanel,"cell 2 1,grow");
+		getContentPane().add(menu, "cell 0 0 3 1,alignx left,aligny top");
+	
+		//TODO change icon
 		this.setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage("jAudioLogo3-16.bmp"));
 		// Display GUI
 		pack();
@@ -260,6 +298,7 @@ public class OuterFrame extends JFrame {
 	// helper class for creating a splashscreen from Graphic Java: Mastering the JFC: AWT
 	protected class SplashFrame extends Frame{
 			private java.awt.Window window = new java.awt.Window(this);
+			//TODO logo del pfc
 			private java.awt.Image image = java.awt.Toolkit.getDefaultToolkit().getImage("jAudioLogo3-400.jpg");
 			private ImageCanvas canvas;
 			

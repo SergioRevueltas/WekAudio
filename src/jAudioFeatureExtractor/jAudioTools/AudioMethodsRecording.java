@@ -7,8 +7,15 @@
 
 package jAudioFeatureExtractor.jAudioTools;
 
-import javax.sound.sampled.*;
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+
+import javax.sound.sampled.AudioFileFormat;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.TargetDataLine;
 
 
 /**
@@ -81,9 +88,7 @@ public class AudioMethodsRecording
 	 * closed after recording has terminated. It will need to be re-started if it is to 
 	 * be used elsewhere.
 	 */
-	public static class RecordThread
-		extends Thread
-	{
+	public static class RecordThread extends Thread {
 		private byte rw_buffer[]; // Temporary buffer to store information between reading and writing
 		private boolean stop_recording; // Set to true if recording should be terminated
 		private TargetDataLine target_data_line; // The source of the audio to be recorded
@@ -97,9 +102,7 @@ public class AudioMethodsRecording
 		 *
 		 * @throws	Exception	Throws an exception if the parameter is null.
 		 */
-		RecordThread(TargetDataLine target_data_line)
-			throws Exception
-		{
+		RecordThread(TargetDataLine target_data_line) throws Exception {
 			// Call the super class' constructor
 			super();
 

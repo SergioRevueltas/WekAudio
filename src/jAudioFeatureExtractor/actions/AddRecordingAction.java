@@ -1,10 +1,6 @@
 package jAudioFeatureExtractor.actions;
 
 import jAudioFeatureExtractor.Controller;
-import jAudioFeatureExtractor.FeatureSelectorPanel;
-import jAudioFeatureExtractor.RecordingSelectorPanel;
-import jAudioFeatureExtractor.RecordingsTableModel;
-import jAudioFeatureExtractor.ACE.XMLParsers.FileFilterXML;
 import jAudioFeatureExtractor.DataTypes.RecordingInfo;
 import jAudioFeatureExtractor.jAudioTools.AudioSamples;
 
@@ -71,6 +67,7 @@ public class AddRecordingAction extends AbstractAction {
 			load_recording_chooser
 					.setFileSelectionMode(JFileChooser.FILES_ONLY);
 			load_recording_chooser.setMultiSelectionEnabled(true);
+			load_recording_chooser.setLocation(30, 30);
 		}
 
 		// Read the user's choice of load or cancel
