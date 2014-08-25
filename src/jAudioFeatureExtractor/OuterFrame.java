@@ -41,7 +41,7 @@ import com.srevueltas.gui.CustomJMenuBar;
 /**
  * A panel holding various components of the jAudio Feature Extractor GUI
  * 
- * @author Cory McKay
+ * @author Cory McKay edited by Sergio Revueltas
  */
 public class OuterFrame extends JFrame {
 	/* FIELDS ***************************************************************** */
@@ -163,27 +163,6 @@ public class OuterFrame extends JFrame {
 
 		controller.executeBatchAction = new ExecuteBatchAction(controller, this);
 
-		/*
-		JRadioButtonMenuItem sample8 = new JRadioButtonMenuItem("8");
-		JRadioButtonMenuItem sample11 = new JRadioButtonMenuItem("11.025");
-		JRadioButtonMenuItem sample16 = new JRadioButtonMenuItem("16");
-		JRadioButtonMenuItem sample22 = new JRadioButtonMenuItem("22.05");
-		JRadioButtonMenuItem sample44 = new JRadioButtonMenuItem("44.1");
-		ButtonGroup sr = new ButtonGroup();
-		sr.add(sample8);
-		sr.add(sample11);
-		sr.add(sample16);
-		sr.add(sample22);
-		sr.add(sample44);
-		sample16.setSelected(true);
-		sample8.addActionListener(controller.samplingRateAction);
-		sample11.addActionListener(controller.samplingRateAction);
-		sample16.addActionListener(controller.samplingRateAction);
-		sample22.addActionListener(controller.samplingRateAction);
-		sample44.addActionListener(controller.samplingRateAction);
-		controller.samplingRateAction.setTarget(new JRadioButtonMenuItem[] {
-				sample8, sample11, sample16, sample22, sample44 });
-		*/
 		controller.removeBatch = new JMenu();
 		controller.viewBatch = new JMenu();
 
@@ -192,42 +171,51 @@ public class OuterFrame extends JFrame {
 		menu = new CustomJMenuBar();
 		
 		JMenu fileMenu = new JMenu("File");
-		fileMenu.setForeground(UIManager.getColor("controlLtHighlight"));
-		fileMenu.setBackground(UIManager.getColor("desktop"));
-		fileMenu.add(c.saveAction);
-		fileMenu.add(c.saveBatchAction);
-		fileMenu.add(c.loadAction);
-		fileMenu.add(c.loadBatchAction);
-		fileMenu.addSeparator();
-		fileMenu.add(c.addBatchAction);
-		fileMenu.add(c.executeBatchAction);
-		controller.removeBatch = new JMenu("Remove Batch");
-		controller.removeBatch.setEnabled(false);
-		fileMenu.add(c.removeBatch);
-		controller.viewBatch = new JMenu("View Batch");
-		controller.viewBatch.setEnabled(false);
-		fileMenu.add(c.viewBatch);
-		fileMenu.addSeparator();
+		fileMenu.setForeground(Color.WHITE);
+		fileMenu.setBackground(BLACK_BACKGROUND);
+		
+		//fileMenu.add(c.saveAction);
+		//fileMenu.add(c.saveBatchAction);
+		//fileMenu.add(c.loadAction);
+		//fileMenu.add(c.loadBatchAction);
+		//fileMenu.addSeparator();
+		//fileMenu.add(c.addBatchAction);
+		//fileMenu.add(c.executeBatchAction);
+		//controller.removeBatch = new JMenu("Remove Batch");
+		//controller.removeBatch.setEnabled(false);
+		//fileMenu.add(c.removeBatch);
+		//controller.viewBatch = new JMenu("View Batch");
+		//controller.viewBatch.setEnabled(false);
+		//fileMenu.add(c.viewBatch);
+		//fileMenu.addSeparator();
 		fileMenu.add(c.exitAction);
 		JMenu editMenu = new JMenu("Edit");
+		editMenu.setForeground(Color.WHITE);
+		editMenu.setBackground(BLACK_BACKGROUND);
 		editMenu.add(c.cutAction);
 		editMenu.add(c.copyAction);
 		editMenu.add(c.pasteAction);
+		
 		JMenu recordingMenu = new JMenu("Recording");
+		recordingMenu.setForeground(Color.WHITE);
+		recordingMenu.setBackground(BLACK_BACKGROUND);
 		recordingMenu.add(c.addRecordingsAction);
-		recordingMenu.add(c.editRecordingsAction);
-		recordingMenu.add(c.removeRecordingsAction);
+		//recordingMenu.add(c.editRecordingsAction);
 		recordingMenu.add(c.recordFromMicAction);
-		recordingMenu.add(c.synthesizeAction);
+		recordingMenu.add(c.removeRecordingsAction);
+		//recordingMenu.add(c.synthesizeAction);
 		recordingMenu.add(c.viewFileInfoAction);
-		recordingMenu.add(c.storeSamples);
-		recordingMenu.add(c.validate);
+		//recordingMenu.add(c.storeSamples);
+		//recordingMenu.add(c.validate);
+		
 		JMenu analysisMenu = new JMenu("Analysis");
-		analysisMenu.add(c.globalWindowChangeAction);
+		analysisMenu.setForeground(Color.WHITE);
+		analysisMenu.setBackground(BLACK_BACKGROUND);
+		//analysisMenu.add(c.globalWindowChangeAction);
 		c.outputType = new JMenu("Output Format");
 		c.outputType.add(ace);
 		c.outputType.add(arff);
-		analysisMenu.add(c.outputType);
+		//analysisMenu.add(c.outputType);
 		c.sampleRate = new JMenu("Sample Rate (kHz)");
 		/*
 		c.sampleRate.add(sample8);
@@ -236,15 +224,19 @@ public class OuterFrame extends JFrame {
 		c.sampleRate.add(sample22);
 		c.sampleRate.add(sample44);
 		*/
-		analysisMenu.add(c.sampleRate);
+		//analysisMenu.add(c.sampleRate);
 		analysisMenu.add(controller.normalise);
+		
 		JMenu playbackMenu = new JMenu("Playback");
 		playbackMenu.add(c.playNowAction);
 		playbackMenu.add(c.playSamplesAction);
 		playbackMenu.add(c.stopPlayBackAction);
 		playbackMenu.add(c.playMIDIAction);
+		
 		JMenu helpMenu = new JMenu("Help");
-		helpMenu.add(helpTopics);
+		helpMenu.setForeground(Color.WHITE);
+		helpMenu.setBackground(BLACK_BACKGROUND);
+		//helpMenu.add(helpTopics);
 		helpMenu.add(c.aboutAction);
 
 //		HelpSet hs = getHelpSet("Sample.hs");
@@ -267,7 +259,7 @@ public class OuterFrame extends JFrame {
 		menu.add(editMenu);
 		menu.add(recordingMenu);
 		menu.add(analysisMenu);
-		menu.add(playbackMenu);
+		//menu.add(playbackMenu);
 		menu.add(helpMenu);
 		getContentPane().setLayout(new MigLayout("", "[104px][503.00px:104px][502.00:n:450.00]", "[21px][74px]"));
 		getContentPane().add(recording_selector_panel, "cell 0 1,grow");

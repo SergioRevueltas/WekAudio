@@ -41,7 +41,7 @@ import javax.swing.JTextField;
  * Controller is a master location for all actions and non-gui components. Not
  * the best design, but it works.
  * 
- * @author Daniel McEnnis
+ * @author Daniel McEnnis edited by Sergio Revueltas
  */
 public class Controller implements ModelListener {
 
