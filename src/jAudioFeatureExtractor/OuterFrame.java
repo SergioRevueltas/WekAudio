@@ -13,6 +13,7 @@ import jAudioFeatureExtractor.actions.ExecuteBatchAction;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -54,6 +55,8 @@ public class OuterFrame extends JFrame {
 	public static final Color GRAY2 = GRAY.brighter();
 	public static final Color GRAY3 = GRAY.darker();
 	public static final Color DARK_GRAY = Color.DARK_GRAY;
+	public static final Font NORMAL_FONT = new Font("Arial", Font.PLAIN, 12);
+	public static final Font H1_FONT = new Font("Arial", Font.BOLD, 14);
 
 	/**
 	 * A panel allowing the user to select files to extract features from.
