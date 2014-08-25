@@ -11,7 +11,6 @@ import java.io.ObjectOutputStream;
 
 import weka.classifiers.Classifier;
 import weka.classifiers.bayes.BayesNet;
-import weka.classifiers.trees.J48;
 import weka.core.DenseInstance;
 import weka.core.Instance;
 import weka.core.Instances;
@@ -30,7 +29,7 @@ public class WekaManager {
 		String modelPath = tmp + ".model";
 		
 		// create J48
-		Classifier clsJ48 = new J48();
+		//Classifier clsJ48 = new J48();
 		
 		// create a BayesNet
 		Classifier cls = new BayesNet();

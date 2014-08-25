@@ -258,6 +258,8 @@ public class DataModel {
 				save_overall_recording_features, featureValue, featureKey,
 				outputType, cancel_, container, toClassify);
 
+		feature_values_per_file.clear();
+		
 		// Extract features from recordings one by one and save them
 		for (int i = 0; i < recordings.length; i++) {
 			File load_file = new File(recordings[i].file_path);

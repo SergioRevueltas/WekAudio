@@ -169,10 +169,6 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 			double window_overlap_percentage = controller.getWindow_overlap_value();
 			double window_overlap_fraction = window_overlap_percentage / 100;
 
-			boolean normalise = controller.normalise.isSelected();
-			double sampling_rate = controller.samplingRateAction.getSamplingRate();
-			int outputType = controller.outputTypeAction.getSelected();
-
 			// Get the audio recordings to extract features from and throw an exception if there are none
 			RecordingInfo[] recordings = controller.dm_.recordingInfo;
 			if (recordings == null)
