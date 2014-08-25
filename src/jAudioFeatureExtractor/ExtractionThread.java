@@ -42,6 +42,8 @@ public class ExtractionThread extends Thread implements Updater {
 
 	boolean toClassify;
 	
+	String modelLoadPath;
+	
 	ArrayList<String> classificationResults;
 
 	/**
@@ -97,10 +99,11 @@ public class ExtractionThread extends Thread implements Updater {
 	 * @param windowSize Size of the analysis window in samples
 	 * @param windowOverlap Percent of the window that is duplicated between analysis windows
 	 * @param toClassify
+	 * @param modelLoadPath 
 	 */
 	public void setup(boolean perFile, boolean perWindow,
 			String valuesSavePath, String definitionSavePath, int windowSize,
-			double windowOverlap, boolean toClassify) {
+			double windowOverlap, boolean toClassify, String modelLoadPath) {
 		this.perFile = perFile;
 		this.perWindow = perWindow;
 		this.valuesSavePath = valuesSavePath;
@@ -108,6 +111,7 @@ public class ExtractionThread extends Thread implements Updater {
 		this.windowSize = windowSize;
 		this.windowOverlap = windowOverlap;
 		this.toClassify = toClassify;
+		this.modelLoadPath = modelLoadPath;
 	}
 
 	/**
@@ -131,7 +135,7 @@ public class ExtractionThread extends Thread implements Updater {
 					controller.samplingRateAction.getSamplingRate(),
 					controller.normalise.isSelected(), perWindow, perFile,
 					controller.dm_.recordingInfo, controller.outputTypeAction
-							.getSelected(), toClassify);
+							.getSelected(), toClassify, modelLoadPath);
 			
 			SwingUtilities.invokeLater(resumeGUI);
 		} catch (Exception e) {

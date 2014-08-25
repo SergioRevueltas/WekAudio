@@ -7,6 +7,7 @@
 package jAudioFeatureExtractor;
 
 import jAudioFeatureExtractor.ACE.XMLParsers.FileFilterARFF;
+import jAudioFeatureExtractor.ACE.XMLParsers.FileFilterMODEL;
 import jAudioFeatureExtractor.Aggregators.Aggregator;
 import jAudioFeatureExtractor.DataTypes.RecordingInfo;
 
@@ -56,6 +57,7 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 	 * GUI dialog boxes
 	 */
 	private JFileChooser save_file_chooser;
+	private JFileChooser load_file_chooser;
 
 	/**
 	 * Responsible for redistributing the control to another class
@@ -143,9 +145,11 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 		} else if (event.getSource().equals(saveBrowseButton)){
 			browseFeatureValuesSavePath();
 		} else if (event.getSource().equals(loadBrowseButton)){
-			// TODO load model to classify
+			browseModelLoadPath();
 		}
 	}
+
+	
 
 	/* PRIVATE METHODS ******************************************************** */
 	/**
@@ -185,7 +189,7 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 
 			controller.extractionThread.setup(save_overall_recording_features,
 					save_features_for_each_window, feature_values_save_path,
-					"", window_size, window_overlap_fraction, toClassify);
+					"", window_size, window_overlap_fraction, toClassify, loadModelTextField.getText());
 			// extract the features
 			controller.extractionThread.start();
 
@@ -247,7 +251,7 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 			// setup thread
 			controller.extractionThread.setup(save_overall_recording_features,
 					save_features_for_each_window, feature_values_save_path,
-					"", window_size, window_overlap_fraction, toClassify);
+					"", window_size, window_overlap_fraction, toClassify, "");
 			// extract the features
 			controller.extractionThread.start();
 
@@ -279,7 +283,62 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 			arffSavePathTextField.setText(path);
 	}
 	
+	private void browseModelLoadPath() {
+		String path = chooseLoadPath();
+		if (path != null)
+			loadModelTextField.setText(path);
+		
+	}
 	
+	
+	/**
+	 * Allows the user to select or enter a file path using a JFileChooser. If the selected path does not have an
+	 * extension of .arff, it is given this extension. If the chosen path refers to a file that already exists, then the
+	 * user is asked if s/he wishes to overwrite the selected file.
+	 * <p>
+	 * No file is actually saved or overwritten by this method. The selected path is simply returned.
+	 * 
+	 * @return The path of the selected or entered file. A value of null is returned if the user presses the cancel
+	 *         button or chooses not to overwrite a file.
+	 */
+	private String chooseLoadPath() {
+		// Create the JFileChooser if it does not already exist
+		if (load_file_chooser == null) {
+			load_file_chooser = new JFileChooser();
+			load_file_chooser.setCurrentDirectory(new File("exportedFeatureValues/"));
+			load_file_chooser.setFileFilter(new FileFilterMODEL());
+			load_file_chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+			load_file_chooser.setMultiSelectionEnabled(false);
+			load_file_chooser.setLocation(30, 30);
+		}
+
+		// Process the user's entry
+		String path = null;
+		int dialog_result = load_file_chooser.showOpenDialog(this);
+		// only do if OK chosen
+		if (dialog_result == JFileChooser.APPROVE_OPTION) {
+			// Get the file the user chose
+			File to_load_model = load_file_chooser.getSelectedFile();
+
+			// Make sure has .model extension
+			path = to_load_model.getPath();
+			int pos = path.lastIndexOf(".");
+			String ext = path.substring(pos, path.length());
+			//String ext = jAudioFeatureExtractor.GeneralTools.StringMethods.getExtension(path);
+			if (ext == null) {
+				path += ".model";
+			} else if (!ext.equals(".xml")) {
+				String tmpPath = path.substring(0, pos);
+				path = tmpPath	+ ".model";
+			}
+			loadModelTextField.setText(path);
+		}
+
+		// Return the selected file path
+		return path;
+	}
+	
+
 	/**
 	 * Allows the user to select or enter a file path using a JFileChooser. If the selected path does not have an
 	 * extension of .arff, it is given this extension. If the chosen path refers to a file that already exists, then the
@@ -307,7 +366,7 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 			// Get the file the user chose
 			File to_save_to = save_file_chooser.getSelectedFile();
 
-			// Make sure has .xml extension
+			// Make sure has .arff extension
 			path = to_save_to.getPath();
 			String ext = jAudioFeatureExtractor.GeneralTools.StringMethods
 					.getExtension(path);

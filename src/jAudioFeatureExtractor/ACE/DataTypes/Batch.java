@@ -80,7 +80,7 @@ public class Batch implements Serializable {
 	public void execute() throws Exception {
 		applyAttributes();
 		dm_.extractAndClassify(windowSize, windowOverlap, samplingRate, normalise,
-				perWindow, overall, recording, outputType, false);
+				perWindow, overall, recording, outputType, false, "");
 	}
 
 	/**

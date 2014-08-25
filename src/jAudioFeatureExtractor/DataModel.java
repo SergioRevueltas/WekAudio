@@ -205,12 +205,13 @@ public class DataModel {
 	 * @param info list of the files that are to be analyzed
 	 * @param arff output format of the data
 	 * @param toClassify
+	 * @param modelLoadPath 
 	 * @return
 	 * @throws Exception
 	 */
 	public ArrayList<String> extractAndClassify(int windowSize, double windowOverlap,
 			double samplingRate, boolean normalise, boolean perWindowStats,
-			boolean overallStats, RecordingInfo[] info, int arff, boolean toClassify)
+			boolean overallStats, RecordingInfo[] info, int arff, boolean toClassify, String modelLoadPath)
 			throws Exception {
 		// Get the control parameters
 		boolean save_features_for_each_window = perWindowStats;
@@ -227,11 +228,11 @@ public class DataModel {
 			throw new Exception(
 					"No recordings available to extract features from.");
 		ArrayList<String> listFileNames = null;
+		// Obtain set of file names to create classes in arff
 		if (!toClassify) {
 			Set<String> setFileNames = new HashSet<String>();
 			for (RecordingInfo r : recordings) {
-				setFileNames
-						.add(r.file_path.substring(r.file_path.lastIndexOf("\\") + 1, r.file_path.lastIndexOf("_")));
+				setFileNames.add(r.file_path.substring(r.file_path.lastIndexOf("\\") + 1, r.file_path.lastIndexOf("_")));
 			}
 			listFileNames = new ArrayList<String>(setFileNames);
 			Collections.sort(listFileNames);
@@ -256,7 +257,7 @@ public class DataModel {
 				save_overall_recording_features, featureValue, featureKey,
 				outputType, cancel_, container, toClassify);
 
-		// Extract features from recordings one by one and save them in XML files
+		// Extract features from recordings one by one and save them
 		for (int i = 0; i < recordings.length; i++) {
 			File load_file = new File(recordings[i].file_path);
 			// update progressbar
@@ -273,7 +274,7 @@ public class DataModel {
 			classPerFile = new ArrayList<String>();
 			for (int i = 0; i < feature_values_per_file.size(); i++) {
 				classPerFile.add("File " + i + ": "
-						+ WekaManager.classify("AB_DBA_TestSuite", feature_values_per_file.get(i)) + "\n");
+						+ WekaManager.classify(modelLoadPath, feature_values_per_file.get(i)) + "\n");
 			}
 		}
 		// Finalize saved XML files

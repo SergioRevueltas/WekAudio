@@ -52,8 +52,7 @@ public class CustomJButton extends JButton implements ActionListener, MouseListe
 	 * Overpainting component, so it can have different colors
 	 */
 	@Override
-	public void paintComponent(Graphics g)
-	{
+	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;
 
@@ -79,20 +78,16 @@ public class CustomJButton extends JButton implements ActionListener, MouseListe
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent arg0)
-	{
-		System.out.println("Button clicked!");
+	public void actionPerformed(ActionEvent arg0) {
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent arg0)
-	{
+	public void mouseClicked(MouseEvent arg0) {
 
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent arg0)
-	{
+	public void mouseEntered(MouseEvent arg0) {
 		hovered = true;
 		clicked = false;
 
@@ -100,8 +95,7 @@ public class CustomJButton extends JButton implements ActionListener, MouseListe
 	}
 
 	@Override
-	public void mouseExited(MouseEvent arg0)
-	{
+	public void mouseExited(MouseEvent arg0) {
 		hovered = false;
 		clicked = false;
 
@@ -109,8 +103,7 @@ public class CustomJButton extends JButton implements ActionListener, MouseListe
 	}
 
 	@Override
-	public void mousePressed(MouseEvent arg0)
-	{
+	public void mousePressed(MouseEvent arg0) {
 		hovered = true;
 		clicked = true;
 
@@ -118,8 +111,7 @@ public class CustomJButton extends JButton implements ActionListener, MouseListe
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent arg0)
-	{
+	public void mouseReleased(MouseEvent arg0) {
 		hovered = true;
 		clicked = false;
 
