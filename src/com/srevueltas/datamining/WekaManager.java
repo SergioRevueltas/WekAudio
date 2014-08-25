@@ -17,32 +17,34 @@ import weka.core.Instances;
 import weka.core.Utils;
 
 /**
- * 
+ * Class for interact with weka
  * @author Sergio Revueltas
- *
  */
 public class WekaManager {
 
+	/**
+	 * Serialize trainning set of instances into a BayesNet model
+	 */
 	public static void saveModel(String arffPath) {
 		int pos = arffPath.lastIndexOf(".");
 		String tmp = arffPath.substring(0, pos);
 		String modelPath = tmp + ".model";
 		
 		// create J48
-		//Classifier clsJ48 = new J48();
+		//Classifier clsJ48 = new J48();	
 		
 		// create a BayesNet
 		Classifier cls = new BayesNet();
 
-		// train
 		Instances inst = null;
+		ObjectOutputStream oos = null;
 		try {
+			// train
 			inst = new Instances(new BufferedReader(new FileReader(arffPath)));
 			inst.setClassIndex(inst.numAttributes() - 1);
 			cls.buildClassifier(inst);
-			
 			// serialize model
-			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(modelPath));
+			oos = new ObjectOutputStream(new FileOutputStream(modelPath));
 			oos.writeObject(cls);
 			oos.flush();
 			oos.close();			
@@ -57,7 +59,8 @@ public class WekaManager {
 	}
 
 	/**
-	 * amb_A, amb_B, amb_C
+	 * Classify the attributes with the stored model.
+	 * NOTE: attributes length and order have to be the same that the model
 	 * 
 	 * @param modelLoadPath into exportedFeatureValues folder
 	 * @param attributes of the new instance which is going to be classified
