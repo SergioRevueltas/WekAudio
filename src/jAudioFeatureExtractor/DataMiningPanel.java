@@ -139,7 +139,7 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 	 */
 	public void actionPerformed(ActionEvent event) {
 		if (event.getSource().equals(extract_features_button))
-			extractFeatures(false);
+			train(false);
 		else if (event.getSource().equals(classify_button)) {
 			classifyInstances(true);
 		} else if (event.getSource().equals(saveBrowseButton)){
@@ -153,16 +153,17 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 
 	/* PRIVATE METHODS ******************************************************** */
 	/**
-	 * Extract the features from all of the files added in the GUI. Use the features and feature settings entered in the
-	 * GUI. Save the results in a feature_vector_file and the features used in a feature_key_file. Daniel McEnnis
-	 * 05-09-05 Moved guts into FeatureModel
+	 * Extract the features from all of the files added in the GUI. 
+	 * Use the features and feature settings entered in the GUI. 
+	 * Save the results in a feature_vector_file and classify features used in a stored model. 
+	 * Sergio Revueltas
 	 */
 	private void classifyInstances(boolean toClassify) {
 		try {
 			// Get the control parameters
 			boolean save_features_for_each_window = false;
 			boolean save_overall_recording_features = true;
-			String feature_values_save_path = arffSavePathTextField.getText();
+			//String feature_values_save_path = arffSavePathTextField.getText();
 			controller.windowSizeCombo.setSelectedIndex(controller.window_size_index);
 			int window_size = (int) controller.windowSizeCombo.getSelectedItem();
 			double window_overlap_percentage = controller.getWindow_overlap_value();
@@ -188,7 +189,7 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 			controller.extractionThread = new ExtractionThread(controller, outer_frame);
 
 			controller.extractionThread.setup(save_overall_recording_features,
-					save_features_for_each_window, feature_values_save_path,
+					save_features_for_each_window, "",
 					"", window_size, window_overlap_fraction, toClassify, loadModelTextField.getText());
 			// extract the features
 			controller.extractionThread.start();
@@ -210,11 +211,13 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 	}
 
 	/**
-	 * Extract the features from all of the files added in the GUI. Use the features and feature settings entered in the
-	 * GUI. Save the results in a feature_vector_file and the features used in a feature_key_file. Daniel McEnnis
-	 * 05-09-05 Moved guts into FeatureModel
+	 * Extract the features from all of the files added in the GUI. 
+	 * Use the features and feature settings entered in the GUI. 
+	 * Save the results in a feature_vector_file and the features used in a feature_key_file. 
+	 * Daniel McEnnis 05-09-05 Moved guts into FeatureModel
+	 * Edited by Sergio Revueltas
 	 */
-	private void extractFeatures(boolean toClassify) {
+	private void train(boolean toClassify) {
 		try {
 			// Get the control parameters
 			boolean save_features_for_each_window = false;

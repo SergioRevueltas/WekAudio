@@ -205,7 +205,7 @@ public class DataModel {
 	 * @param info list of the files that are to be analyzed
 	 * @param arff output format of the data
 	 * @param toClassify
-	 * @param modelLoadPath 
+	 * @param modelLoadPath
 	 * @return
 	 * @throws Exception
 	 */
@@ -232,7 +232,8 @@ public class DataModel {
 		if (!toClassify) {
 			Set<String> setFileNames = new HashSet<String>();
 			for (RecordingInfo r : recordings) {
-				setFileNames.add(r.file_path.substring(r.file_path.lastIndexOf("\\") + 1, r.file_path.lastIndexOf("_")));
+				setFileNames
+						.add(r.file_path.substring(r.file_path.lastIndexOf("\\") + 1, r.file_path.lastIndexOf("_")));
 			}
 			listFileNames = new ArrayList<String>(setFileNames);
 			Collections.sort(listFileNames);
@@ -276,10 +277,10 @@ public class DataModel {
 				classPerFile.add("File " + i + ": "
 						+ WekaManager.classify(modelLoadPath, feature_values_per_file.get(i)) + "\n");
 			}
+		} else {
+			// Finalize saved XML files
+			processor.finalize();
 		}
-		// Finalize saved XML files
-		processor.finalize();
-
 		return classPerFile;
 
 		// JOptionPane.showMessageDialog(null,
@@ -296,7 +297,7 @@ public class DataModel {
 		this.updater = u;
 	}
 
-	public void validateFile(String values)	throws Exception {
+	public void validateFile(String values) throws Exception {
 		File feature_values_save_file = new File(values);
 		// Throw an exception if the given file paths are not writable. Involves
 		// creating a blank file if one does not already exist.

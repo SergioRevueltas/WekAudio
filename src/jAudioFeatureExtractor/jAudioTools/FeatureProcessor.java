@@ -90,11 +90,11 @@ public class FeatureProcessor {
 
 	// Used to write to the feature_key_file file to save feature definitions
 	// to.
-	//private DataOutputStream definitions_writer;
+	// private DataOutputStream definitions_writer;
 
 	// Indicates whether the feature definitions have been written by the
 	// definitions_writer yet.
-	//private boolean definitions_written;
+	// private boolean definitions_written;
 
 	// Indicates what the type of the output format is
 	private int outputType;
@@ -148,9 +148,14 @@ public class FeatureProcessor {
 			OutputStream feature_definitions_save_path,
 			int outputType,
 			Cancel cancel,
-			AggregatorContainer container, boolean toClassify)
+			AggregatorContainer container,
+			boolean toClassify)
 			throws Exception {
+
+		this.toClassify = toClassify;
 		this.cancel = cancel;
+		this.preEmphasis = false;
+
 		if (container != null) {
 			if ((container.getNumberOfAggregators() == 0) && (save_overall_recording_features)) {
 				throw new Exception(
@@ -185,11 +190,12 @@ public class FeatureProcessor {
 			throw new Exception(
 					"INTERNAL ERROR - only ARFF and ACE output files are supported");
 		}
-
-		values_writer = new DataOutputStream(feature_values_save_path);
-		//definitions_writer = new DataOutputStream(feature_definitions_save_path);
-		//definitions_written = false;
-
+		
+		if(!toClassify) {
+			values_writer = new DataOutputStream(feature_values_save_path);
+		} else {
+			values_writer = null;
+		}
 		// Save parameters as fields
 		this.window_size = window_size;
 		this.sampling_rate = sampling_rate;
@@ -206,14 +212,14 @@ public class FeatureProcessor {
 				features_to_save_among_all);
 
 		// Write the headers of the feature_vector_file
-		if (outputType == 0) {
-			writeValuesXMLHeader();
-		} else if (outputType == 1) {
-			writeValuesARFFHeader();
+		if (!toClassify) {
+			if (outputType == 0) {
+				writeValuesXMLHeader();
+			} else if (outputType == 1) {
+				writeValuesARFFHeader();
+			}
 		}
 
-		preEmphasis = false;
-		this.toClassify = toClassify;
 	}
 
 	/* PUBLIC METHODS ********************************************************* */
@@ -934,8 +940,6 @@ public class FeatureProcessor {
 		values_writer.writeBytes("\t</data_set>\n\n");
 	}
 
-	
-	
 	/**
 	 * Writes feature definitions to the XML file referred to by the definitions_writer field. Writes both overall and
 	 * individual feature definitions.

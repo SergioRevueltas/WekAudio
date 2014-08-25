@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+import com.srevueltas.datamining.WekaManager;
+
 /**
  * This is a thread for executing the DataModel.extractFeatures without tying up the swing dispatch thread.
  * 
@@ -121,22 +123,20 @@ public class ExtractionThread extends Thread implements Updater {
 		try {
 			SwingUtilities.invokeAndWait(suspendGUI);
 			
-			//controller.dm_.validateFile(definitionSavePath);
-			//File feature_definitions_save_file = new File(definitionSavePath);
-			//FileOutputStream definitions_to = new FileOutputStream(feature_definitions_save_file);
-			//controller.dm_.featureKey = definitions_to;
-			
-			controller.dm_.validateFile(valuesSavePath);
-			File feature_values_save_file = new File(valuesSavePath);
-			FileOutputStream values_to = new FileOutputStream(feature_values_save_file);
-			controller.dm_.featureValue = values_to;
+			if (!toClassify) {
+				controller.dm_.validateFile(valuesSavePath);
+				File feature_values_save_file = new File(valuesSavePath);
+				FileOutputStream values_to = new FileOutputStream(feature_values_save_file);
+				controller.dm_.featureValue = values_to;
+			}
 			
 			classificationResults = controller.dm_.extractAndClassify(windowSize, windowOverlap,
 					controller.samplingRateAction.getSamplingRate(),
 					controller.normalise.isSelected(), perWindow, perFile,
 					controller.dm_.recordingInfo, controller.outputTypeAction
 							.getSelected(), toClassify, modelLoadPath);
-			
+			if (!toClassify)
+				WekaManager.saveModel(valuesSavePath);
 			SwingUtilities.invokeLater(resumeGUI);
 		} catch (Exception e) {
 			e.printStackTrace();
