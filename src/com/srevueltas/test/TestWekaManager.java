@@ -25,7 +25,7 @@ public class TestWekaManager {
 
 	@Test
 	public void when_classify_an_existing_instance_of_amb_A_then_return_class_name() {
-		String trainSetName = "exportedFeatureValues/dafault.model";
+		String trainSetName = "exportedFeatureValues/AB_DBA_TestSuite.model";
 		String result = "-";
 		double[] at = {5.371E-3,3.096E3,1.342E2,-1.264E2,-3.086E0,-1.114E0,2.505E0,3.611E0,3.268E0,4.627E-1,2.2E0,-3.061E-1,-1.111E0,9.093E-1,1.135E0,-3.019E-1,-2.636E-1,1.226E0,-5.798E-1,-1.868E-1,4.008E-1,-1.838E-1,3.085E-1,1.316E0,7.449E-1,-5.157E-1,1.354E-13,5.157E-1,-7.449E-1,-1.316E0,-3.085E-1,1.838E-1,-4.008E-1,-9.015E-1,8.16E-1,-1.054E-1,3.355E-1,1.889E-1,1.652E-1,5.63E-2,-8.396E-2,-1.29E-1,0E0};
 		try {
