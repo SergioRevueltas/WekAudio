@@ -22,12 +22,12 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 import net.miginfocom.swing.MigLayout;
 
 import com.srevueltas.gui.CustomJButton;
 import com.srevueltas.gui.CustomJLabel;
+import com.srevueltas.gui.CustomJTextField;
 
 /**
  * 
@@ -63,9 +63,9 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 	 * Responsible for redistributing the control to another class
 	 */
 	private Controller controller;
-	private JTextField arffSavePathTextField;
+	private CustomJTextField arffSavePathTextField;
 	private JButton saveBrowseButton;
-	private JTextField loadModelTextField;
+	private CustomJTextField loadModelTextField;
 	private JButton loadBrowseButton;
 	private JLabel lblArffSavePath;
 	private JLabel lblModelLoadPath;
@@ -95,8 +95,9 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 
 		lblArffSavePath = new CustomJLabel("ARFF Save Path");
 		add(lblArffSavePath, "cell 0 1,alignx trailing");
-
-		arffSavePathTextField = new JTextField();
+		lblArffSavePath.setFont(new Font("Arial", Font.BOLD, 12));
+		
+		arffSavePathTextField = new CustomJTextField();
 		add(arffSavePathTextField, "cell 1 1,growx");
 		arffSavePathTextField.setColumns(50);
 		arffSavePathTextField.setText("exportedFeatureValues/default.arff");
@@ -112,8 +113,9 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 
 		lblModelLoadPath = new CustomJLabel("Model Load Path");
 		add(lblModelLoadPath, "cell 0 4,alignx trailing");
+		lblModelLoadPath.setFont(new Font("Arial", Font.BOLD, 12));
 
-		loadModelTextField = new JTextField();
+		loadModelTextField = new CustomJTextField();
 		add(loadModelTextField, "cell 1 4,growx");
 		loadModelTextField.setColumns(50);
 

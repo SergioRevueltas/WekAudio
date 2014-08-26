@@ -3,6 +3,8 @@
  *
  * Cory McKay
  * McGill Univarsity
+ * 
+ * Edited by Sergio Revueltas
  */
 
 package jAudioFeatureExtractor.jAudioTools;
