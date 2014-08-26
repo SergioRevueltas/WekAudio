@@ -3,6 +3,8 @@
  *
  * Cory McKay
  * McGill Univarsity
+ * 
+ * Edited by Sergio Revueltas 2014
  */
 
 package jAudioFeatureExtractor;
@@ -37,6 +39,7 @@ import javax.swing.JTextPane;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.srevueltas.core.ThreadCompleteListener;
 import com.srevueltas.gui.CustomJButton;
 import com.srevueltas.gui.CustomJLabel;
 
@@ -64,10 +67,7 @@ import com.srevueltas.gui.CustomJLabel;
  * The Save button saves the last recorded audio using the format selected in the File Format For Saving combo box. This
  * window is then hidden.
  */
-public class RecordingFrame
-		extends JFrame
-		implements ActionListener
-{
+public class RecordingFrame extends JFrame implements ActionListener, ThreadCompleteListener {
 
 	/* FIELDS ******************************************************************/
 
@@ -139,8 +139,7 @@ public class RecordingFrame
 	 *
 	 * @param c near global controller
 	 */
-	public RecordingFrame(Controller c)
-	{
+	public RecordingFrame(Controller c)	{
 		// Set window title
 		setTitle("Record Audio");
 		getContentPane().setBackground(OuterFrame.BLACK_BACKGROUND);
@@ -338,8 +337,7 @@ public class RecordingFrame
 			record_button.setEnabled(true);
 			play_recording_button.setEnabled(true);
 		}
-		if (playback_thread != null)
-		{
+		if (playback_thread != null) {
 			playback_thread.stopPlaying();
 			lblCurrentstatus.setText("Stop.");
 			record_button.setEnabled(true);
@@ -359,19 +357,18 @@ public class RecordingFrame
 	/**
 	 * Begin playback of last recorded audio, if any. Stop any playback or recording currently in progress
 	 */
-	private void play()
-	{
-		if (last_recorded_audio != null){
+	private void play()	{
+		if (last_recorded_audio != null) {
 			stopRecording();
 			SourceDataLine source_data_line = AudioMethods.getSourceDataLine(last_recorded_audio.getFormat(),
 					null);
-			try
-			{
-				playback_thread = AudioMethodsPlayback.playAudioInputStreamInterruptible(last_recorded_audio,
-						source_data_line);
+			try	{
+				playback_thread = AudioMethodsPlayback.playAudioInputStreamInterruptible(last_recorded_audio, source_data_line);
 				lblCurrentstatus.setText("Playing...");
-			} catch (Exception e)
-			{
+				playback_thread.addListener(this);
+				//playback_thread.join();
+				//lblCurrentstatus.setText("Stop.");
+			} catch (Exception e) {
 				JOptionPane.showMessageDialog(null, "Could not play because:\n" + e.getMessage(), "ERROR",
 						JOptionPane.ERROR_MESSAGE);
 			}
@@ -379,30 +376,6 @@ public class RecordingFrame
 			lblCurrentstatus.setText("There is no recording to play.");
 		}
 	}
-
-	/**
-	 * Stop any playback currently in progress and reposition the marker in last_recorded_audio so that it will start
-	 * from the beginning the next time that play is invoked.
-	 */
-
-	/*
-	private void stopPlayback()
-	{
-		if (playback_thread != null)
-		{
-			playback_thread.stopPlaying();
-			try
-			{
-				last_recorded_audio.reset();
-			}
-			catch (Exception e)
-			{
-				JOptionPane.showMessageDialog(null, "Could not reset playback position:\n" + e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-			}
-		}
-		playback_thread = null;
-	}
-	*/
 
 	/**
 	 * Hides this window and clears any stored recording. Ends any recording or playback in progress.
@@ -526,5 +499,13 @@ public class RecordingFrame
 		JOptionPane.showMessageDialog(null, "Incorrect file extension specified.\nChanged from " + ext + " to "
 				+ correct_extension + ".", "WARNING", JOptionPane.INFORMATION_MESSAGE);
 		return new File(path);
+	}
+
+	/**
+	 * Callback when PlayThread ends
+	 */
+	@Override
+	public void notifyOfThreadComplete(Thread thread) {
+		lblCurrentstatus.setText("Stop.");
 	}
 }

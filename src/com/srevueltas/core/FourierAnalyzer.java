@@ -1,6 +1,5 @@
 package com.srevueltas.core;
 
-
 public class FourierAnalyzer {
 	
 	private MFCC mfcc;

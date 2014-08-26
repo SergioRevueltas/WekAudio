@@ -1,10 +1,15 @@
 package com.srevueltas.core;
 /**
+ * Class to apply a set of Window Functions:
+ * 
  * Window.HAMMING = 1;
  * Window.HANNING = 2;
  * Window.BLACKMAN = 3;
  * Window.BARTLETT = 4;
  * Window.BLACKMAN_HARRIS = 5; 
+ * 
+ * @author Sergio Revueltas
+ *
  */
 public class WindowFunction {
 
