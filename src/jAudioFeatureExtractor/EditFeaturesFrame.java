@@ -18,6 +18,7 @@ import net.miginfocom.swing.MigLayout;
 
 import com.srevueltas.gui.CustomJButton;
 import com.srevueltas.gui.CustomJLabel;
+import com.srevueltas.gui.CustomJTextField;
 
 /**
  * Window for allowing a user to edit the individual features in the table. The window appears when a feature is double
@@ -45,7 +46,7 @@ public class EditFeaturesFrame extends JFrame implements ActionListener {
 
 	private JPanel descriptionPanel;
 
-	private JTextArea[] inputBoxes;
+	private CustomJTextField[] inputBoxes;
 
 	private CustomJLabel[] inputBoxLabels;
 
@@ -103,10 +104,10 @@ public class EditFeaturesFrame extends JFrame implements ActionListener {
 		getContentPane().add(descriptionPanel, "cell 0 0,grow");
 
 		
-		inputBoxes = new JTextArea[attributes.length];
+		inputBoxes = new CustomJTextField[attributes.length];
 		inputBoxLabels = new CustomJLabel[attributes.length];
 		for (int i = 0; i < inputBoxes.length; ++i) {
-			inputBoxes[i] = new JTextArea();
+			inputBoxes[i] = new CustomJTextField();
 			inputBoxes[i].setFont(OuterFrame.NORMAL_FONT);
 			try {
 				inputBoxes[i].setText(fe_.getElement(i));

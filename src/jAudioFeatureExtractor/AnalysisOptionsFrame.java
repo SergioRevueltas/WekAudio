@@ -19,6 +19,7 @@ import net.miginfocom.swing.MigLayout;
 
 import com.srevueltas.gui.CustomJButton;
 import com.srevueltas.gui.CustomJLabel;
+import com.srevueltas.gui.CustomJTextField;
 
 /**
  * 
@@ -29,17 +30,17 @@ public class AnalysisOptionsFrame extends JFrame implements ActionListener{
 
 	static final long serialVersionUID = 1;
 	private Controller controller;
-	private JLabel sample_rate_label;
-	private JLabel window_size_label;
-	private JLabel window_overlap_label;
-	private JLabel normalise_label;
+	private CustomJLabel sample_rate_label;
+	private CustomJLabel window_size_label;
+	private CustomJLabel window_overlap_label;
+	private CustomJLabel normalise_label;
 	private JComboBox<String> sample_rate_combo;
 	private JComboBox<Integer> window_size_combo;
 	private JSlider window_overlap_slider;
-	private JTextField window_overlap_textField;
+	private CustomJTextField window_overlap_textField;
 	private JCheckBox normalise_checkbox;
-	private JButton save_button;
-	private JButton cancel_button;
+	private CustomJButton save_button;
+	private CustomJButton cancel_button;
 
 	public AnalysisOptionsFrame(Controller controller) {
 		super("Analysis options");
@@ -77,7 +78,7 @@ public class AnalysisOptionsFrame extends JFrame implements ActionListener{
 		window_overlap_slider = new JSlider();
 		window_overlap_slider.setBackground(Color.GRAY);
 		window_overlap_slider.setValue(50);
-		window_overlap_textField = new JTextField();
+		window_overlap_textField = new CustomJTextField();
 		window_overlap_textField.setText("50");
 		window_overlap_textField.setEditable(false);
 		getContentPane().add(window_overlap_label, "cell 0 2,grow");
@@ -155,18 +156,8 @@ public class AnalysisOptionsFrame extends JFrame implements ActionListener{
 	}
 
 	
-	public void setSample_rate_label(JLabel sample_rate_label) {
-		this.sample_rate_label = sample_rate_label;
-	}
-
-	
 	public JLabel getWindow_size_label() {
 		return window_size_label;
-	}
-
-	
-	public void setWindow_size_label(JLabel window_size_label) {
-		this.window_size_label = window_size_label;
 	}
 
 	
@@ -175,18 +166,8 @@ public class AnalysisOptionsFrame extends JFrame implements ActionListener{
 	}
 
 	
-	public void setWindow_overlap_label(JLabel window_overlap_label) {
-		this.window_overlap_label = window_overlap_label;
-	}
-
-	
 	public JLabel getNormalise_label() {
 		return normalise_label;
-	}
-
-	
-	public void setNormalise_label(JLabel normalise_label) {
-		this.normalise_label = normalise_label;
 	}
 
 	
@@ -225,11 +206,6 @@ public class AnalysisOptionsFrame extends JFrame implements ActionListener{
 	}
 
 	
-	public void setSlider_value(JTextField slider_value) {
-		this.window_overlap_textField = slider_value;
-	}
-
-	
 	public JCheckBox getNormalise_checkbox() {
 		return normalise_checkbox;
 	}
@@ -245,26 +221,7 @@ public class AnalysisOptionsFrame extends JFrame implements ActionListener{
 	}
 
 	
-	public void setAccept_button(JButton accept_button) {
-		this.save_button = accept_button;
-	}
-
-	
 	public JButton getCancel_button() {
 		return cancel_button;
 	}
-
-	
-	public void setCancel_button(JButton cancel_button) {
-		this.cancel_button = cancel_button;
-	}
-
-	
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
-	
-	
-	
 }

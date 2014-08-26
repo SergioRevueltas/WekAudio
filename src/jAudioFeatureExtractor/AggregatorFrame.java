@@ -129,9 +129,7 @@ public class AggregatorFrame extends JFrame implements ActionListener {
 					if (e.getClickCount() == 2) {
 						int row = activeAggTable.getSelectedRow();
 						if (row >= 0) {
-							aggEditorFrame =
-									new AggEditorFrame(
-											(jAudioFeatureExtractor.Aggregators.Aggregator) controller.activeAgg_
+							aggEditorFrame = new AggEditorFrame((jAudioFeatureExtractor.Aggregators.Aggregator) controller.activeAgg_
 													.getAggregator(row), controller);
 							aggEditorFrame.setVisible(true);
 							((ActiveAggTableModel) activeAggTable.getModel()).setAggregator(row, aggEditorFrame
