@@ -45,10 +45,11 @@ public class AggregatorFrame extends JFrame implements ActionListener {
 	private CustomJButton aggRemove = null;
 	private AggEditorFrame aggEditorFrame = null;
 	private Controller controller;
-	private CustomJButton doneButton = null;
-	private CustomJButton abort = null;
+	private CustomJButton saveButton = null;
+	private CustomJButton cancelButton = null;
 	private CustomJLabel lblCurrentAggregators = null;
 	private CustomJLabel lblAggregatorsList = null;
+	private JLabel lblErrorlabel;
 
 	/**
 	 * This is the default constructor
@@ -87,6 +88,7 @@ public class AggregatorFrame extends JFrame implements ActionListener {
 			jContentPane.add(getActiveAggList(), "cell 0 1,alignx left,aligny bottom");
 			jContentPane.add(getAggButtonPanel(), "cell 1 1 2 1,alignx center,aligny center");
 			jContentPane.add(getAggList(), "cell 3 1,alignx right,growy");
+			jContentPane.add(getLblErrorlabel(), "cell 0 2,alignx center");
 			jContentPane.add(getDoneButton(), "cell 1 2,growx");
 			jContentPane.setBackground(OuterFrame.BLACK_BACKGROUND);
 			jContentPane.add(getAbort(), "cell 2 2,growx");
@@ -117,6 +119,7 @@ public class AggregatorFrame extends JFrame implements ActionListener {
 	private JTable getActiveAggTable() {
 		if (activeAggTable == null) {
 			activeAggTable = new CustomJTable();
+			activeAggTable.setSelectionMode(NORMAL);
 			controller.activeAgg_ = new ActiveAggTableModel();
 			controller.activeAgg_.init(controller);
 			activeAggTable.setModel(controller.activeAgg_);
@@ -164,6 +167,7 @@ public class AggregatorFrame extends JFrame implements ActionListener {
 	private JTable getAggListTable() {
 		if (aggListTable == null) {
 			aggListTable = new CustomJTable();
+			aggListTable.setSelectionMode(NORMAL);
 			controller.aggList_ = new AggListTableModel();
 			controller.aggList_.init(controller.dm_.aggregatorMap);
 			aggListTable.setModel(controller.aggList_);
@@ -174,12 +178,20 @@ public class AggregatorFrame extends JFrame implements ActionListener {
 
 				public void mouseClicked(java.awt.event.MouseEvent e) {
 					if (e.getClickCount() == 2) {
-						int[] row = aggListTable.getSelectedRows();
-						for (int i = 0; i < row.length; ++i) {
-							AggListTableModel list = (AggListTableModel) aggListTable.getModel();
-							Aggregator prototype = list.getAggregator(row[i]);
+						int selectedRow = aggListTable.getSelectedRow();
+						AggListTableModel list = (AggListTableModel) aggListTable.getModel();
+						Aggregator prototype = list.getAggregator(selectedRow);
+						String name = prototype.getAggregatorDefinition().name;
+						boolean isAlreadySelected = false;
+						for (int row = 0; row < activeAggTable.getRowCount(); row++) {
+							if (name.equals(activeAggTable.getValueAt(row, 0))) {
+								isAlreadySelected = true;
+							}
+						}
+						if (!isAlreadySelected) {
 							Aggregator newAgg = (Aggregator) prototype.clone();
 							((ActiveAggTableModel) activeAggTable.getModel()).addAggregator(newAgg);
+							lblErrorlabel.setVisible(false);
 						}
 					}
 				}
@@ -228,9 +240,10 @@ public class AggregatorFrame extends JFrame implements ActionListener {
 								break;
 							}
 						}
-						if (!isAlreadySelected){
+						if (!isAlreadySelected) {
 							Aggregator newAgg = (Aggregator) prototype.clone();
 							((ActiveAggTableModel) activeAggTable.getModel()).addAggregator(newAgg);
+							lblErrorlabel.setVisible(false);
 						}
 					}
 				}
@@ -267,12 +280,12 @@ public class AggregatorFrame extends JFrame implements ActionListener {
 	 * @return javax.swing.JButton
 	 */
 	private JButton getDoneButton() {
-		if (doneButton == null) {
-			doneButton = new CustomJButton("Save");
-			doneButton.setToolTipText("Save and exit aggregator editing.");
-			doneButton.addActionListener(this);
+		if (saveButton == null) {
+			saveButton = new CustomJButton("Save");
+			saveButton.setToolTipText("Save and exit aggregator editing.");
+			saveButton.addActionListener(this);
 		}
-		return doneButton;
+		return saveButton;
 	}
 
 	/**
@@ -281,26 +294,27 @@ public class AggregatorFrame extends JFrame implements ActionListener {
 	 * @return javax.swing.JButton
 	 */
 	private JButton getAbort() {
-		if (abort == null) {
-			abort = new CustomJButton("Cancel");
-			abort.setToolTipText("Exit without saving.");
-			abort.addActionListener(this);
+		if (cancelButton == null) {
+			cancelButton = new CustomJButton("Cancel");
+			cancelButton.setToolTipText("Exit without saving.");
+			cancelButton.addActionListener(this);
 		}
-		return abort;
+		return cancelButton;
 	}
 
 	/**
 	 * handles events on this window
 	 */
 	public void actionPerformed(ActionEvent event) {
-		if (event.getSource() == doneButton) {
+		if (event.getSource() == saveButton) {
 			if ((controller.activeAgg_.getAggregator() != null) && (controller.activeAgg_.getAggregator().length > 0)) {
 				controller.dm_.aggregators = controller.activeAgg_.getAggregator();
 				this.setVisible(false);
 			} else {
 				controller.dm_.aggregators = new Aggregator[] { new Mean() };
+				lblErrorlabel.setVisible(true);
 			}
-		} else if (event.getSource() == abort) {
+		} else if (event.getSource() == cancelButton) {
 			this.setVisible(false);
 		}
 	}
@@ -319,5 +333,13 @@ public class AggregatorFrame extends JFrame implements ActionListener {
 			lblAggregatorsList.setFont(new Font("Arial", Font.BOLD, 14));
 		}
 		return lblAggregatorsList;
+	}
+	private JLabel getLblErrorlabel() {
+		if (lblErrorlabel == null) {
+			lblErrorlabel = new CustomJLabel("errorLabel");
+			lblErrorlabel.setText("You have to add at least one aggregator.");
+			lblErrorlabel.setVisible(false);
+		}
+		return lblErrorlabel;
 	}
 }

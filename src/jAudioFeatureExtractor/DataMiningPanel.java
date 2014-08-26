@@ -39,7 +39,6 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 
 	static final long serialVersionUID = 1;
 
-	public static final Color BLUE = new Color((float) 0.75, (float) 0.85, (float) 1.0);
 	public static final Color GREY = Color.GRAY;
 	/**
 	 * Holds a reference to the JPanel that holds objects of this class.
