@@ -129,13 +129,13 @@
 	<feature>
 	  <class>jAudioFeatureExtractor.AudioFeatures.AreaPolynomialApproximationLogConstantQ</class>
 	</feature>
-	<aggregator>jAudioFeatureExtractor.Aggregators.Mean</aggregator>
-	<aggregator>jAudioFeatureExtractor.Aggregators.StandardDeviation</aggregator>
-	<aggregator>jAudioFeatureExtractor.Aggregators.DensityBasedAverage</aggregator>
 	<!-- 
+	<aggregator>jAudioFeatureExtractor.Aggregators.MFCC</aggregator>
+	 -->
 	<aggregator>jAudioFeatureExtractor.Aggregators.AreaMoments</aggregator>
 	<aggregator>jAudioFeatureExtractor.Aggregators.AreaPolynomialApproximation</aggregator>
-	<aggregator>jAudioFeatureExtractor.Aggregators.MFCC</aggregator>
 	<aggregator>jAudioFeatureExtractor.Aggregators.MultipleFeatureHistogram</aggregator>
-	 -->
+	<aggregator>jAudioFeatureExtractor.Aggregators.DensityBasedAverage</aggregator>
+	<aggregator>jAudioFeatureExtractor.Aggregators.StandardDeviation</aggregator>
+	<aggregator>jAudioFeatureExtractor.Aggregators.Mean</aggregator>
 </featureList>

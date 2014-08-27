@@ -34,7 +34,6 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JTextPane;
 
 import net.miginfocom.swing.MigLayout;
@@ -42,6 +41,7 @@ import net.miginfocom.swing.MigLayout;
 import com.srevueltas.core.ThreadCompleteListener;
 import com.srevueltas.gui.CustomJButton;
 import com.srevueltas.gui.CustomJLabel;
+import com.srevueltas.gui.CustomJPanel;
 
 /**
  * A JFrame that allows the user to record audio in the system (coming in through a mic, playing from a file, etc.) and
@@ -128,9 +128,9 @@ public class RecordingFrame extends JFrame implements ActionListener, ThreadComp
 	private JTextPane txtpnCurrentFormatTextPane;
 	private CustomJLabel lblRecorderStatus;
 	private CustomJLabel lblCurrentstatus;
-	private JPanel formatPanel;
-	private JPanel recorder_panel;
-	private JPanel fileFormatPanel;
+	private CustomJPanel formatPanel;
+	private CustomJPanel recorder_panel;
+	private CustomJPanel fileFormatPanel;
 
 	/* CONSTRUCTOR *************************************************************/
 
@@ -179,10 +179,9 @@ public class RecordingFrame extends JFrame implements ActionListener, ThreadComp
 			e1.printStackTrace();
 		}
 
-		formatPanel = new JPanel();
+		formatPanel = new CustomJPanel();
 		getContentPane().add(formatPanel, "cell 0 0 2 1,grow");
 		formatPanel.setLayout(new MigLayout("", "[][215.00:n]", "[][]"));
-		formatPanel.setBackground(OuterFrame.GRAY);
 
 		lblAudioFormat = new CustomJLabel("Audio Format:");
 		lblAudioFormat.setFont(new Font("Arial", Font.BOLD, 14));
@@ -198,8 +197,7 @@ public class RecordingFrame extends JFrame implements ActionListener, ThreadComp
 		formatPanel.add(choose_encoding_format_button, "cell 1 1,aligny top");
 		choose_encoding_format_button.addActionListener(this);
 		
-		fileFormatPanel = new JPanel();
-		fileFormatPanel.setBackground(OuterFrame.GRAY);
+		fileFormatPanel = new CustomJPanel();
 		getContentPane().add(fileFormatPanel, "cell 0 2 2 1,grow");
 		fileFormatPanel.setLayout(new MigLayout("", "[][100.00:n]", "[][]"));
 		CustomJLabel customJLabel = new CustomJLabel("File Format For Saving:");
@@ -212,8 +210,7 @@ public class RecordingFrame extends JFrame implements ActionListener, ThreadComp
 			choose_file_format_combo_box.addItem(file_types[i]);
 		choose_file_format_combo_box.setSelectedIndex(2);
 
-		recorder_panel = new JPanel();
-		recorder_panel.setBackground(OuterFrame.GRAY);
+		recorder_panel = new CustomJPanel();
 		getContentPane().add(recorder_panel, "cell 0 1 2 1,grow");
 		recorder_panel.setLayout(new MigLayout("", "[150.00:n][150.00:n][150.00:n]", "[][]"));
 

@@ -113,10 +113,9 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 	/**
 	 * GUI text areas
 	 */
-	//private JTextArea window_length_text_field;
+	// private JTextArea window_length_text_field;
 
-	//private JTextArea window_overlap_fraction_text_field;
-
+	// private JTextArea window_overlap_fraction_text_field;
 
 	/**
 	 * GUI check boxes
@@ -129,7 +128,7 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 	 * GUI buttons
 	 */
 	private JButton set_aggregators_button;
-	
+
 	private JButton config_button;
 
 	/**
@@ -138,8 +137,9 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 	private JFileChooser save_file_chooser;
 
 	private AggregatorFrame aggregator_editor = null;
+
+	// private AnalysisOptionsFrame analysis_options = null;
 	
-	private AnalysisOptionsFrame analysis_options = null;
 
 	/**
 	 * Children Windows
@@ -194,26 +194,27 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 
 		control_panel.add(save_overall_file_featurese_check_box);
 
-		//control_panel.add(new JLabel("Window Size (samples):"));
-		//window_length_text_field = new JTextArea("1024", 1, 20);
-		//control_panel.add(window_length_text_field);
+		// control_panel.add(new JLabel("Window Size (samples):"));
+		// window_length_text_field = new JTextArea("1024", 1, 20);
+		// control_panel.add(window_length_text_field);
 
-		//control_panel.add(new JLabel("Window Overlap (fraction):"));
-		//window_overlap_fraction_text_field = new JTextArea("0.5", 1, 20);
-		//control_panel.add(window_overlap_fraction_text_field);
+		// control_panel.add(new JLabel("Window Overlap (fraction):"));
+		// window_overlap_fraction_text_field = new JTextArea("0.5", 1, 20);
+		// control_panel.add(window_overlap_fraction_text_field);
 
 		control_panel.setBackground(GRAY);
-		//add(control_panel, "cell 0 3,growx,aligny top");
+		// add(control_panel, "cell 0 3,growx,aligny top");
 		control_panel.setVisible(false);
 
 		// Cause the table to respond to double clicks
 		addTableMouseListener();
+		/*
 		analysis_options = new AnalysisOptionsFrame(controller);
 		
 		controller.setObjectReferences(
 				analysis_options.getWindow_size_combo(),
 				analysis_options.getSlider_TextField());
-		
+		*/
 		/*
 		controller.loadAction.setObjectReferences(window_length_text_field,
 				window_overlap_fraction_text_field,
@@ -232,7 +233,7 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 				save_overall_file_featurese_check_box,
 				window_length_text_field, window_overlap_fraction_text_field);
 		*/
-		
+
 		controller.dm_.aggregators = new Aggregator[] {
 				// (Aggregator) (controller.dm_.aggregatorMap.get("Mean").clone()),
 				(Aggregator) (controller.dm_.aggregatorMap.get("Density Based Average").clone()) };
@@ -248,17 +249,21 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent event) {
 		if (event.getSource().equals(set_aggregators_button)) {
 			launchAggEditTable();
-		} else if(event.getSource().equals(config_button)) {
+		} else if (event.getSource().equals(config_button)) {
 			launchOptionsFrame();
 		}
 	}
 
 	private void launchOptionsFrame() {
-		if (analysis_options == null) {
-			analysis_options = new AnalysisOptionsFrame(controller);
+		AnalysisOptionsFrame opFrame = controller.analisysOptionsAction.analysis_options;
+		if (opFrame == null) {
+			opFrame = new AnalysisOptionsFrame(controller);
+			controller.setObjectReferences(
+					opFrame.getWindow_size_combo(),
+					opFrame.getSlider_TextField());
 		}
-		analysis_options.loadDataFromController();
-		analysis_options.setVisible(true);
+		opFrame.loadDataFromController();
+		opFrame.setVisible(true);
 	}
 
 	/* PRIVATE METHODS ******************************************************** */
@@ -275,7 +280,7 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 		String key = "MultipleToggleAction";
 		features_table.getInputMap().put(KeyStroke.getKeyStroke(' '), key);
 		features_table.getActionMap().put(key, multipleToggleAction);
-		
+
 		/*
 		features_table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer(){
 		    @Override
@@ -287,7 +292,7 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 		    }
 		});
 		*/
-		
+
 		/*
 		int[] width = new int[3];
 		width[0] = decorator.getRealPrefferedWidth(features_table, 0);
@@ -303,7 +308,7 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 		features_table.getColumnModel().getColumn(0).setPreferredWidth(30);
 		features_table.getColumnModel().getColumn(1).setPreferredWidth(360);
 		features_table.getColumnModel().getColumn(2).setPreferredWidth(50);
-		
+
 		features_table.getColumnModel().getColumn(0).setMinWidth(30);
 		features_table.getColumnModel().getColumn(1).setMinWidth(360);
 		features_table.getColumnModel().getColumn(2).setMinWidth(50);
@@ -323,7 +328,8 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 				}
 			}
 		});
-		setLayout(new MigLayout("", "[:450px:250.00px][245.00:n]", "[17px][60.00:51.00:60.00][400.00px:315.00px][125px]"));
+		setLayout(new MigLayout("", "[:450px:250.00px][245.00:n]",
+				"[17px][60.00:51.00:60.00][400.00px:315.00px][125px]"));
 
 		set_aggregators_button = new CustomJButton("Alter Aggregators");
 		add(set_aggregators_button, "flowx,cell 0 1,grow");
@@ -341,7 +347,7 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 		add(features_panel, "cell 0 2 2 1,grow");
 		controller.fstm_.fireTableDataChanged();
 		TableColumn tableColumn = features_table.getColumn(features_table.getColumnName(0));
-		//tableColumn.setCellRenderer(new FeatureDisplay());
+		// tableColumn.setCellRenderer(new FeatureDisplay());
 		tableColumn = features_table.getColumn(features_table.getColumnName(1));
 		tableColumn.setCellRenderer(new FeatureDisplay());
 		tableColumn = features_table.getColumn(features_table.getColumnName(2));

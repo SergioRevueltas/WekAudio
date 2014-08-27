@@ -5,6 +5,7 @@ import jAudioFeatureExtractor.ACE.DataTypes.FeatureDefinition;
 import jAudioFeatureExtractor.actions.AboutAction;
 import jAudioFeatureExtractor.actions.AddBatchAction;
 import jAudioFeatureExtractor.actions.AddRecordingAction;
+import jAudioFeatureExtractor.actions.AnalysisOptionsAction;
 import jAudioFeatureExtractor.actions.CopyAction;
 import jAudioFeatureExtractor.actions.CutAction;
 import jAudioFeatureExtractor.actions.EditRecordingsAction;
@@ -106,6 +107,8 @@ public class Controller implements ModelListener {
 	public RecordFromMicAction recordFromMicAction = new RecordFromMicAction(
 			this);
 
+	public AnalysisOptionsAction analisysOptionsAction = new AnalysisOptionsAction(this);
+	
 	/**
 	 * @see jAudioFeatureExtractor.actions.SynthesizeAction
 	 */
@@ -271,6 +274,7 @@ public class Controller implements ModelListener {
 	public int window_size_index = -1;
 	
 	public int window_overlap_value = -1;
+
 	
 
 	/**

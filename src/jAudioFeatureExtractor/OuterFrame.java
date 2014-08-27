@@ -179,7 +179,9 @@ public class OuterFrame extends JFrame {
 		JMenu fileMenu = new JMenu("File");
 		fileMenu.setForeground(Color.WHITE);
 		fileMenu.setBackground(BLACK_BACKGROUND);
-		
+		fileMenu.add(c.addRecordingsAction);
+		//recordingMenu.add(c.editRecordingsAction);
+		fileMenu.add(c.recordFromMicAction);
 		//fileMenu.add(c.saveAction);
 		//fileMenu.add(c.saveBatchAction);
 		//fileMenu.add(c.loadAction);
@@ -205,9 +207,7 @@ public class OuterFrame extends JFrame {
 		JMenu recordingMenu = new JMenu("Recording");
 		recordingMenu.setForeground(Color.WHITE);
 		recordingMenu.setBackground(BLACK_BACKGROUND);
-		recordingMenu.add(c.addRecordingsAction);
-		//recordingMenu.add(c.editRecordingsAction);
-		recordingMenu.add(c.recordFromMicAction);
+		
 		recordingMenu.add(c.removeRecordingsAction);
 		//recordingMenu.add(c.synthesizeAction);
 		recordingMenu.add(c.viewFileInfoAction);
@@ -231,7 +231,7 @@ public class OuterFrame extends JFrame {
 		c.sampleRate.add(sample44);
 		*/
 		//analysisMenu.add(c.sampleRate);
-		analysisMenu.add(controller.normalise);
+		analysisMenu.add(c.analisysOptionsAction);
 		
 		JMenu playbackMenu = new JMenu("Playback");
 		playbackMenu.add(c.playNowAction);
