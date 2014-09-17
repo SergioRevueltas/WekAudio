@@ -1,7 +1,7 @@
 /*
  * @(#)FeatureSelectorPanel.java	1.01	April 9, 2005.
  *
- * McGill Univarsity
+ * McGill Univarsity edited by Sergio Revueltas
  */
 
 package jAudioFeatureExtractor;
@@ -67,7 +67,7 @@ import com.srevueltas.gui.CustomJTable;
  * <p>
  * Double clicking on a feature will bring up a description of it.
  * 
- * @author Cory McKay
+ * @author Cory McKay edited by Sergio Revueltas
  */
 public class FeatureSelectorPanel extends JPanel implements ActionListener {
 
@@ -81,19 +81,6 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 	 */
 	public OuterFrame outer_frame;
 
-	/**
-	 * Holds references to all of the features that it's possible to extract.
-	 */
-	// private FeatureExtractor[] feature_extractors;
-	/**
-	 * The default as to whether each feature is to be saved after feature extraction. Indices correspond to those of
-	 * feature_extractors.
-	 */
-	// private boolean[] feature_save_defaults;
-	/**
-	 * Replaces feature_extractors and feature_save_defaults with a view neutral model.
-	 */
-	// private FeatureModel featureModel;
 	private MultipleToggleAction multipleToggleAction;
 
 	/**
@@ -110,12 +97,6 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 
 	private SortingTableModelDecorator decorator;
 
-	/**
-	 * GUI text areas
-	 */
-	// private JTextArea window_length_text_field;
-
-	// private JTextArea window_overlap_fraction_text_field;
 
 	/**
 	 * GUI check boxes
@@ -137,9 +118,6 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 	private JFileChooser save_file_chooser;
 
 	private AggregatorFrame aggregator_editor = null;
-
-	// private AnalysisOptionsFrame analysis_options = null;
-	
 
 	/**
 	 * Children Windows
@@ -167,10 +145,6 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 		// Set the file chooser to null initially
 		save_file_chooser = null;
 
-		// General container preparations containers
-		int horizontal_gap = 6; // horizontal space between GUI elements
-		int vertical_gap = 11;
-
 		// Set up the list of feature extractors
 		setUpFeatureTable();
 
@@ -181,6 +155,9 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 		add(label, "cell 0 0,growx,aligny top");
 
 		// Set up buttons and text area
+		// General container preparations containers
+		int horizontal_gap = 6; // horizontal space between GUI elements
+		int vertical_gap = 11;
 		JPanel control_panel = new JPanel(new GridLayout(4, 2, horizontal_gap, vertical_gap));
 
 		save_window_features_check_box = new JCheckBox("Save Features For Each Window", false);
@@ -194,27 +171,11 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 
 		control_panel.add(save_overall_file_featurese_check_box);
 
-		// control_panel.add(new JLabel("Window Size (samples):"));
-		// window_length_text_field = new JTextArea("1024", 1, 20);
-		// control_panel.add(window_length_text_field);
-
-		// control_panel.add(new JLabel("Window Overlap (fraction):"));
-		// window_overlap_fraction_text_field = new JTextArea("0.5", 1, 20);
-		// control_panel.add(window_overlap_fraction_text_field);
-
 		control_panel.setBackground(GRAY);
-		// add(control_panel, "cell 0 3,growx,aligny top");
 		control_panel.setVisible(false);
 
 		// Cause the table to respond to double clicks
 		addTableMouseListener();
-		/*
-		analysis_options = new AnalysisOptionsFrame(controller);
-		
-		controller.setObjectReferences(
-				analysis_options.getWindow_size_combo(),
-				analysis_options.getSlider_TextField());
-		*/
 		/*
 		controller.loadAction.setObjectReferences(window_length_text_field,
 				window_overlap_fraction_text_field,
