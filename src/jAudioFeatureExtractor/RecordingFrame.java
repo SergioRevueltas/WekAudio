@@ -142,7 +142,7 @@ public class RecordingFrame extends JFrame implements ActionListener, ThreadComp
 	public RecordingFrame(Controller c)	{
 		// Set window title
 		setTitle("Record Audio");
-		getContentPane().setBackground(OuterFrame.BLACK_BACKGROUND);
+		getContentPane().setBackground(OuterFrame.GRAY_BACKGROUND);
 		getContentPane().setLocation(30, 30);
 		// Cause program to react when the exit box is pressed
 		addWindowListener(new WindowAdapter() {

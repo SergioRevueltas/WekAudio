@@ -19,7 +19,7 @@ public class FeatureDisplay extends DefaultTableCellRenderer {
 		JLabel tmp =  (JLabel)super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 		// if checked
 		if (((Boolean)table.getModel().getValueAt(row, 0)).booleanValue()) {
-			setBackground(OuterFrame.GRAY3);
+			setBackground(OuterFrame.GRAY_BACKGROUND);
 		} else {
 			setBackground(OuterFrame.GRAY);
 		}

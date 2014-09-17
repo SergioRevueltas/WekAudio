@@ -90,7 +90,7 @@ public class AggregatorFrame extends JFrame implements ActionListener {
 			jContentPane.add(getAggList(), "cell 3 1,alignx right,growy");
 			jContentPane.add(getLblErrorlabel(), "cell 0 2,alignx center");
 			jContentPane.add(getDoneButton(), "cell 1 2,growx");
-			jContentPane.setBackground(OuterFrame.BLACK_BACKGROUND);
+			jContentPane.setBackground(OuterFrame.GRAY_BACKGROUND);
 			jContentPane.add(getAbort(), "cell 2 2,growx");
 		}
 		return jContentPane;
@@ -208,7 +208,7 @@ public class AggregatorFrame extends JFrame implements ActionListener {
 			aggButtonPanel = new JPanel();
 			aggButtonPanel.setLayout(new MigLayout("", "[144.00px:59px:150.00px]", "[25px][]"));
 			aggButtonPanel.add(getAggAdd(), "cell 0 0,growx,aligny top");
-			aggButtonPanel.setBackground(OuterFrame.BLACK_BACKGROUND);
+			aggButtonPanel.setBackground(OuterFrame.GRAY_BACKGROUND);
 			aggButtonPanel.add(getAggRemove(), "cell 0 1,growx,aligny top");
 		}
 		return aggButtonPanel;
