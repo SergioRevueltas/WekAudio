@@ -92,7 +92,8 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 	/**
 	 * GUI panels
 	 */
-	//private JPanel recordings_panel;
+	// private JPanel recordings_panel;
+	private JPanel buttonsPanel;
 
 	private JScrollPane recordings_scroll_pane;
 
@@ -109,7 +110,7 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 	private JButton add_recordings_button;
 
 	private JButton delete_recordings_button;
-	
+
 	private JButton add_from_mic_button;
 
 	private JButton view_recording_information_button;
@@ -185,7 +186,7 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 		synthesis_frame = null;
 		midi_frame = null;
 
-		setLayout(new MigLayout("", "[266.00px]", "[14px][60.00px:125px:60.00px][400.00:n,fill][]"));
+		setLayout(new MigLayout("ins 5", "[340.00px]", "[14px][50.00px:50.00px:50.00px][400.00:n,fill]"));
 
 		// Add an overall title for this panel
 		JLabel label = new JLabel("RECORDINGS:");
@@ -197,19 +198,26 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 		setUpRecordingListTable();
 
 		recordings_table = new CustomJTable(controller.rtm_);
-		
+
 		recordings_table.getColumnModel().getColumn(0).setPreferredWidth(35);
 		recordings_table.getColumnModel().getColumn(1).setPreferredWidth(150);
 		recordings_table.getColumnModel().getColumn(2).setPreferredWidth(400);
-		
+
+		buttonsPanel = new JPanel();
+		add(buttonsPanel, "flowx,cell 0 1,grow");
+		buttonsPanel.setLayout(new MigLayout("ins 0", "[110.00px]2[110.00px]2[110.00px]", "[50.00px:50.00px:50.00px]"));
+		buttonsPanel.setBackground(GRAY);
 		add_recordings_button = new CustomJButton("Add Recordings");
-		add(add_recordings_button, "flowx,cell 0 1,grow");
-		add_recordings_button.addActionListener(controller.addRecordingsAction);
+		buttonsPanel.add(add_recordings_button, "cell 0 0,grow");
 
 		add_from_mic_button = new CustomJButton("Add from Mic");
-		add(add_from_mic_button, "cell 0 1,grow");
+		buttonsPanel.add(add_from_mic_button, "cell 1 0,grow");
+
+		delete_recordings_button = new CustomJButton("Delete Recordings");
+		buttonsPanel.add(delete_recordings_button, "cell 2 0,grow");
+		delete_recordings_button.addActionListener(controller.removeRecordingsAction);
 		add_from_mic_button.addActionListener(controller.recordFromMicAction);
-		
+		add_recordings_button.addActionListener(controller.addRecordingsAction);
 
 		controller.removeRecordingsAction.setModel(controller, recordings_table);
 		controller.playSamplesAction.setTable(recordings_table);
@@ -223,12 +231,6 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 		recordings_scroll_pane.setBackground(OuterFrame.GRAY_BOXES_LINE);
 		recordings_scroll_pane.getViewport().setBackground(OuterFrame.GRAY);
 
-		
-		delete_recordings_button = new CustomJButton("Delete Recordings");
-		add(delete_recordings_button, "cell 0 1,grow");
-		delete_recordings_button.addActionListener(controller.removeRecordingsAction);
-
-		
 		addTableMouseListener();
 		/*
 		controller.addBatchAction.setFilePath(values_save_path_text_field,
@@ -609,8 +611,6 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 		outer_frame.repaint();
 	}
 
-	
-
 	/**
 	 * Allow the user to choose a save path for the feature_key_file XML file where feature values are to be saved. The
 	 * selected path is entered in the definitions_save_path_text_field.
@@ -622,7 +622,5 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 			definitions_save_path_text_field.setText(path);
 	}
 	*/
-	
-	
 
 }

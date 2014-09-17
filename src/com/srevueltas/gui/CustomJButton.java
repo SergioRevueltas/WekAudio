@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Insets;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -39,9 +40,9 @@ public class CustomJButton extends JButton implements ActionListener, MouseListe
 		this.selectedColor = normalColor.darker();
 		
 		setForeground(Color.WHITE);
-		setFont(new Font("Arial", Font.BOLD, 14));
+		setFont(new Font("Arial", Font.BOLD, 12));
 		setFocusPainted(false);
-
+		setMargin(new Insets(3,3,3,3));
 		
 		addActionListener(this);
 		addMouseListener(this);

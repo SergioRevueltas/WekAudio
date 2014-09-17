@@ -39,7 +39,7 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 
 	static final long serialVersionUID = 1;
 
-	public static final Color GREY = Color.GRAY;
+	public static final Color GRAY = Color.GRAY;
 	/**
 	 * Holds a reference to the JPanel that holds objects of this class.
 	 */
@@ -68,6 +68,8 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 	private JButton loadBrowseButton;
 	private JLabel lblArffSavePath;
 	private JLabel lblModelLoadPath;
+	private JPanel trainPanel;
+	private JPanel classifyPanel;
 
 	/* CONSTRUCTOR ************************************************************ */
 
@@ -84,47 +86,57 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 		this.controller = c;
 		// Set the file chooser to null initially
 		save_file_chooser = null;
-		setLayout(new MigLayout("", "[][240.00px:271.00px:240.00px,grow][90.00px:92.00px:97.00px]", "[23px][][50.00:n:50.00][138.00:n][][50.00:n:50.00]"));
+		setLayout(new MigLayout("", "[340.00px]", "[23px][240.00px:240.00px:240.00px][240.00px:240.00px:240.00px]"));
 
 		// Add an overall title for this panel
 		JLabel label = new CustomJLabel("DATA MINING:");
 		label.setForeground(Color.WHITE);
 		label.setFont(new Font("Arial", Font.BOLD, 14));
 		add(label, "cell 0 0,alignx left,aligny center");
+		
+		trainPanel = new JPanel();
+		add(trainPanel, "flowx,cell 0 1,grow");
+		trainPanel.setLayout(new MigLayout("ins 0", "[][][]", "[][50.00px:50.00px:50.00px]"));
+		trainPanel.setBackground(GRAY);
 
 		lblArffSavePath = new CustomJLabel("ARFF Save Path");
-		add(lblArffSavePath, "cell 0 1,alignx trailing");
+		trainPanel.add(lblArffSavePath, "cell 0 0");
 		lblArffSavePath.setFont(new Font("Arial", Font.BOLD, 12));
 		
 		arffSavePathTextField = new CustomJTextField();
-		add(arffSavePathTextField, "cell 1 1,growx");
+		trainPanel.add(arffSavePathTextField, "cell 1 0");
 		arffSavePathTextField.setColumns(50);
 		arffSavePathTextField.setText("exportedFeatureValues/default.arff");
 
 		saveBrowseButton = new CustomJButton("Browse");
-		add(saveBrowseButton, "cell 2 1,growx");
+		trainPanel.add(saveBrowseButton, "cell 2 0");
+		
+				extract_features_button = new CustomJButton("Extract Features");
+				trainPanel.add(extract_features_button, "cell 0 1 3 1,grow");
+				extract_features_button.setText("Train");
+				extract_features_button.addActionListener(this);
 		saveBrowseButton.addActionListener(this);
-
-		extract_features_button = new CustomJButton("Extract Features");
-		extract_features_button.setText("Train");
-		add(extract_features_button, "cell 0 2 3 1,grow");
-		extract_features_button.addActionListener(this);
-
+		
+		classifyPanel = new JPanel();
+		add(classifyPanel, "flowx,cell 0 2,growy");
+		classifyPanel.setLayout(new MigLayout("ins 0", "[][][]", "[][50.00px:50.00px:50.00px]"));
+		classifyPanel.setBackground(GRAY);
+		
 		lblModelLoadPath = new CustomJLabel("Model Load Path");
-		add(lblModelLoadPath, "cell 0 4,alignx trailing");
+		classifyPanel.add(lblModelLoadPath, "cell 0 0");
 		lblModelLoadPath.setFont(new Font("Arial", Font.BOLD, 12));
 
 		loadModelTextField = new CustomJTextField();
-		add(loadModelTextField, "cell 1 4,growx");
+		classifyPanel.add(loadModelTextField, "cell 1 0");
 		loadModelTextField.setColumns(50);
 
 		loadBrowseButton = new CustomJButton("Browse");
-		add(loadBrowseButton, "cell 2 4,grow");
+		classifyPanel.add(loadBrowseButton, "cell 2 0");
+		
+				classify_button = new CustomJButton("Classify");
+				classifyPanel.add(classify_button, "cell 0 1 3 1,grow");
+				classify_button.addActionListener(this);
 		loadBrowseButton.addActionListener(this);
-
-		classify_button = new CustomJButton("Classify");
-		add(classify_button, "cell 0 5 3 1,grow");
-		classify_button.addActionListener(this);
 
 		controller.dm_.aggregators = new Aggregator[] {
 				// (Aggregator) (controller.dm_.aggregatorMap.get("Mean").clone()),

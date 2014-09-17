@@ -89,6 +89,9 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 	private JPanel features_panel;
 
 	private JScrollPane features_scroll_pane;
+	
+	private JPanel buttonsPanel;
+
 
 	/**
 	 * GUI table-related fields
@@ -289,15 +292,19 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 				}
 			}
 		});
-		setLayout(new MigLayout("", "[:450px:250.00px][245.00:n]",
-				"[17px][60.00:51.00:60.00][400.00px:315.00px][125px]"));
+		setLayout(new MigLayout("ins 5", "[340px]", "[14px][50.00px:50.00px:50.00px][400.00:n,fill]"));
+
+		buttonsPanel = new JPanel();
+		add(buttonsPanel, "flowx,cell 0 1,grow");
+		buttonsPanel.setLayout(new MigLayout("ins 0", "[167.00px]2[167.00px]", "[50.00px:50.00px:50.00px]"));
+		buttonsPanel.setBackground(GRAY);
 
 		set_aggregators_button = new CustomJButton("Alter Aggregators");
-		add(set_aggregators_button, "flowx,cell 0 1,grow");
-		set_aggregators_button.addActionListener(this);
+		buttonsPanel.add(set_aggregators_button, "cell 0 0,grow");
 		config_button = new CustomJButton("Analysis Options");
-		add(config_button, "cell 1 1,grow");
+		buttonsPanel.add(config_button, "cell 1 0,grow");
 		config_button.addActionListener(this);
+		set_aggregators_button.addActionListener(this);
 
 		// Set up and display the table
 		features_scroll_pane = new JScrollPane(features_table);
@@ -305,7 +312,7 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 		features_panel.add(features_scroll_pane);
 		features_scroll_pane.setBackground(OuterFrame.GRAY_BOXES_LINE);
 		features_scroll_pane.getViewport().setBackground(OuterFrame.GRAY);
-		add(features_panel, "cell 0 2 2 1,grow");
+		add(features_panel, "cell 0 2,grow");
 		controller.fstm_.fireTableDataChanged();
 		TableColumn tableColumn = features_table.getColumn(features_table.getColumnName(0));
 		// tableColumn.setCellRenderer(new FeatureDisplay());

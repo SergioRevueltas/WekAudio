@@ -267,7 +267,7 @@ public class OuterFrame extends JFrame {
 		menu.add(analysisMenu);
 		//menu.add(playbackMenu);
 		menu.add(helpMenu);
-		getContentPane().setLayout(new MigLayout("", "[104px][503.00px:104px][502.00:n:450.00]", "[21px][74px]"));
+		getContentPane().setLayout(new MigLayout("", "[340.00px][340.00px][340.00px]", "[21px][500.00px]"));
 		getContentPane().add(recording_selector_panel, "cell 0 1,grow");
 		getContentPane().add(feature_selector_panel, "cell 1 1,grow");
 		getContentPane().add(dataMiningPanel,"cell 2 1,grow");
