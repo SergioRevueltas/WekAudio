@@ -99,7 +99,6 @@ public class CustomJButton extends JButton implements ActionListener, MouseListe
 	public void mouseExited(MouseEvent arg0) {
 		hovered = false;
 		clicked = false;
-
 		repaint();
 	}
 
@@ -107,15 +106,13 @@ public class CustomJButton extends JButton implements ActionListener, MouseListe
 	public void mousePressed(MouseEvent arg0) {
 		hovered = true;
 		clicked = true;
-
 		repaint();
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
-		hovered = true;
+		hovered = false;
 		clicked = false;
-
 		repaint();
 	}
 

@@ -49,11 +49,12 @@ public class OuterFrame extends JFrame {
 
 	static final long serialVersionUID = 1;
 	public static final Color BLUE = UIManager.getColor("MenuItem.selectionBackground");
-	public static final Color BLACK_BACKGROUND = UIManager.getColor("inactiveCaptionText");
 	public static final Color GRAY_BOXES_LINE = Color.LIGHT_GRAY;
 	public static final Color GRAY = Color.GRAY;
 	public static final Color GRAY2 = GRAY.brighter();
 	public static final Color GRAY3 = GRAY.darker();
+	public static final Color BLACK_BACKGROUND = UIManager.getColor("inactiveCaptionText");
+	//public static final Color BLACK_BACKGROUND = GRAY3;
 	public static final Color DARK_GRAY = Color.DARK_GRAY;
 	public static final Font NORMAL_FONT = new Font("Arial", Font.PLAIN, 12);
 	public static final Font H1_FONT = new Font("Arial", Font.BOLD, 14);
