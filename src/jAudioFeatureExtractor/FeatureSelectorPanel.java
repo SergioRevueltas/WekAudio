@@ -269,13 +269,13 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 					width[i]);
 		}
 		*/
-		features_table.getColumnModel().getColumn(0).setPreferredWidth(30);
-		features_table.getColumnModel().getColumn(1).setPreferredWidth(360);
-		features_table.getColumnModel().getColumn(2).setPreferredWidth(50);
+		features_table.getColumnModel().getColumn(0).setPreferredWidth(28);
+		features_table.getColumnModel().getColumn(1).setPreferredWidth(200);
+		features_table.getColumnModel().getColumn(2).setPreferredWidth(40);
 
-		features_table.getColumnModel().getColumn(0).setMinWidth(30);
-		features_table.getColumnModel().getColumn(1).setMinWidth(360);
-		features_table.getColumnModel().getColumn(2).setMinWidth(50);
+		features_table.getColumnModel().getColumn(0).setMinWidth(28);
+		features_table.getColumnModel().getColumn(1).setMinWidth(200);
+		features_table.getColumnModel().getColumn(2).setMinWidth(40);
 
 		// add handler for sorting panel
 		JTableHeader header = (JTableHeader) features_table.getTableHeader();

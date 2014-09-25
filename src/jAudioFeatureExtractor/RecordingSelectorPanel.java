@@ -200,7 +200,7 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 		recordings_table = new CustomJTable(controller.rtm_);
 
 		recordings_table.getColumnModel().getColumn(0).setPreferredWidth(35);
-		recordings_table.getColumnModel().getColumn(1).setPreferredWidth(150);
+		recordings_table.getColumnModel().getColumn(1).setPreferredWidth(170);
 		recordings_table.getColumnModel().getColumn(2).setPreferredWidth(400);
 
 		buttonsPanel = new JPanel();

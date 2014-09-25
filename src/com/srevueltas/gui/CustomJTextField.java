@@ -24,6 +24,6 @@ public class CustomJTextField extends JTextField{
 	private void loadSettings() {
 		setBackground(OuterFrame.GRAY_PANELS.brighter());
 		setForeground(Color.WHITE);
-		setFont(new Font("Arial", Font.PLAIN, 12));
+		setFont(new Font("Arial", Font.PLAIN, 10));
 	}
 }
