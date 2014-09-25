@@ -74,6 +74,7 @@ public class AddRecordingAction extends AbstractAction {
 
 		// Read the user's choice of load or cancel
 		int dialog_result = load_recording_chooser.showOpenDialog(null);
+		load_recording_chooser.setLocation(30,30);
 
 		// Add the files to the table and to recording_list
 		if (dialog_result == JFileChooser.APPROVE_OPTION) // only do if OK
