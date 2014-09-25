@@ -163,7 +163,7 @@ public class RecordingFrame extends JFrame implements ActionListener, ThreadComp
 		save_file_chooser = null;
 
 		// Prepare the audio format selection dialog box
-		audio_format_selector = new AudioFormatJFrame();
+		audio_format_selector = new AudioFormatJFrame(this);
 		AudioFormat default_format = AudioFormatJFrame.getStandardMidQualityRecordAudioFormat();
 		audio_format_selector.setAudioFormat(default_format);
 
@@ -241,8 +241,10 @@ public class RecordingFrame extends JFrame implements ActionListener, ThreadComp
 		cancel_button.addActionListener(this);
 
 		// Display GUI
-		pack();
-		setVisible(true);
+		this.pack();
+		this.setAlwaysOnTop(true);
+		this.setLocation(30,30);
+		this.setVisible(true);
 	}
 
 	/* PUBLIC METHODS **********************************************************/
@@ -287,6 +289,8 @@ public class RecordingFrame extends JFrame implements ActionListener, ThreadComp
 	private void chooseEncodingFormt()
 	{
 		audio_format_selector.setVisible(true);
+		audio_format_selector.setAlwaysOnTop(true);
+		this.setEnabled(false);
 	}
 
 	/**
@@ -383,6 +387,8 @@ public class RecordingFrame extends JFrame implements ActionListener, ThreadComp
 		// stopPlayback();
 		last_recorded_audio = null;
 		this.setVisible(false);
+		this.controller.getFrame().setEnabled(true);
+		this.controller.getFrame().toFront();
 	}
 
 	/**
@@ -468,6 +474,7 @@ public class RecordingFrame extends JFrame implements ActionListener, ThreadComp
 				}
 			}
 		}
+		this.controller.getFrame().setEnabled(true);
 	}
 
 	/**

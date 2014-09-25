@@ -87,14 +87,19 @@ public class AudioFormatJFrame extends JFrame implements ActionListener {
 	private CustomJButton cancel_button;
 	private CustomJButton ok_button;
 	private JPanel quality_panel;
+	
+	
+	private JFrame parent;
 
 	/* CONSTRUCTOR *************************************************************/
 
 	/**
 	 * Basic constructor. Configures the panel and its fields to low quality audio. Prepares the <code>JFrame</code>,
 	 * but does not show it. The <code>setVisible</code> method must be called externally to show this.
+	 * @param recordingFrame 
 	 */
-	public AudioFormatJFrame() {
+	public AudioFormatJFrame(JFrame parent) {
+		this.parent = parent;
 		// Configure overall window settings
 		setTitle("PCM Audio Format Selector");
 		content_pane = getContentPane();
@@ -178,11 +183,11 @@ public class AudioFormatJFrame extends JFrame implements ActionListener {
 		ok_button.addActionListener(this);
 		button_panel.add(ok_button);
 		button_panel.add(cancel_button);
-		getContentPane().setLayout(new MigLayout("", "[538px,grow]", "[grow][253px][33px]"));
-
+		content_pane.setLayout(new MigLayout("", "[500.00px,grow]", "[grow][grow][grow]"));
+		this.setLocation(60,60);
 		quality_panel = new JPanel();
 		quality_panel.setBackground(OuterFrame.GRAY_PANELS);
-		getContentPane().add(quality_panel, "cell 0 0,grow");
+		content_pane.add(quality_panel, "cell 0 0,grow");
 
 		// Instantiate buttons
 		low_quality_button = new CustomJButton("Low Quality Settings");
@@ -455,8 +460,11 @@ public class AudioFormatJFrame extends JFrame implements ActionListener {
 			cancel();
 
 		// React to the ok_button
-		else if (event.getSource().equals(ok_button))
+		else if (event.getSource().equals(ok_button)) {
 			this.setVisible(false);
+			this.parent.setEnabled(true);
+			this.parent.toFront();
+		}
 	}
 
 	/**
@@ -489,5 +497,7 @@ public class AudioFormatJFrame extends JFrame implements ActionListener {
 	{
 		setAudioFormat(temp_format);
 		this.setVisible(false);
+		this.parent.setEnabled(true);
+		this.parent.toFront();
 	}
 }

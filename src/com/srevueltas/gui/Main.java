@@ -8,7 +8,8 @@ public class Main {
 	
 	public static void main(String[] args) {
 		Controller c = new Controller();
-		new OuterFrame(c);
+		OuterFrame outerFrame = new OuterFrame(c);
+		c.setFrame(outerFrame);
 		//new MainWindow();
 	}
 }

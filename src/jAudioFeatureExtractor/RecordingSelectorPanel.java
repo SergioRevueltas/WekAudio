@@ -137,8 +137,6 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 
 	private RecordingFrame recording_frame;
 
-	private SynthesisFrame synthesis_frame;
-
 	private MIDIFrame midi_frame;
 
 	/**
@@ -183,7 +181,6 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 		// save_file = null;
 		load_recording_chooser = null;
 		recording_frame = null;
-		synthesis_frame = null;
 		midi_frame = null;
 
 		setLayout(new MigLayout("ins 5", "[340.00px]", "[14px][50.00px:50.00px:50.00px][400.00:n,fill]"));

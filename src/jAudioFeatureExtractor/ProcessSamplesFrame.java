@@ -7,14 +7,37 @@
 
 package jAudioFeatureExtractor;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import java.io.*;
-import javax.sound.sampled.*;
-import jAudioFeatureExtractor.jAudioTools.*;
-import jAudioFeatureExtractor.GeneralTools.PlotDisplay;
 import jAudioFeatureExtractor.DataTypes.RecordingInfo;
+import jAudioFeatureExtractor.GeneralTools.PlotDisplay;
+import jAudioFeatureExtractor.jAudioTools.AudioFormatJFrame;
+import jAudioFeatureExtractor.jAudioTools.AudioMethods;
+import jAudioFeatureExtractor.jAudioTools.AudioMethodsPlayback;
+import jAudioFeatureExtractor.jAudioTools.AudioSamples;
+import jAudioFeatureExtractor.jAudioTools.DSPMethods;
+import jAudioFeatureExtractor.jAudioTools.FFT;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.File;
+
+import javax.sound.sampled.AudioFileFormat;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.SourceDataLine;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextArea;
 
 /**
  * A window that allows the user to process and edit the samples belonging to an
@@ -201,7 +224,7 @@ public class ProcessSamplesFrame extends JFrame implements ActionListener {
 			playback_thread = null;
 
 			// Prepare the audio format selection dialog box
-			audio_format_selector = new AudioFormatJFrame();
+			audio_format_selector = new AudioFormatJFrame(this);
 			AudioFormat default_format = AudioFormatJFrame
 					.getStandardMidQualityRecordAudioFormat();
 			audio_format_selector.setAudioFormat(default_format);

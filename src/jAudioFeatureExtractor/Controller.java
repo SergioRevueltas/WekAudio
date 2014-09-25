@@ -26,7 +26,6 @@ import jAudioFeatureExtractor.actions.SamplingRateAction;
 import jAudioFeatureExtractor.actions.SaveAction;
 import jAudioFeatureExtractor.actions.SaveBatchAction;
 import jAudioFeatureExtractor.actions.StopPlayBackAction;
-import jAudioFeatureExtractor.actions.SynthesizeAction;
 import jAudioFeatureExtractor.actions.ViewBatchAction;
 import jAudioFeatureExtractor.actions.ViewFileInfoAction;
 
@@ -109,11 +108,7 @@ public class Controller implements ModelListener {
 
 	public AnalysisOptionsAction analisysOptionsAction = new AnalysisOptionsAction(this);
 	
-	/**
-	 * @see jAudioFeatureExtractor.actions.SynthesizeAction
-	 */
-	public SynthesizeAction synthesizeAction;
-
+	
 	/**
 	 * @see jAudioFeatureExtractor.actions.ViewFileInfoAction
 	 */
@@ -275,6 +270,11 @@ public class Controller implements ModelListener {
 	
 	public int window_overlap_value = -1;
 
+	/**
+	 * OuterFrame reference
+	 */
+	private OuterFrame outerFrame;
+
 	
 
 	/**
@@ -283,6 +283,7 @@ public class Controller implements ModelListener {
 	 * components, requiring further inititalization in those GUI components
 	 */
 	public Controller() {
+		outerFrame = null;
 		dm_ = new DataModel("features.xml",this);
 		fstm_ = new FeatureSelectorTableModel(new Object[] {
 				new String("Save"), 
@@ -300,7 +301,6 @@ public class Controller implements ModelListener {
 		loadAction = new LoadAction(this, fstm_);
 		globalWindowChangeAction = new GlobalWindowChangeAction(dm_);
 		addRecordingsAction.setModel(this);
-		synthesizeAction = new SynthesizeAction(this);
 		playSamplesAction = new PlaySamplesAction(this);
 		stopPlayBackAction = new StopPlayBackAction(this);
 		playNowAction = new PlayNowAction(this);
@@ -346,7 +346,15 @@ public class Controller implements ModelListener {
 	
 	public int getWindow_overlap_value() {
 		return window_overlap_value;
+	}
+
+	public void setFrame(OuterFrame outerFrame) {
+		this.outerFrame = outerFrame;
+		
 	}	
+	public OuterFrame getFrame() {
+		return this.outerFrame;
+	}
 
 	
 }
