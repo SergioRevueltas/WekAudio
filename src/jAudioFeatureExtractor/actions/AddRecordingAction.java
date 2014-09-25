@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
 /**
  * Action for importing audio files into jAudio.
  * 
- * @author Daniel McEnnis
+ * @author Daniel McEnnis edited by Sergio Revueltas
  */
 public class AddRecordingAction extends AbstractAction {
 
@@ -57,11 +57,13 @@ public class AddRecordingAction extends AbstractAction {
 	 * <p>
 	 * If a selected file path corresponds to a file that does not exist, then
 	 * an error message is displayed.
+	 * 
+	 * audioFiles folder added.
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (load_recording_chooser == null) {
 			load_recording_chooser = new JFileChooser();
-			load_recording_chooser.setCurrentDirectory(new File("."));
+			load_recording_chooser.setCurrentDirectory(new File(System.getProperty("user.dir")+"/audioFiles"));
 			load_recording_chooser
 					.setFileFilter(new jAudioFeatureExtractor.jAudioTools.FileFilterAudio());
 			load_recording_chooser
