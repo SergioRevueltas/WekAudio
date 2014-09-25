@@ -78,7 +78,7 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 
 	static final long serialVersionUID = 1;
 	public static final Color BLUE = new Color((float) 0.75, (float) 0.85, (float) 1.0);
-	public static final Color GRAY = OuterFrame.GRAY;
+	public static final Color GRAY = OuterFrame.GRAY_PANELS;
 
 	/**
 	 * Holds a reference to the JPanel that holds objects of this class.
@@ -229,7 +229,7 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 		recordings_scroll_pane = new JScrollPane(recordings_table);
 		add(recordings_scroll_pane, "cell 0 2,grow");
 		recordings_scroll_pane.setBackground(OuterFrame.GRAY_BOXES_LINE);
-		recordings_scroll_pane.getViewport().setBackground(OuterFrame.GRAY);
+		recordings_scroll_pane.getViewport().setBackground(OuterFrame.GRAY_PANELS);
 
 		addTableMouseListener();
 		/*

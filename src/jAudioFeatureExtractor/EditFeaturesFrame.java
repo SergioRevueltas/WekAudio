@@ -77,7 +77,7 @@ public class EditFeaturesFrame extends JFrame implements ActionListener {
 			this.setTitle("Feature info");
 		}
 		this.setBounds(new Rectangle(400, 30, 500, 400));
-		this.getContentPane().setBackground(OuterFrame.GRAY);
+		this.getContentPane().setBackground(OuterFrame.GRAY_PANELS);
 		this.getContentPane().setLayout(new MigLayout("", "[67.00][]", "[93.00px:80.00px][60.00px:23px][]"));
 		this.setAlwaysOnTop(true);
 
@@ -88,7 +88,7 @@ public class EditFeaturesFrame extends JFrame implements ActionListener {
 			}
 		});
 		descriptionPanel = new JPanel();
-		descriptionPanel.setBackground(OuterFrame.GRAY);
+		descriptionPanel.setBackground(OuterFrame.GRAY_PANELS);
 		descriptionPanel.setLayout(new MigLayout("", "[550.00px:151px]", "[15px][58.00px:22px]"));
 		descriptionTitle = new CustomJLabel(fe.getFeatureDefinition().name + ":");
 		descriptionTitle.setFont(OuterFrame.H1_FONT);
@@ -119,7 +119,7 @@ public class EditFeaturesFrame extends JFrame implements ActionListener {
 		}
 
 		editingPanel = new JPanel();
-		editingPanel.setBackground(OuterFrame.GRAY);
+		editingPanel.setBackground(OuterFrame.GRAY_PANELS);
 		editingPanel.setLayout(new MigLayout("", "[][]", "[][]"));
 		for (int i = 0; i < inputBoxLabels.length; ++i) {
 			editingPanel.add(inputBoxLabels[i], "cell " + 0 + " " + i + ",grow");

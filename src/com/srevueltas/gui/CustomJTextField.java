@@ -22,7 +22,7 @@ public class CustomJTextField extends JTextField{
 	
 	
 	private void loadSettings() {
-		setBackground(OuterFrame.GRAY.brighter());
+		setBackground(OuterFrame.GRAY_PANELS.brighter());
 		setForeground(Color.WHITE);
 		setFont(new Font("Arial", Font.PLAIN, 12));
 	}

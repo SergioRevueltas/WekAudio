@@ -105,8 +105,8 @@ public class AggregatorFrame extends JFrame implements ActionListener {
 		if (activeAggList == null) {
 			activeAggList = new JScrollPane();
 			activeAggList.setViewportView(getActiveAggTable());
-			activeAggList.setBackground(OuterFrame.GRAY);
-			activeAggList.getViewport().setBackground(OuterFrame.GRAY);
+			activeAggList.setBackground(OuterFrame.GRAY_PANELS);
+			activeAggList.getViewport().setBackground(OuterFrame.GRAY_PANELS);
 		}
 		return activeAggList;
 	}
@@ -151,8 +151,8 @@ public class AggregatorFrame extends JFrame implements ActionListener {
 		if (aggList == null) {
 			aggList = new JScrollPane();
 			aggList.setViewportView(getAggListTable());
-			aggList.setBackground(OuterFrame.GRAY);
-			aggList.getViewport().setBackground(OuterFrame.GRAY);
+			aggList.setBackground(OuterFrame.GRAY_PANELS);
+			aggList.getViewport().setBackground(OuterFrame.GRAY_PANELS);
 		}
 		return aggList;
 	}

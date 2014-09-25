@@ -13,7 +13,7 @@ public class CustomJMenuBar extends JMenuBar {
 
 	static final long serialVersionUID = 1;
 	
-	private Color bgColor = OuterFrame.GRAY;
+	private Color bgColor = OuterFrame.GRAY_PANELS;
 	private Color fgColor = Color.WHITE;
 
 	public CustomJMenuBar() {

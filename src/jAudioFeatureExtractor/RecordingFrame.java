@@ -189,7 +189,7 @@ public class RecordingFrame extends JFrame implements ActionListener, ThreadComp
 
 		formatPanel.add(txtpnCurrentFormatTextPane, "cell 0 1");
 		txtpnCurrentFormatTextPane.setEditable(false);
-		txtpnCurrentFormatTextPane.setBackground(OuterFrame.GRAY);
+		txtpnCurrentFormatTextPane.setBackground(OuterFrame.GRAY_PANELS);
 		txtpnCurrentFormatTextPane.setFont(new Font("Arial", Font.PLAIN, 12));
 		txtpnCurrentFormatTextPane.setForeground(Color.WHITE);
 		// lblCurrentformat.setText(AudioMethods.getAudioFormatData(audio_format_selector.getAudioFormat(false)));

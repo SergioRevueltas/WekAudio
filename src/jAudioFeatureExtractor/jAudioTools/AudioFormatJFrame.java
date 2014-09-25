@@ -98,12 +98,12 @@ public class AudioFormatJFrame extends JFrame implements ActionListener {
 		// Configure overall window settings
 		setTitle("PCM Audio Format Selector");
 		content_pane = getContentPane();
-		content_pane.setBackground(OuterFrame.GRAY);
+		content_pane.setBackground(OuterFrame.GRAY_PANELS);
 
 		settings_panel = new JPanel();
-		settings_panel.setBackground(OuterFrame.GRAY);
+		settings_panel.setBackground(OuterFrame.GRAY_PANELS);
 		button_panel = new JPanel();
-		button_panel.setBackground(OuterFrame.GRAY);
+		button_panel.setBackground(OuterFrame.GRAY_PANELS);
 		settings_panel.setLayout(new MigLayout("", "[133px][133px]",
 				"[23px][23px][23px][23px][23px][23px][23px][23px][23px][]"));
 		settings_panel.add(new CustomJLabel("Sampling Rate (Hz):"), "cell 0 0,grow");
@@ -181,7 +181,7 @@ public class AudioFormatJFrame extends JFrame implements ActionListener {
 		getContentPane().setLayout(new MigLayout("", "[538px,grow]", "[grow][253px][33px]"));
 
 		quality_panel = new JPanel();
-		quality_panel.setBackground(OuterFrame.GRAY);
+		quality_panel.setBackground(OuterFrame.GRAY_PANELS);
 		getContentPane().add(quality_panel, "cell 0 0,grow");
 
 		// Instantiate buttons

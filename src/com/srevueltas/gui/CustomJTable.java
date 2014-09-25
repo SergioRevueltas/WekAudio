@@ -34,7 +34,7 @@ public class CustomJTable extends JTable{
 		getTableHeader().setBackground(OuterFrame.GRAY_BOXES_LINE);
 		getTableHeader().setForeground(Color.WHITE);
 		setFont(new Font("Arial", Font.PLAIN, 12));
-		setBackground(OuterFrame.GRAY);
+		setBackground(OuterFrame.GRAY_PANELS);
 		setForeground(Color.WHITE);
 	}
 }

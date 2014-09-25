@@ -48,13 +48,12 @@ public class OuterFrame extends JFrame {
 	/* FIELDS ***************************************************************** */
 
 	static final long serialVersionUID = 1;
-	public static final Color BLUE = UIManager.getColor("MenuItem.selectionBackground");
+	//public static final Color BLUE = UIManager.getColor("MenuItem.selectionBackground");
 	public static final Color GRAY_BOXES_LINE = Color.LIGHT_GRAY;
-	public static final Color GRAY = Color.GRAY;
-	public static final Color GRAY2 = GRAY.brighter();
-	public static final Color GRAY_BACKGROUND = GRAY.darker();
+	public static final Color GRAY_PANELS = Color.GRAY;
+	public static final Color GRAY_BACKGROUND = new Color(105, 105, 105);
 	//public static final Color BLACK_BACKGROUND = UIManager.getColor("inactiveCaptionText");
-	public static final Color DARK_GRAY = Color.DARK_GRAY;
+	//public static final Color DARK_GRAY = Color.DARK_GRAY;
 	public static final Font NORMAL_FONT = new Font("Arial", Font.PLAIN, 12);
 	public static final Font H1_FONT = new Font("Arial", Font.BOLD, 14);
 
@@ -154,11 +153,11 @@ public class OuterFrame extends JFrame {
 		recording_selector_panel = new RecordingSelectorPanel(this, c);
 		feature_selector_panel = new FeatureSelectorPanel(this, c);
 		dataMiningPanel = new DataMiningPanel(this, c);
-		feature_selector_panel.setBackground(GRAY);
+		feature_selector_panel.setBackground(GRAY_PANELS);
 		feature_selector_panel.setBorder(border);
-		recording_selector_panel.setBackground(GRAY);
+		recording_selector_panel.setBackground(GRAY_PANELS);
 		recording_selector_panel.setBorder(border);
-		dataMiningPanel.setBackground(GRAY);
+		dataMiningPanel.setBackground(GRAY_PANELS);
 		dataMiningPanel.setBorder(border);
 
 		controller.normalise = new JCheckBoxMenuItem("Normalise Recordings", true);

@@ -47,7 +47,7 @@ public class AnalysisOptionsFrame extends JFrame implements ActionListener{
 		this.controller = controller;
 		setBounds(new Rectangle(400, 30, 400, 300));
 		setResizable(false);
-		getContentPane().setBackground(OuterFrame.GRAY);
+		getContentPane().setBackground(OuterFrame.GRAY_PANELS);
 		getContentPane().setLayout(
 				new MigLayout("", "[150.00:n:355.00][100.00:n][44.00][]", "[50.00:50.00][50.00:n][50.00:n][:462px:50.00px][][]"));
 

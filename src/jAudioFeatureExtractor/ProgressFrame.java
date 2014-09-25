@@ -34,7 +34,7 @@ public class ProgressFrame extends JFrame {
 	 */
 	public ProgressFrame() {
 		setLocation(15, 15);
-		getContentPane().setBackground(OuterFrame.GRAY);
+		getContentPane().setBackground(OuterFrame.GRAY_PANELS);
 		fileProgressBar = new JProgressBar();
 		fileProgressBar.setStringPainted(true);
 		overallProgressBar = new JProgressBar();

@@ -21,7 +21,7 @@ public class FeatureDisplay extends DefaultTableCellRenderer {
 		if (((Boolean)table.getModel().getValueAt(row, 0)).booleanValue()) {
 			setBackground(OuterFrame.GRAY_BACKGROUND);
 		} else {
-			setBackground(OuterFrame.GRAY);
+			setBackground(OuterFrame.GRAY_PANELS);
 		}
 		// if selected
 		if (isSelected){

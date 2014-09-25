@@ -75,7 +75,7 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 
 	static final long serialVersionUID = 1;
 
-	public static final Color GRAY = OuterFrame.GRAY;
+	public static final Color GRAY = OuterFrame.GRAY_PANELS;
 	/**
 	 * Holds a reference to the JPanel that holds objects of this class.
 	 */
@@ -311,7 +311,7 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 		features_panel = new JPanel(new GridLayout(1, 1));
 		features_panel.add(features_scroll_pane);
 		features_scroll_pane.setBackground(OuterFrame.GRAY_BOXES_LINE);
-		features_scroll_pane.getViewport().setBackground(OuterFrame.GRAY);
+		features_scroll_pane.getViewport().setBackground(OuterFrame.GRAY_PANELS);
 		add(features_panel, "cell 0 2,grow");
 		controller.fstm_.fireTableDataChanged();
 		TableColumn tableColumn = features_table.getColumn(features_table.getColumnName(0));
