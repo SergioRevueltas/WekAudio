@@ -219,7 +219,6 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 		controller.removeRecordingsAction.setModel(controller, recordings_table);
 		controller.playSamplesAction.setTable(recordings_table);
 		controller.playNowAction.setTable(recordings_table);
-		controller.editRecordingsAction.setTable(recordings_table, outer_frame);
 		controller.viewFileInfoAction.setTable(recordings_table);
 
 		// Set up and display the table

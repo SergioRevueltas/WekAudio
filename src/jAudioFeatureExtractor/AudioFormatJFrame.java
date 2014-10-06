@@ -1,6 +1,4 @@
-package jAudioFeatureExtractor.jAudioTools;
-
-import jAudioFeatureExtractor.OuterFrame;
+package jAudioFeatureExtractor;
 
 import java.awt.Container;
 import java.awt.event.ActionEvent;

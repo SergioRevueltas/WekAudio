@@ -3,8 +3,9 @@
  */
 package jAudioFeatureExtractor;
 
-import java.util.Vector;
 import jAudioFeatureExtractor.Aggregators.Aggregator;
+
+import java.util.Vector;
 
 /**
  * AggListTableModel
@@ -22,7 +23,7 @@ public class AggListTableModel extends javax.swing.table.DefaultTableModel{
 	 * Construct an empty list of aggregators
 	 */
 	public AggListTableModel(){
-		super(new Object[]{"Global","Name"},2);
+		super(new Object[]{"Name"},1);
 		agg = new Vector<Aggregator>();
 		
 	}
@@ -38,7 +39,7 @@ public class AggListTableModel extends javax.swing.table.DefaultTableModel{
 		agg.addAll(data.values());
 		for(int i=0;i<agg.size();++i){
 			Vector row = new Vector();
-			row.add(new Boolean(agg.get(i).getAggregatorDefinition().generic));
+			//row.add(new Boolean(agg.get(i).getAggregatorDefinition().generic));
 			row.add(agg.get(i).getAggregatorDefinition().name);
 			dataVector.add(row);
 		}

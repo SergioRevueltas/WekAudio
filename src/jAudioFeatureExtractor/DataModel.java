@@ -237,6 +237,7 @@ public class DataModel {
 			}
 			listFileNames = new ArrayList<String>(setFileNames);
 			Collections.sort(listFileNames);
+			System.out.println("SetFileNames: "+ listFileNames.toString());
 		}
 		if (updater != null) {
 			updater.setNumberOfFiles(recordings.length);

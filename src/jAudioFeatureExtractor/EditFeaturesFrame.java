@@ -2,7 +2,6 @@ package jAudioFeatureExtractor;
 
 import jAudioFeatureExtractor.AudioFeatures.FeatureExtractor;
 
-import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,12 +11,12 @@ import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 
 import net.miginfocom.swing.MigLayout;
 
 import com.srevueltas.gui.CustomJButton;
 import com.srevueltas.gui.CustomJLabel;
+import com.srevueltas.gui.CustomJTextArea;
 import com.srevueltas.gui.CustomJTextField;
 
 /**
@@ -52,7 +51,7 @@ public class EditFeaturesFrame extends JFrame implements ActionListener {
 
 	private CustomJLabel descriptionTitle;
 
-	private JTextArea infoTextArea;
+	private CustomJTextArea infoTextArea;
 
 	private CustomJButton save;
 
@@ -92,13 +91,8 @@ public class EditFeaturesFrame extends JFrame implements ActionListener {
 		descriptionPanel.setLayout(new MigLayout("", "[550.00px:151px]", "[15px][58.00px:22px]"));
 		descriptionTitle = new CustomJLabel(fe.getFeatureDefinition().name + ":");
 		descriptionTitle.setFont(OuterFrame.H1_FONT);
-		infoTextArea = new JTextArea(fe.getFeatureDefinition().description);
-		infoTextArea.setFont(OuterFrame.NORMAL_FONT);
-		infoTextArea.setForeground(Color.WHITE);
-		infoTextArea.setWrapStyleWord(true);
-		infoTextArea.setLineWrap(true);
-		infoTextArea.setEditable(false);
-		infoTextArea.setBackground(this.getContentPane().getBackground());
+		infoTextArea = new CustomJTextArea(fe.getFeatureDefinition().description);
+
 		descriptionPanel.add(descriptionTitle, "cell 0 0,growx,aligny top");
 		descriptionPanel.add(infoTextArea, "cell 0 1,grow");
 		getContentPane().add(descriptionPanel, "cell 0 0,grow");

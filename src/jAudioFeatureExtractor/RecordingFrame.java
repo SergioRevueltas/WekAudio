@@ -10,7 +10,6 @@
 package jAudioFeatureExtractor;
 
 import jAudioFeatureExtractor.GeneralTools.StringMethods;
-import jAudioFeatureExtractor.jAudioTools.AudioFormatJFrame;
 import jAudioFeatureExtractor.jAudioTools.AudioMethods;
 import jAudioFeatureExtractor.jAudioTools.AudioMethodsPlayback;
 import jAudioFeatureExtractor.jAudioTools.AudioMethodsRecording;

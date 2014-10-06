@@ -8,7 +8,6 @@ import jAudioFeatureExtractor.actions.AddRecordingAction;
 import jAudioFeatureExtractor.actions.AnalysisOptionsAction;
 import jAudioFeatureExtractor.actions.CopyAction;
 import jAudioFeatureExtractor.actions.CutAction;
-import jAudioFeatureExtractor.actions.EditRecordingsAction;
 import jAudioFeatureExtractor.actions.ExecuteBatchAction;
 import jAudioFeatureExtractor.actions.ExitAction;
 import jAudioFeatureExtractor.actions.GlobalWindowChangeAction;
@@ -160,11 +159,6 @@ public class Controller implements ModelListener {
 	public SamplingRateAction samplingRateAction = new SamplingRateAction();
 
 	/**
-	 * @see jAudioFeatureExtractor.actions.EditRecordingsAction
-	 */
-	public EditRecordingsAction editRecordingsAction;
-
-	/**
 	 * @see jAudioFeatureExtractor.actions.AboutAction
 	 */
 	public AboutAction aboutAction = new AboutAction();
@@ -304,7 +298,6 @@ public class Controller implements ModelListener {
 		playSamplesAction = new PlaySamplesAction(this);
 		stopPlayBackAction = new StopPlayBackAction(this);
 		playNowAction = new PlayNowAction(this);
-		editRecordingsAction = new EditRecordingsAction(this);
 		viewFileInfoAction = new ViewFileInfoAction(this);
 		batches = new Vector<Batch>();
 		addBatchAction = new AddBatchAction(this);

@@ -120,7 +120,7 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 	 */
 	private JFileChooser save_file_chooser;
 
-	private AggregatorFrame aggregator_editor = null;
+	private AggregatorsFrame aggregator_editor = null;
 
 	/**
 	 * Children Windows
@@ -366,7 +366,10 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 	}
 
 	private void launchAggEditTable() {
-		aggregator_editor = new AggregatorFrame(controller);
+		if (aggregator_editor == null){
+			aggregator_editor = new AggregatorsFrame(controller);
+		}
+		this.controller.getFrame().setEnabled(false);
 		aggregator_editor.setVisible(true);
 	}
 

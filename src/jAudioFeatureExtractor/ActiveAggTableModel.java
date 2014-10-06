@@ -3,9 +3,11 @@
  */
 package jAudioFeatureExtractor;
 
-import javax.swing.table.DefaultTableModel;
-import java.util.Vector;
 import jAudioFeatureExtractor.Aggregators.Aggregator;
+
+import java.util.Vector;
+
+import javax.swing.table.DefaultTableModel;
 
 /**
  * ActiveAggTableModel
@@ -92,8 +94,7 @@ public class ActiveAggTableModel extends DefaultTableModel {
 		if (c.dm_.aggregators != null) {
 			for (int i = 0; i < c.dm_.aggregators.length; ++i) {
 				agg.add(c.dm_.aggregators[i]);
-				this.addRow(new Object[] {
-						c.dm_.aggregators[i].getAggregatorDefinition().name });
+				this.addRow(new Object[] {c.dm_.aggregators[i].getAggregatorDefinition().name });
 			}
 		}
 	}
