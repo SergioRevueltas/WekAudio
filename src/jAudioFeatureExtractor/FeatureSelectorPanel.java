@@ -201,6 +201,16 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 		controller.dm_.aggregators = new Aggregator[] {
 				// (Aggregator) (controller.dm_.aggregatorMap.get("Mean").clone()),
 				(Aggregator) (controller.dm_.aggregatorMap.get("Density Based Average").clone()) };
+		
+		
+		AnalysisOptionsFrame opFrame = controller.analisysOptionsAction.analysis_options;
+		if (opFrame == null) {
+			opFrame = new AnalysisOptionsFrame(controller);
+			controller.setObjectReferences(opFrame,
+					opFrame.getWindow_size_combo(),
+					opFrame.getSlider_TextField());
+		}
+		opFrame.loadDataFromController();
 	}
 
 	/* PUBLIC METHODS ********************************************************* */
@@ -221,7 +231,6 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 	private void launchOptionsFrame() {
 		AnalysisOptionsFrame opFrame = controller.analisysOptionsAction.analysis_options;
 		if (opFrame == null) {
-			System.out.println("New frame FSP");
 			opFrame = new AnalysisOptionsFrame(controller);
 			controller.setObjectReferences(opFrame,
 					opFrame.getWindow_size_combo(),
