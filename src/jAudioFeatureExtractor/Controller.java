@@ -329,11 +329,12 @@ public class Controller implements ModelListener {
 		fstm_.fireTableDataChanged();
 	}
 	
-	public void setObjectReferences(JComboBox<Integer> windowSizeCombo,
+	public void setObjectReferences(AnalysisOptionsFrame opFrame, JComboBox<Integer> windowSizeCombo,
 			JTextField overlapSliderTextField) {
 		this.window_size_index = windowSizeCombo.getSelectedIndex();
 		this.windowSizeCombo = windowSizeCombo;
 		this.window_overlap_value = Integer.parseInt(overlapSliderTextField.getText());		
+		this.analisysOptionsAction.analysis_options = opFrame;
 	}
 
 	

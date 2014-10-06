@@ -221,13 +221,15 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 	private void launchOptionsFrame() {
 		AnalysisOptionsFrame opFrame = controller.analisysOptionsAction.analysis_options;
 		if (opFrame == null) {
+			System.out.println("New frame FSP");
 			opFrame = new AnalysisOptionsFrame(controller);
-			controller.setObjectReferences(
+			controller.setObjectReferences(opFrame,
 					opFrame.getWindow_size_combo(),
 					opFrame.getSlider_TextField());
 		}
 		opFrame.loadDataFromController();
 		opFrame.setVisible(true);
+		controller.getFrame().setEnabled(false);
 	}
 
 	/* PRIVATE METHODS ******************************************************** */
