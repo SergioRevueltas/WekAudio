@@ -72,11 +72,11 @@ public class ExtractionThread extends Thread implements Updater {
 				outerFrame.setEnabled(true);
 				progressFrame.setVisible(false);
 				if (!toClassify) {
-					JOptionPane.showMessageDialog(null,
+					JOptionPane.showMessageDialog(controller.getFrame(),
 							"Features successfully extracted and saved.", "DONE",
 							JOptionPane.INFORMATION_MESSAGE);
 				} else if (classificationResults != null){
-					JOptionPane.showMessageDialog(null,
+					JOptionPane.showMessageDialog(controller.getFrame(),
 							classificationResults.toString(), "Classification done",
 							JOptionPane.INFORMATION_MESSAGE);
 				}

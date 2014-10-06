@@ -207,13 +207,13 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 			// React to the Java Runtime running out of memory
 			if (t.toString().equals("java.lang.OutOfMemoryError"))
 				JOptionPane.showMessageDialog(
-						null,
+						controller.getFrame(),
 						"The Java Runtime ran out of memory. Please rerun this program\n"
 								+ "with a higher amount of memory assigned to the Java Runtime heap.",
 						"ERROR", JOptionPane.ERROR_MESSAGE);
 			else if (t instanceof Exception) {
 				Exception e = (Exception) t;
-				JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR",
+				JOptionPane.showMessageDialog(controller.getFrame(), e.getMessage(), "ERROR",
 						JOptionPane.ERROR_MESSAGE);
 			}
 		}
@@ -272,13 +272,13 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 			if (t.toString().equals("java.lang.OutOfMemoryError"))
 				JOptionPane
 						.showMessageDialog(
-								null,
+								controller.getFrame(),
 								"The Java Runtime ran out of memory. Please rerun this program\n"
 										+ "with a higher amount of memory assigned to the Java Runtime heap.",
 								"ERROR", JOptionPane.ERROR_MESSAGE);
 			else if (t instanceof Exception) {
 				Exception e = (Exception) t;
-				JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR",
+				JOptionPane.showMessageDialog(controller.getFrame(), e.getMessage(), "ERROR",
 						JOptionPane.ERROR_MESSAGE);
 			}
 		}
@@ -326,7 +326,7 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 
 		// Process the user's entry
 		String path = null;
-		int dialog_result = load_file_chooser.showOpenDialog(this);
+		int dialog_result = load_file_chooser.showOpenDialog(this.controller.getFrame());
 		// only do if OK chosen
 		if (dialog_result == JFileChooser.APPROVE_OPTION) {
 			// Get the file the user chose
@@ -371,7 +371,7 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 
 		// Process the user's entry
 		String path = null;
-		int dialog_result = save_file_chooser.showSaveDialog(this);
+		int dialog_result = save_file_chooser.showSaveDialog(this.controller.getFrame());
 		if (dialog_result == JFileChooser.APPROVE_OPTION) // only do if OK
 		// chosen
 		{
@@ -397,7 +397,7 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 			if (to_save_to.exists()) {
 				int overwrite = JOptionPane
 						.showConfirmDialog(
-								null,
+								controller.getFrame(),
 								"This file already exists.\nDo you wish to overwrite it?",
 								"WARNING", JOptionPane.YES_NO_OPTION);
 				if (overwrite != JOptionPane.YES_OPTION)

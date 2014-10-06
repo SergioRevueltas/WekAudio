@@ -60,15 +60,19 @@ public class EditFeaturesFrame extends JFrame implements ActionListener {
 	private int row;
 
 	private FeatureExtractor fe_;
+	
+	private Controller controller;
 
 	/**
 	 * Create a new instance of this panel for editing a variable.
 	 * 
 	 * @param parent parent window which created this window
 	 * @param fe The feature which is being edited by this window
+	 * @param controller 
 	 */
-	public EditFeaturesFrame(FeatureExtractor fe) {
+	public EditFeaturesFrame(FeatureExtractor fe, Controller controller) {
 		this.fe_ = fe;
+		this.controller = controller;
 		String[] attributes = fe.getFeatureDefinition().attributes;
 		if (attributes.length != 0) {
 			this.setTitle("Edit Feature");
@@ -107,7 +111,7 @@ public class EditFeaturesFrame extends JFrame implements ActionListener {
 				inputBoxes[i].setText(fe_.getElement(i));
 				inputBoxLabels[i] = new CustomJLabel(attributes[i]);
 			} catch (Exception e1) {
-				JOptionPane.showMessageDialog(null, e1.getMessage(), "ERROR",
+				JOptionPane.showMessageDialog(controller.getFrame(), e1.getMessage(), "ERROR",
 						JOptionPane.ERROR_MESSAGE);
 			}
 		}
@@ -169,7 +173,7 @@ public class EditFeaturesFrame extends JFrame implements ActionListener {
 			} catch (Exception e) {
 				good = false;
 				e.printStackTrace();
-				JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR",
+				JOptionPane.showMessageDialog(controller.getFrame(), e.getMessage(), "ERROR",
 						JOptionPane.ERROR_MESSAGE);
 			}
 		}

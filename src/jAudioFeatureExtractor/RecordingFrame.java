@@ -315,7 +315,7 @@ public class RecordingFrame extends JFrame implements ActionListener, ThreadComp
 			lblCurrentstatus.setText("Recording...");
 		} catch (Exception e)
 		{
-			JOptionPane.showMessageDialog(null, "Could not record because:\n" + e.getMessage(), "ERROR",
+			JOptionPane.showMessageDialog(controller.getFrame(), "Could not record because:\n" + e.getMessage(), "ERROR",
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
@@ -347,7 +347,7 @@ public class RecordingFrame extends JFrame implements ActionListener, ThreadComp
 				last_recorded_audio.reset();
 			} catch (Exception e)
 			{
-				JOptionPane.showMessageDialog(null, "Could not reset playback position:\n" + e.getMessage(), "ERROR",
+				JOptionPane.showMessageDialog(controller.getFrame(), "Could not reset playback position:\n" + e.getMessage(), "ERROR",
 						JOptionPane.ERROR_MESSAGE);
 			}
 		}
@@ -369,7 +369,7 @@ public class RecordingFrame extends JFrame implements ActionListener, ThreadComp
 				//playback_thread.join();
 				//lblCurrentstatus.setText("Stop.");
 			} catch (Exception e) {
-				JOptionPane.showMessageDialog(null, "Could not play because:\n" + e.getMessage(), "ERROR",
+				JOptionPane.showMessageDialog(controller.getFrame(), "Could not play because:\n" + e.getMessage(), "ERROR",
 						JOptionPane.ERROR_MESSAGE);
 			}
 		} else {
@@ -402,7 +402,7 @@ public class RecordingFrame extends JFrame implements ActionListener, ThreadComp
 		// or of going back to make a recording.
 		if (last_recorded_audio == null)
 		{
-			int end = JOptionPane.showConfirmDialog(null,
+			int end = JOptionPane.showConfirmDialog(controller.getFrame(),
 					"No recording has been made.\nDo you wish to make a recording?",
 					"WARNING",
 					JOptionPane.YES_NO_OPTION);
@@ -446,7 +446,7 @@ public class RecordingFrame extends JFrame implements ActionListener, ThreadComp
 				// See if user wishes to overwrite if a file with the same name exists
 				if (save_file.exists())
 				{
-					int overwrite = JOptionPane.showConfirmDialog(null,
+					int overwrite = JOptionPane.showConfirmDialog(controller.getFrame(),
 							"This file already exists.\nDo you wish to overwrite it?",
 							"WARNING",
 							JOptionPane.YES_NO_OPTION);
@@ -468,7 +468,7 @@ public class RecordingFrame extends JFrame implements ActionListener, ThreadComp
 						cancel();
 					} catch (Exception e)
 					{
-						JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(controller.getFrame(), e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			}
@@ -499,7 +499,7 @@ public class RecordingFrame extends JFrame implements ActionListener, ThreadComp
 			path = StringMethods.removeExtension(path) + correct_extension;
 		else
 			return file_to_verify;
-		JOptionPane.showMessageDialog(null, "Incorrect file extension specified.\nChanged from " + ext + " to "
+		JOptionPane.showMessageDialog(controller.getFrame(), "Incorrect file extension specified.\nChanged from " + ext + " to "
 				+ correct_extension + ".", "WARNING", JOptionPane.INFORMATION_MESSAGE);
 		return new File(path);
 	}

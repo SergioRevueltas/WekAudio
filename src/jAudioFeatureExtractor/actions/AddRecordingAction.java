@@ -24,11 +24,9 @@ public class AddRecordingAction extends AbstractAction {
 
 	private Controller controller;
 
-	/**
-	 * Generic constructor that provides menu item text.
-	 */
-	public AddRecordingAction() {
+	public AddRecordingAction(Controller controller) {
 		super("Add Recording...");
+		this.controller = controller;
 	}
 
 	/**
@@ -73,7 +71,7 @@ public class AddRecordingAction extends AbstractAction {
 		}
 
 		// Read the user's choice of load or cancel
-		int dialog_result = load_recording_chooser.showOpenDialog(null);
+		int dialog_result = load_recording_chooser.showOpenDialog(controller.getFrame());
 		load_recording_chooser.setLocation(30,30);
 
 		// Add the files to the table and to recording_list
@@ -148,11 +146,11 @@ public class AddRecordingAction extends AbstractAction {
 							.getName(), toBeAdded[i].getPath(), audio_samples,
 							false);
 				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null, e.getMessage(),
-							"ERROR", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(controller.getFrame(), e.getMessage(),
+							"Unsuported file.", JOptionPane.ERROR_MESSAGE);
 				}
 			} else {
-				JOptionPane.showMessageDialog(null, "The selected file "
+				JOptionPane.showMessageDialog(controller.getFrame(), "The selected file "
 						+ toBeAdded[i].getName() + " does not exist.", "ERROR",
 						JOptionPane.ERROR_MESSAGE);
 			}

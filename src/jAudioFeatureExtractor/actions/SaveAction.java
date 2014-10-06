@@ -99,7 +99,7 @@ public class SaveAction extends AbstractAction {
 			if (to_save_to.exists()) {
 				int overwrite = JOptionPane
 						.showConfirmDialog(
-								null,
+								controller.getFrame(),
 								"This file already exists.\nDo you wish to overwrite it?",
 								"WARNING", JOptionPane.YES_NO_OPTION);
 				if (overwrite != JOptionPane.YES_OPTION)
@@ -203,7 +203,7 @@ public class SaveAction extends AbstractAction {
 				fw.write("</save_settings>" + sep);
 				fw.close();
 			} catch (IOException e1) {
-				JOptionPane.showMessageDialog(null, e1.getMessage(), "ERROR",
+				JOptionPane.showMessageDialog(controller.getFrame(), e1.getMessage(), "ERROR",
 						JOptionPane.ERROR_MESSAGE);
 				e1.printStackTrace();
 			}

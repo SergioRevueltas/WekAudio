@@ -116,7 +116,7 @@ public class Controller implements ModelListener {
 	/**
 	 * @see jAudioFeatureExtractor.actions.AddRecordingAction
 	 */
-	public AddRecordingAction addRecordingsAction = new AddRecordingAction();
+	public AddRecordingAction addRecordingsAction = new AddRecordingAction(this);
 
 	/**
 	 * @see jAudioFeatureExtractor.actions.RemoveRecordingAction
@@ -161,7 +161,7 @@ public class Controller implements ModelListener {
 	/**
 	 * @see jAudioFeatureExtractor.actions.AboutAction
 	 */
-	public AboutAction aboutAction = new AboutAction();
+	public AboutAction aboutAction = new AboutAction(this);
 
 	/**
 	 * @see jAudioFeatureExtractor.actions.SaveBatchAction
@@ -293,7 +293,7 @@ public class Controller implements ModelListener {
 		activeAgg_ = new ActiveAggTableModel();
 		saveAction = new SaveAction(this, fstm_);
 		loadAction = new LoadAction(this, fstm_);
-		globalWindowChangeAction = new GlobalWindowChangeAction(dm_);
+		globalWindowChangeAction = new GlobalWindowChangeAction(this, dm_);
 		addRecordingsAction.setModel(this);
 		playSamplesAction = new PlaySamplesAction(this);
 		stopPlayBackAction = new StopPlayBackAction(this);

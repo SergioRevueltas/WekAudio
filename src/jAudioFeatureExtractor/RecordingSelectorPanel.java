@@ -295,11 +295,11 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 							.getName(), files_to_add[i].getPath(),
 							audio_samples, false);
 				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null, e.getMessage(),
+					JOptionPane.showMessageDialog(controller.getFrame(), e.getMessage(),
 							"ERROR", JOptionPane.ERROR_MESSAGE);
 				}
 			} else {
-				JOptionPane.showMessageDialog(null, "The selected file "
+				JOptionPane.showMessageDialog(controller.getFrame(), "The selected file "
 						+ files_to_add[i].getName() + " does not exist.",
 						"ERROR", JOptionPane.ERROR_MESSAGE);
 			}
@@ -440,13 +440,13 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 						controller.dm_.recordingInfo[selected_rows[i]].file_path);
 				String data = jAudioFeatureExtractor.jAudioTools.AudioMethods
 						.getAudioFileFormatData(file);
-				JOptionPane.showMessageDialog(null, data, "FILE INFORMATION",
+				JOptionPane.showMessageDialog(controller.getFrame(), data, "FILE INFORMATION",
 						JOptionPane.INFORMATION_MESSAGE);
 			} catch (Exception e) {
 				String message = "Could not display file information for file "
 						+ controller.dm_.recordingInfo[selected_rows[i]].file_path
 						+ "\n" + e.getMessage();
-				JOptionPane.showMessageDialog(null, message, "ERROR",
+				JOptionPane.showMessageDialog(controller.getFrame(), message, "ERROR",
 						JOptionPane.ERROR_MESSAGE);
 			}
 		}
@@ -492,7 +492,7 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 						+ " is not playable.\n" + ex.getMessage());
 			}
 		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR",
+			JOptionPane.showMessageDialog(controller.getFrame(), ex.getMessage(), "ERROR",
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
@@ -549,7 +549,7 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 						+ " is not playable.\n" + ex.getMessage());
 			}
 		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR",
+			JOptionPane.showMessageDialog(controller.getFrame(), ex.getMessage(), "ERROR",
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}

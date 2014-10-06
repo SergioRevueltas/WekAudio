@@ -361,7 +361,7 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 	 * Creates and displays the Dialog for editing feature attributes.
 	 */
 	private void editDialog(FeatureExtractor fe) {
-		ef_ = new EditFeaturesFrame(fe);
+		ef_ = new EditFeaturesFrame(fe,controller);
 		ef_.setVisible(true);
 	}
 

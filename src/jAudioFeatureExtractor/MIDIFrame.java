@@ -7,12 +7,26 @@
 
 package jAudioFeatureExtractor;
 
-import javax.sound.midi.*;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import jAudioFeatureExtractor.jMIDITools.*;
+import jAudioFeatureExtractor.jMIDITools.FileFilterMIDI;
+import jAudioFeatureExtractor.jMIDITools.MIDIMethodsPlayback;
+
+import java.awt.Color;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.File;
+
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.Sequence;
+import javax.sound.midi.Sequencer;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 
 
 /**
@@ -205,11 +219,11 @@ public class MIDIFrame
 				}
 				catch (Exception e)
 				{
-					JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);							
+					JOptionPane.showMessageDialog(controller.getFrame(), e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);							
 				}
 			}
 			else
-				JOptionPane.showMessageDialog(null, "The selected file does not exist.", "ERROR", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(controller.getFrame(), "The selected file does not exist.", "ERROR", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -231,7 +245,7 @@ public class MIDIFrame
 		}
 		catch (Exception e)
 		{
-			JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);							
+			JOptionPane.showMessageDialog(controller.getFrame(), e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);							
 		}
 	}
 
