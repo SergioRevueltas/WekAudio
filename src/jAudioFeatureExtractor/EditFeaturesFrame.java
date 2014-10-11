@@ -159,6 +159,8 @@ public class EditFeaturesFrame extends JFrame implements ActionListener {
 	 */
 	private void cancel() {
 		setVisible(false);
+		this.controller.getFrame().setEnabled(true);
+		this.controller.getFrame().toFront();
 	}
 
 	/**
@@ -178,7 +180,7 @@ public class EditFeaturesFrame extends JFrame implements ActionListener {
 			}
 		}
 		if (good) {
-			setVisible(false);
+			cancel();
 		}
 	}
 

@@ -349,6 +349,7 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 					row_clicked[0] = features_table
 							.rowAtPoint(event.getPoint());
 					editDialog(controller.dm_.features[row_clicked[0]]);
+					controller.getFrame().setEnabled(false);
 
 				} else {
 					features_table.repaint();
