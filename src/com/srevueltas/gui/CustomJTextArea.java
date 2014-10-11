@@ -12,6 +12,16 @@ public class CustomJTextArea extends JTextArea{
 	
 	public CustomJTextArea(String text) {
 		super(text);
+		load();
+	}
+
+	public CustomJTextArea() {
+		super();
+		load();
+	}
+	
+	
+	private void load() {
 		this.setFont(OuterFrame.NORMAL_FONT);
 		this.setBackground(OuterFrame.GRAY_PANELS);
 		this.setForeground(Color.WHITE);
