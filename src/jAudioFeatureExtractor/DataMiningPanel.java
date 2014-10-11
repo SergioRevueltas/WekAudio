@@ -96,7 +96,7 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 		this.controller = c;
 		// Set the file chooser to null initially
 		save_file_chooser = null;
-		setLayout(new MigLayout("", "[340.00px]", "[23px][240.00px:240.00px:240.00px][240.00px:240.00px:240.00px]"));
+		setLayout(new MigLayout("", "[::340.00px]", "[23px][240.00px:240.00px:240.00px][240.00px:240.00px:240.00px]"));
 
 		// Add an overall title for this panel
 		JLabel label = new CustomJLabel("DATA MINING:");
@@ -220,10 +220,12 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 						"ParallelIteratedSingleClassifierEnhancer", "ParallelMultipleClassifiersCombiner",
 						"PART", "PMMLClassifier", "PreConstructedLinearModel", "RandomCommittee",
 						"RandomForest", "RandomizableClassifier", "RandomizableFilteredClassifier",
-						"RandomizableIteratedSingleClassifierEnhancer", "RandomizableMultipleClassifiersCombiner",
-						"RandomizableParallelIteratedSingleClassifierEnhancer",
-						"RandomizableParallelMultipleClassifiersCombiner",
-						"RandomizableSingleClassifierEnhancer", "RandomSubSpace", "RandomTree",
+						//"RandomizableIteratedSingleClassifierEnhancer", 
+						//"RandomizableMultipleClassifiersCombiner", 
+						//"RandomizableParallelIteratedSingleClassifierEnhancer", 
+						//"RandomizableParallelMultipleClassifiersCombiner", 
+						//"RandomizableSingleClassifierEnhancer", 
+						"RandomSubSpace", "RandomTree",
 						"Regression", "RegressionByDiscretization", "REPTree", "RuleNode",
 						"RuleSetModel", "SerializedClassifier", "SGD", "SGDText", "SimpleLinearRegression",
 						"SimpleLogistic", "SingleClassifierEnhancer", "SMO", "SMOreg", "Stacking",

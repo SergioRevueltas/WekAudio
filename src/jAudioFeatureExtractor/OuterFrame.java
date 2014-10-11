@@ -272,14 +272,15 @@ public class OuterFrame extends JFrame {
 		getContentPane().add(dataMiningPanel,"cell 2 1,grow");
 		getContentPane().add(menu, "cell 0 0 3 1,alignx left,aligny top");
 	
-		//TODO change icon
-		this.setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage("jAudioLogo3-16.bmp"));
+		//https://www.iconfinder.com/icons/174976/audio_file_icon
+		this.setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage("img/icon.png"));
 		// Display GUI
 		pack();
 		splash.endSplash();
 		splash = null;
 		setVisible(true);
 		setAlwaysOnTop(true);
+		setResizable(false);
 	}
 
 	/**
