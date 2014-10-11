@@ -275,6 +275,8 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 
 			// Get the audio recordings to extract features from and throw an exception if there are none
 			RecordingInfo[] recordings = controller.dm_.recordingInfo;
+			
+			
 			if (recordings == null)
 				throw new Exception(
 						"No recordings available to extract features from.");
@@ -304,8 +306,8 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 						"ERROR", JOptionPane.ERROR_MESSAGE);
 			else if (t instanceof Exception) {
 				Exception e = (Exception) t;
-				JOptionPane.showMessageDialog(controller.getFrame(), e.getMessage(), "ERROR",
-						JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(controller.getFrame(), e.getMessage(), "No recording selected",
+						JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
 	}
@@ -336,9 +338,12 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 			// exception
 			// if there are none
 			RecordingInfo[] recordings = controller.dm_.recordingInfo;
-			if (recordings == null)
-				throw new Exception(
-						"No recordings available to extract features from.");
+			if (recordings == null) {
+				throw new Exception("No recordings available to extract features from.\n\n"
+						+ "Add recordings from disk or mic in the first panel.\n"
+						+ "Check out help menu to get more info.");
+				
+			}
 
 			// Find which features are selected to be saved
 			for (int i = 0; i < controller.dm_.defaults.length; i++) {
@@ -367,8 +372,8 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 								"ERROR", JOptionPane.ERROR_MESSAGE);
 			else if (t instanceof Exception) {
 				Exception e = (Exception) t;
-				JOptionPane.showMessageDialog(controller.getFrame(), e.getMessage(), "ERROR",
-						JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(controller.getFrame(), e.getMessage(), "No recordings selected",
+						JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
 	}
