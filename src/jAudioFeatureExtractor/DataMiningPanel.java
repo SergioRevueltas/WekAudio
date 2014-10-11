@@ -109,7 +109,7 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 		trainPanel.setLayout(new MigLayout("ins 0", "[grow][grow][]", "[][][50.00px:50.00px:50.00px][grow]"));
 		trainPanel.setBackground(GRAY);
 
-		lblClassifiers = new CustomJLabel("Classifiers");
+		lblClassifiers = new CustomJLabel("Classifier");
 		trainPanel.add(lblClassifiers, "cell 0 0,alignx trailing");
 		lblClassifiers.setFont(new Font("Arial", Font.BOLD, 12));
 
@@ -117,7 +117,7 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 		trainPanel.add(cbClassifiers, "cell 1 0 2 1,growx,aligny bottom");
 
 		lblArffSavePath = new CustomJLabel("ARFF Save Path");
-		trainPanel.add(lblArffSavePath, "cell 0 1");
+		trainPanel.add(lblArffSavePath, "cell 0 1,alignx trailing");
 		lblArffSavePath.setFont(new Font("Arial", Font.BOLD, 12));
 
 		arffSavePathTextField = new CustomJTextField();
@@ -153,12 +153,12 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 		classifyPanel.setBackground(GRAY);
 
 		lblFileToClassify = new CustomJLabel("File to classify");
-		classifyPanel.add(lblFileToClassify, "cell 0 0");
+		classifyPanel.add(lblFileToClassify, "cell 0 0,alignx trailing");
 		lblFileToClassify.setFont(new Font("Arial", Font.BOLD, 12));
 
 		
 		lblModelLoadPath = new CustomJLabel("Model Load Path");
-		classifyPanel.add(lblModelLoadPath, "cell 0 1");
+		classifyPanel.add(lblModelLoadPath, "cell 0 1,alignx trailing");
 		lblModelLoadPath.setFont(new Font("Arial", Font.BOLD, 12));
 
 		loadFileToClassifyTextField = new CustomJTextField();
