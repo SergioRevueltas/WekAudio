@@ -1,9 +1,3 @@
-/*
- * @(#)FeatureSelectorPanel.java	1.01	April 9, 2005.
- *
- * McGill Univarsity
- */
-
 package jAudioFeatureExtractor;
 
 import jAudioFeatureExtractor.ACE.XMLParsers.FileFilterARFF;
@@ -54,6 +48,8 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 	 */
 	private JPanel trainPanel;
 	private JPanel classifyPanel;
+	private JPanel trainningResultsPanel;
+	private JPanel classificationResultsPanel;
 	/**
 	 * GUI buttons
 	 */
@@ -82,8 +78,8 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 	private CustomJTextField loadFileToClassifyTextField;
 	private CustomJTextField loadModelTextField;
 	private JComboBox<String> cbClassifiers;
-	private JPanel trainResultsPanel;
-	private CustomJTextArea trainresultstextarea;
+	private CustomJTextArea trainresultsTextarea;
+	private CustomJTextArea classificationResultsTextArea;
 
 	/* CONSTRUCTOR ************************************************************ */
 
@@ -136,23 +132,24 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 		trainPanel.add(extract_features_button, "cell 0 2 3 1,grow");
 		extract_features_button.setText("Train");
 
-		trainResultsPanel = new JPanel();
-		trainPanel.add(trainResultsPanel, "flowx,cell 0 3 3 1,growy");
-		trainResultsPanel.setBackground(GRAY);
-		trainResultsPanel.setLayout(new MigLayout("", "[329.00px:104px]", "[120.00px:19px]"));
+		trainningResultsPanel = new JPanel();
+		trainPanel.add(trainningResultsPanel, "flowx,cell 0 3 3 1,growy");
+		trainningResultsPanel.setBackground(GRAY);
+		trainningResultsPanel.setLayout(new MigLayout("", "[329.00px:104px]", "[120.00px:19px]"));
 
-		trainresultstextarea = new CustomJTextArea();
-		trainresultstextarea.setFont(new Font("Arial", Font.PLAIN, 10));
-		trainResultsPanel.add(trainresultstextarea, "cell 0 0,grow");
-		trainresultstextarea.setText("train Results Text Area slkdfglñkdfjg ñldfkgj ñldkgj dlfñkgj ñldskg"
+		trainresultsTextarea = new CustomJTextArea();
+		trainresultsTextarea.setFont(new Font("Arial", Font.PLAIN, 10));
+		trainningResultsPanel.add(trainresultsTextarea, "cell 0 0,grow");
+		trainresultsTextarea.setText("train Results Text Area slkdfglñkdfjg ñldfkgj ñldkgj dlfñkgj ñldskg"
 				+ "asdfsadf sadfasd fsda fasd f asdf sda fsda f sdafjasdlkfjasñlk sdlkj fsdlkñj fsaldñk flñksd");
-
+		trainresultsTextarea.setVisible(false);
+		
 		extract_features_button.addActionListener(this);
 		saveBrowseButton.addActionListener(this);
 
 		classifyPanel = new JPanel();
 		add(classifyPanel, "flowx,cell 0 2,growy");
-		classifyPanel.setLayout(new MigLayout("ins 0", "[][][]", "[][][50.00px:50.00px:50.00px][][][]"));
+		classifyPanel.setLayout(new MigLayout("ins 0", "[grow][][]", "[][][50.00px:50.00px:50.00px][::111.00,grow,top]"));
 		classifyPanel.setBackground(GRAY);
 
 		lblFileToClassify = new CustomJLabel("File to classify");
@@ -181,6 +178,20 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 
 		classify_button = new CustomJButton("Classify");
 		classifyPanel.add(classify_button, "cell 0 2 3 1,grow");
+		
+		classificationResultsPanel = new JPanel();
+		classifyPanel.add(classificationResultsPanel, "cell 0 3 3 1,grow");
+		classificationResultsPanel.setLayout(new MigLayout("", "[::330.00,grow]", "[grow]"));
+		classificationResultsPanel.setBackground(GRAY);
+
+		
+		classificationResultsTextArea = new CustomJTextArea();
+		classificationResultsTextArea.setFont(new Font("Arial", Font.PLAIN, 10));
+		classificationResultsPanel.add(classificationResultsTextArea, "cell 0 0,grow");
+		classificationResultsTextArea.setText("train Results Text Area slkdfglñkdfjg ñldfkgj ñldkgj dlfñkgj ñldskg"
+				+ "asdfsadf sadfasd fsda fasd f asdf sda fsda f sdafjasdlkfjasñlk sdlkj fsdlkñj fsaldñk flñksd");
+		classificationResultsTextArea.setVisible(false);
+		
 		classify_button.addActionListener(this);
 		loadModelBrowseButton.addActionListener(this);
 
