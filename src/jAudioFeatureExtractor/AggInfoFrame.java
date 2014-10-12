@@ -112,6 +112,7 @@ public class AggInfoFrame extends JFrame {
 	private void initialize() {
 		this.setContentPane(getJContentPane());
 		this.setTitle(aggregator.getAggregatorDefinition().name);
+		this.setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage("img/icon.png"));
 		this.setBounds(new Rectangle(50, 50, 500, 220));
 		this.getContentPane().setBackground(OuterFrame.GRAY_PANELS);
 		// this.getContentPane().setLayout(new MigLayout("", "[67.00][]", "[93.00px:80.00px][60.00px:23px][]"));

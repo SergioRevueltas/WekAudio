@@ -33,6 +33,7 @@ public class ProgressFrame extends JFrame {
 	 *
 	 */
 	public ProgressFrame() {
+		this.setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage("img/icon.png"));
 		setLocation(15, 15);
 		getContentPane().setBackground(OuterFrame.GRAY_PANELS);
 		fileProgressBar = new JProgressBar();

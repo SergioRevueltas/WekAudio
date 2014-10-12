@@ -34,6 +34,7 @@ public class BatchProgressFrame extends JFrame {
 	 *
 	 */
 	public BatchProgressFrame(){
+		this.setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage("img/icon.png"));
 		fileProgressBar = new JProgressBar();
 		fileProgressBar.setStringPainted(true);
 		overallProgressBar = new JProgressBar();
