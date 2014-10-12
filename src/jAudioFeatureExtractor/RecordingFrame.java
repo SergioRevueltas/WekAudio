@@ -138,7 +138,7 @@ public class RecordingFrame extends JFrame implements ActionListener, ThreadComp
 	 *
 	 * @param c near global controller
 	 */
-	public RecordingFrame(Controller c)	{
+	public RecordingFrame(Controller c) {
 		// Set window title
 		setTitle("Record Audio");
 		this.setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage("img/icon.png"));
@@ -196,7 +196,7 @@ public class RecordingFrame extends JFrame implements ActionListener, ThreadComp
 		choose_encoding_format_button = new CustomJButton("Change Encoding Format");
 		formatPanel.add(choose_encoding_format_button, "cell 1 1,aligny top");
 		choose_encoding_format_button.addActionListener(this);
-		
+
 		fileFormatPanel = new CustomJPanel();
 		getContentPane().add(fileFormatPanel, "cell 0 2 2 1,grow");
 		fileFormatPanel.setLayout(new MigLayout("", "[][100.00:n]", "[][]"));
@@ -232,7 +232,6 @@ public class RecordingFrame extends JFrame implements ActionListener, ThreadComp
 		stop_recording_button.addActionListener(this);
 		record_button.addActionListener(this);
 
-		
 		save_button = new CustomJButton("Save");
 		getContentPane().add(save_button, "cell 0 3,alignx right,aligny center");
 		save_button.addActionListener(this);
@@ -243,7 +242,7 @@ public class RecordingFrame extends JFrame implements ActionListener, ThreadComp
 		// Display GUI
 		this.pack();
 		this.setAlwaysOnTop(true);
-		this.setLocation(30,30);
+		this.setLocation(30, 30);
 		this.setVisible(true);
 	}
 
@@ -316,7 +315,8 @@ public class RecordingFrame extends JFrame implements ActionListener, ThreadComp
 			lblCurrentstatus.setText("Recording...");
 		} catch (Exception e)
 		{
-			JOptionPane.showMessageDialog(controller.getFrame(), "Could not record because:\n" + e.getMessage(), "ERROR",
+			JOptionPane.showMessageDialog(controller.getFrame(), "Could not record because:\n" + e.getMessage(),
+					"ERROR",
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
@@ -348,7 +348,8 @@ public class RecordingFrame extends JFrame implements ActionListener, ThreadComp
 				last_recorded_audio.reset();
 			} catch (Exception e)
 			{
-				JOptionPane.showMessageDialog(controller.getFrame(), "Could not reset playback position:\n" + e.getMessage(), "ERROR",
+				JOptionPane.showMessageDialog(controller.getFrame(), "Could not reset playback position:\n"
+						+ e.getMessage(), "ERROR",
 						JOptionPane.ERROR_MESSAGE);
 			}
 		}
@@ -358,19 +359,21 @@ public class RecordingFrame extends JFrame implements ActionListener, ThreadComp
 	/**
 	 * Begin playback of last recorded audio, if any. Stop any playback or recording currently in progress
 	 */
-	private void play()	{
+	private void play() {
 		if (last_recorded_audio != null) {
 			stopRecording();
 			SourceDataLine source_data_line = AudioMethods.getSourceDataLine(last_recorded_audio.getFormat(),
 					null);
-			try	{
-				playback_thread = AudioMethodsPlayback.playAudioInputStreamInterruptible(last_recorded_audio, source_data_line);
+			try {
+				playback_thread =
+						AudioMethodsPlayback.playAudioInputStreamInterruptible(last_recorded_audio, source_data_line);
 				lblCurrentstatus.setText("Playing...");
 				playback_thread.addListener(this);
-				//playback_thread.join();
-				//lblCurrentstatus.setText("Stop.");
+				// playback_thread.join();
+				// lblCurrentstatus.setText("Stop.");
 			} catch (Exception e) {
-				JOptionPane.showMessageDialog(controller.getFrame(), "Could not play because:\n" + e.getMessage(), "ERROR",
+				JOptionPane.showMessageDialog(controller.getFrame(), "Could not play because:\n" + e.getMessage(),
+						"ERROR",
 						JOptionPane.ERROR_MESSAGE);
 			}
 		} else {
@@ -425,7 +428,7 @@ public class RecordingFrame extends JFrame implements ActionListener, ThreadComp
 			if (save_file_chooser == null)
 			{
 				save_file_chooser = new JFileChooser();
-				save_file_chooser.setCurrentDirectory(new File("."));
+				save_file_chooser.setCurrentDirectory(new File("audioFiles/"));
 				save_file_chooser.setFileFilter(new FileFilterAudio());
 			}
 
@@ -469,7 +472,8 @@ public class RecordingFrame extends JFrame implements ActionListener, ThreadComp
 						cancel();
 					} catch (Exception e)
 					{
-						JOptionPane.showMessageDialog(controller.getFrame(), e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(controller.getFrame(), e.getMessage(), "ERROR",
+								JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			}
@@ -500,8 +504,8 @@ public class RecordingFrame extends JFrame implements ActionListener, ThreadComp
 			path = StringMethods.removeExtension(path) + correct_extension;
 		else
 			return file_to_verify;
-		JOptionPane.showMessageDialog(controller.getFrame(), "Incorrect file extension specified.\nChanged from " + ext + " to "
-				+ correct_extension + ".", "WARNING", JOptionPane.INFORMATION_MESSAGE);
+		// JOptionPane.showMessageDialog(controller.getFrame(), "Incorrect file extension specified.\nChanged from " +
+		// ext + " to "+ correct_extension + ".", "WARNING", JOptionPane.INFORMATION_MESSAGE);
 		return new File(path);
 	}
 
