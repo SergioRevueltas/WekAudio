@@ -13,7 +13,6 @@ import java.awt.event.ActionListener;
 import java.io.File;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -22,6 +21,7 @@ import javax.swing.JPanel;
 import net.miginfocom.swing.MigLayout;
 
 import com.srevueltas.gui.CustomJButton;
+import com.srevueltas.gui.CustomJComboBox;
 import com.srevueltas.gui.CustomJLabel;
 import com.srevueltas.gui.CustomJTextArea;
 import com.srevueltas.gui.CustomJTextField;
@@ -77,7 +77,7 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 	private CustomJTextField arffSavePathTextField;
 	private CustomJTextField loadFileToClassifyTextField;
 	private CustomJTextField loadModelTextField;
-	private JComboBox<String> cbClassifiers;
+	private CustomJComboBox cbClassifiers;
 	private CustomJTextArea trainresultsTextarea;
 	private CustomJTextArea classificationResultsTextArea;
 
@@ -204,7 +204,7 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 	 * Classifier interface implementing classes http://weka.sourceforge.net/doc.dev/weka/classifiers/Classifier.html
 	 */
 	private void loadClassifiersCombo() {
-		this.cbClassifiers = new JComboBox<String>();
+		this.cbClassifiers = new CustomJComboBox();
 		String[] classifierItems =
 				new String[] { "AbstractClassifier", "AdaBoostM1",
 						"AdditiveRegression", "AttributeSelectedClassifier", "Bagging", "BayesNet",
