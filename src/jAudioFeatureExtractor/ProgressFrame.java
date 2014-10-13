@@ -35,21 +35,22 @@ public class ProgressFrame extends JFrame {
 	public ProgressFrame() {
 		//Icon from http://icons8.com/icons/#!/1391/audio-file
 		this.setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage("img/icon.png"));
-		setLocation(15, 15);
-		getContentPane().setBackground(OuterFrame.GRAY_PANELS);
+		this.setLocation(15, 15);
+		this.getContentPane().setBackground(OuterFrame.GRAY_PANELS);
 		fileProgressBar = new JProgressBar();
 		fileProgressBar.setStringPainted(true);
 		overallProgressBar = new JProgressBar();
 		overallProgressBar.setStringPainted(true);
-		setLayout(new GridLayout(4, 1, 6, 11));
-		CustomJLabel tmp = new CustomJLabel("File Progress");
-		tmp.setHorizontalAlignment(SwingConstants.CENTER);
-		add(tmp);
-		add(fileProgressBar);
-		tmp = new CustomJLabel("Overall Progress");
-		tmp.setHorizontalAlignment(SwingConstants.CENTER);
-		add(tmp);
-		add(overallProgressBar);
+		this.setLayout(new GridLayout(4, 1, 6, 11));
+		CustomJLabel tmpLabel = new CustomJLabel("File Progress");
+		tmpLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		this.add(tmpLabel);
+		this.add(fileProgressBar);
+		tmpLabel = new CustomJLabel("Overall Progress");
+		tmpLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		this.add(tmpLabel);
+		this.add(overallProgressBar);
+		this.setAlwaysOnTop(true);
 		pack();
 	}
 

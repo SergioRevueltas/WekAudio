@@ -233,7 +233,7 @@ public class DataModel {
 			Set<String> setFileNames = new HashSet<String>();
 			for (RecordingInfo r : recordings) {
 				setFileNames
-						.add(r.file_path.substring(r.file_path.lastIndexOf("\\") + 1, r.file_path.lastIndexOf("_")));
+						.add(r.file_path.substring(r.file_path.lastIndexOf("\\") + 1, r.file_path.lastIndexOf(" ")));
 			}
 			listFileNames = new ArrayList<String>(setFileNames);
 			Collections.sort(listFileNames);

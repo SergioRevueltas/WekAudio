@@ -170,7 +170,7 @@ public class AggregatorContainer {
 	 * @throws Exception IO error occurs.
 	 */
 	public void outputARFFValueEntries(DataOutputStream output, String identifier) throws Exception {
-		String className = identifier.substring(identifier.lastIndexOf("\\")+1,identifier.lastIndexOf("_"));
+		String className = identifier.substring(identifier.lastIndexOf("\\")+1,identifier.lastIndexOf(" "));
 		for (int i = 0; i < aggregatorList.size(); ++i) {
 			aggregatorList.get(i).outputARFFValueEntries(output);
 			output.writeBytes(",");
