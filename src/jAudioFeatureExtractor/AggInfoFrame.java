@@ -112,6 +112,7 @@ public class AggInfoFrame extends JFrame {
 	private void initialize() {
 		this.setContentPane(getJContentPane());
 		this.setTitle(aggregator.getAggregatorDefinition().name);
+		//Icon from http://icons8.com/icons/#!/1391/audio-file
 		this.setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage("img/icon.png"));
 		this.setBounds(new Rectangle(50, 50, 500, 220));
 		this.getContentPane().setBackground(OuterFrame.GRAY_PANELS);

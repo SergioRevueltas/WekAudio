@@ -100,6 +100,7 @@ public class AudioFormatJFrame extends JFrame implements ActionListener {
 		this.parent = parent;
 		// Configure overall window settings
 		setTitle("PCM Audio Format Selector");
+		//Icon from http://icons8.com/icons/#!/1391/audio-file
 		this.setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage("img/icon.png"));
 		content_pane = getContentPane();
 		content_pane.setBackground(OuterFrame.GRAY_PANELS);

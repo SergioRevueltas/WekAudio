@@ -272,7 +272,7 @@ public class OuterFrame extends JFrame {
 		getContentPane().add(dataMiningPanel,"cell 2 1,grow");
 		getContentPane().add(menu, "cell 0 0 3 1,alignx left,aligny top");
 	
-		//https://www.iconfinder.com/icons/174976/audio_file_icon
+		//Icon from http://icons8.com/icons/#!/1391/audio-file
 		this.setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage("img/icon.png"));
 		// Display GUI
 		pack();
@@ -298,7 +298,7 @@ public class OuterFrame extends JFrame {
 	// helper class for creating a splashscreen from Graphic Java: Mastering the JFC: AWT
 	protected class SplashFrame extends Frame{
 			private java.awt.Window window = new java.awt.Window(this);
-			//TODO logo del pfc
+			//Icon from http://icons8.com/icons/#!/1391/audio-file
 			private java.awt.Image image = java.awt.Toolkit.getDefaultToolkit().getImage("img/icon.png");
 			private ImageCanvas canvas;
 			

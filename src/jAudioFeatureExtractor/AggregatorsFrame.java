@@ -70,6 +70,7 @@ public class AggregatorsFrame extends JFrame implements ActionListener {
 	private void initialize() {
 		this.setContentPane(getJContentPane());
 		this.setTitle("Aggregators");
+		//Icon from http://icons8.com/icons/#!/1391/audio-file
 		this.setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage("img/icon.png"));
 		this.setBounds(new Rectangle(30, 30, 630, 290));
 		this.setResizable(false);

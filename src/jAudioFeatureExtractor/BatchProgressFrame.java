@@ -34,6 +34,7 @@ public class BatchProgressFrame extends JFrame {
 	 *
 	 */
 	public BatchProgressFrame(){
+		//Icon from http://icons8.com/icons/#!/1391/audio-file
 		this.setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage("img/icon.png"));
 		fileProgressBar = new JProgressBar();
 		fileProgressBar.setStringPainted(true);

@@ -141,6 +141,7 @@ public class RecordingFrame extends JFrame implements ActionListener, ThreadComp
 	public RecordingFrame(Controller c) {
 		// Set window title
 		setTitle("Record Audio");
+		//Icon from http://icons8.com/icons/#!/1391/audio-file
 		this.setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage("img/icon.png"));
 		getContentPane().setBackground(OuterFrame.GRAY_BACKGROUND);
 		getContentPane().setLocation(30, 30);

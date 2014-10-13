@@ -33,6 +33,7 @@ public class ProgressFrame extends JFrame {
 	 *
 	 */
 	public ProgressFrame() {
+		//Icon from http://icons8.com/icons/#!/1391/audio-file
 		this.setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage("img/icon.png"));
 		setLocation(15, 15);
 		getContentPane().setBackground(OuterFrame.GRAY_PANELS);

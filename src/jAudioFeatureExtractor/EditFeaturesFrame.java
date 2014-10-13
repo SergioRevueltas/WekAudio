@@ -71,6 +71,7 @@ public class EditFeaturesFrame extends JFrame implements ActionListener {
 	 * @param controller 
 	 */
 	public EditFeaturesFrame(FeatureExtractor fe, Controller controller) {
+		//Icon from http://icons8.com/icons/#!/1391/audio-file
 		this.setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage("img/icon.png"));
 		this.fe_ = fe;
 		this.controller = controller;
