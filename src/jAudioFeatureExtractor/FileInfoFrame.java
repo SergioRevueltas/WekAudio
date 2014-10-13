@@ -152,5 +152,6 @@ public class FileInfoFrame extends JFrame implements ActionListener, ThreadCompl
 	@Override
 	public void notifyOfThreadComplete(Thread thread) {
 		play_recording_button.setText("Play");
+		playback_thread = null;
 	}
 }
