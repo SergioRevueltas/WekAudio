@@ -135,7 +135,7 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 		trainningResultsPanel = new JPanel();
 		trainPanel.add(trainningResultsPanel, "flowx,cell 0 3 3 1,growy");
 		trainningResultsPanel.setBackground(GRAY);
-		trainningResultsPanel.setLayout(new MigLayout("", "[329.00px:104px]", "[120.00px:19px]"));
+		trainningResultsPanel.setLayout(new MigLayout("", "[300.00px]", "[120.00px:19px]"));
 
 		trainresultsTextarea = new CustomJTextArea();
 		trainresultsTextarea.setFont(new Font("Arial", Font.PLAIN, 10));

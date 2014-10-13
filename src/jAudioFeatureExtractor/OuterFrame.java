@@ -299,15 +299,14 @@ public class OuterFrame extends JFrame {
 	protected class SplashFrame extends Frame{
 			private java.awt.Window window = new java.awt.Window(this);
 			//TODO logo del pfc
-			private java.awt.Image image = java.awt.Toolkit.getDefaultToolkit().getImage("jAudioLogo3-400.jpg");
+			private java.awt.Image image = java.awt.Toolkit.getDefaultToolkit().getImage("img/icon.png");
 			private ImageCanvas canvas;
 			
 			public void loadSplash(){
 				canvas = new ImageCanvas(image);
 				window.add(canvas,"Center");
-				Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-				window.setLocation(screenSize.width/2-200,screenSize.height/2-200);
-				window.setSize(400,400);
+				//Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+				window.setLocation(200,50);
 				window.pack();
 				window.show();
 				window.toFront();
@@ -337,7 +336,7 @@ public class OuterFrame extends JFrame {
 			paint(g);
 		}
 		public Dimension getPreferredSize(){
-			return new Dimension(400,400);
+			return new Dimension(512,512);
 		}	
 	}
 } 
