@@ -66,7 +66,7 @@ import com.srevueltas.gui.CustomJPanel;
  * The Save button saves the last recorded audio using the format selected in the File Format For Saving combo box. This
  * window is then hidden.
  */
-public class RecordingFrame extends JFrame implements ActionListener, ThreadCompleteListener {
+public class RecordingFromMicFrame extends JFrame implements ActionListener, ThreadCompleteListener {
 
 	/* FIELDS ******************************************************************/
 
@@ -138,7 +138,7 @@ public class RecordingFrame extends JFrame implements ActionListener, ThreadComp
 	 *
 	 * @param c near global controller
 	 */
-	public RecordingFrame(Controller c) {
+	public RecordingFromMicFrame(Controller c) {
 		// Set window title
 		setTitle("Record Audio");
 		//Icon from http://icons8.com/icons/#!/1391/audio-file
@@ -211,8 +211,14 @@ public class RecordingFrame extends JFrame implements ActionListener, ThreadComp
 			choose_file_format_combo_box.addItem(file_types[i]);
 		choose_file_format_combo_box.setSelectedIndex(2);
 
+		
+		
+		
 		recorder_panel = new CustomJPanel();
 		getContentPane().add(recorder_panel, "cell 0 1 2 1,grow");
+		
+		
+		
 		recorder_panel.setLayout(new MigLayout("", "[150.00:n][150.00:n][150.00:n]", "[][]"));
 
 		lblRecorderStatus = new CustomJLabel("Recorder Status:");
@@ -436,7 +442,7 @@ public class RecordingFrame extends JFrame implements ActionListener, ThreadComp
 			// Save the recording and send the reference to the parent window
 			// if the user chooses OK. Also hide this window, delete the recording
 			// in the buffer and end any recording or playback in progress
-			int dialog_result = save_file_chooser.showSaveDialog(RecordingFrame.this);
+			int dialog_result = save_file_chooser.showSaveDialog(RecordingFromMicFrame.this);
 			if (dialog_result == JFileChooser.APPROVE_OPTION) // only do if OK chosen
 			{
 				// Prepare a temporary File

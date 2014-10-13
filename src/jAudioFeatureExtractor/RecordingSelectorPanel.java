@@ -135,7 +135,7 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 
 	private JFileChooser load_feature_vector_file_chooser;
 
-	private RecordingFrame recording_frame;
+	private RecordingFromMicFrame recording_frame;
 
 	private MIDIFrame midi_frame;
 
@@ -159,6 +159,7 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 	 * Class that handles all actions - separating the model out of the view.
 	 */
 	private Controller controller;
+	private FileInfoFrame fileInfoFrame;
 
 	/* CONSTRUCTOR ************************************************************ */
 
@@ -440,8 +441,13 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 						controller.dm_.recordingInfo[selected_rows[i]].file_path);
 				String data = jAudioFeatureExtractor.jAudioTools.AudioMethods
 						.getAudioFileFormatData(file);
+				fileInfoFrame = new FileInfoFrame(controller, controller.dm_.recordingInfo[selected_rows[i]].identifier,controller.dm_.recordingInfo[selected_rows[i]].file_path, data);
+				fileInfoFrame.setVisible(true);
+				controller.getFrame().setEnabled(false);
+				/*
 				JOptionPane.showMessageDialog(controller.getFrame(), data, "FILE INFORMATION",
 						JOptionPane.INFORMATION_MESSAGE);
+						*/
 			} catch (Exception e) {
 				String message = "Could not display file information for file "
 						+ controller.dm_.recordingInfo[selected_rows[i]].file_path
@@ -568,7 +574,7 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 	 */
 	private void recordNewRecording() {
 		if (recording_frame == null)
-			recording_frame = new RecordingFrame(controller);
+			recording_frame = new RecordingFromMicFrame(controller);
 		else
 			recording_frame.setVisible(true);
 	}

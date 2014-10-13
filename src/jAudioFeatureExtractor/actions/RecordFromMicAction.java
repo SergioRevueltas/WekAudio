@@ -1,7 +1,7 @@
 package jAudioFeatureExtractor.actions;
 
 import jAudioFeatureExtractor.Controller;
-import jAudioFeatureExtractor.RecordingFrame;
+import jAudioFeatureExtractor.RecordingFromMicFrame;
 
 import java.awt.event.ActionEvent;
 
@@ -18,7 +18,7 @@ public class RecordFromMicAction extends AbstractAction {
 
 	Controller parent;
 
-	RecordingFrame rec_ = null;
+	RecordingFromMicFrame rec_ = null;
 
 	/**
 	 * Constructor that sets th4e menu text and stores a reference to the
@@ -37,7 +37,7 @@ public class RecordFromMicAction extends AbstractAction {
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (rec_ == null) {
-			rec_ = new RecordingFrame(parent);
+			rec_ = new RecordingFromMicFrame(parent);
 		}
 		rec_.setVisible(true);
 		parent.getFrame().setEnabled(false);
