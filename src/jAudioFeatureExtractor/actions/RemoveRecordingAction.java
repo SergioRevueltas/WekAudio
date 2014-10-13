@@ -26,6 +26,7 @@ public class RemoveRecordingAction extends AbstractAction {
 	 */
 	public RemoveRecordingAction() {
 		super("Delete Recording");
+		setEnabled(false);
 	}
 
 	/**

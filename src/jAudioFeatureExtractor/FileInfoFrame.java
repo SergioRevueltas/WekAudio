@@ -60,6 +60,7 @@ public class FileInfoFrame extends JFrame implements ActionListener, ThreadCompl
 		this.setBounds(new Rectangle(200, 30, 330, 370));
 		this.getContentPane().setLayout(new MigLayout("ins 5", "[grow]", "[][200.00,grow][]"));
 		this.setTitle("File info");
+		this.setResizable(false);
 		this.setAlwaysOnTop(true);
 
 		addWindowListener(new WindowAdapter() {

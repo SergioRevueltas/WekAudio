@@ -44,6 +44,7 @@ public class AnalysisOptionsAction extends AbstractAction {
 		}
 		analysis_options.loadDataFromController();
 		analysis_options.setVisible(true);
+		controller.getFrame().setEnabled(false);
 	}
 
 }
