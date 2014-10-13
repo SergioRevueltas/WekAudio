@@ -40,6 +40,7 @@ public class RecordFromMicAction extends AbstractAction {
 			rec_ = new RecordingFrame(parent);
 		}
 		rec_.setVisible(true);
+		parent.getFrame().setEnabled(false);
 	}
 
 }

@@ -1,14 +1,17 @@
 package jAudioFeatureExtractor;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import javax.swing.*;
-
-import java.awt.event.*;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 
 /**
  * This is a window for changing all window based features simultaneously. The
@@ -29,14 +32,17 @@ public class GlobalWindowChange extends JFrame implements ActionListener {
 
 	private JTextArea inputBox;
 
+	private Controller controller;
 	/**
 	 * The constructor creates the gui that is used to initiate a global window
 	 * change.
+	 * @param controller 
 	 * 
 	 * @param fm
 	 */
-	public GlobalWindowChange(DataModel fm) {
+	public GlobalWindowChange(Controller controller, DataModel fm) {
 		fm_ = fm;
+		this.controller = controller;
 		this.setTitle("Globally change window sizes");
 		Color blue = new Color((float) 0.75, (float) 0.85, (float) 1.0);
 		this.getContentPane().setBackground(blue);
@@ -75,10 +81,10 @@ public class GlobalWindowChange extends JFrame implements ActionListener {
 			}
 			this.setVisible(false);
 		} catch (NumberFormatException e) {
-			JOptionPane.showMessageDialog(null, inputBox.getText()
+			JOptionPane.showMessageDialog(controller.getFrame(), inputBox.getText()
 					+ " is not an integer", "ERROR", JOptionPane.ERROR_MESSAGE);
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR",
+			JOptionPane.showMessageDialog(controller.getFrame(), e.getMessage(), "ERROR",
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}

@@ -78,7 +78,7 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 
 	static final long serialVersionUID = 1;
 	public static final Color BLUE = new Color((float) 0.75, (float) 0.85, (float) 1.0);
-	public static final Color GRAY = OuterFrame.GRAY;
+	public static final Color GRAY = OuterFrame.GRAY_PANELS;
 
 	/**
 	 * Holds a reference to the JPanel that holds objects of this class.
@@ -92,7 +92,8 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 	/**
 	 * GUI panels
 	 */
-	//private JPanel recordings_panel;
+	// private JPanel recordings_panel;
+	private JPanel buttonsPanel;
 
 	private JScrollPane recordings_scroll_pane;
 
@@ -109,7 +110,7 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 	private JButton add_recordings_button;
 
 	private JButton delete_recordings_button;
-	
+
 	private JButton add_from_mic_button;
 
 	private JButton view_recording_information_button;
@@ -135,8 +136,6 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 	private JFileChooser load_feature_vector_file_chooser;
 
 	private RecordingFrame recording_frame;
-
-	private SynthesisFrame synthesis_frame;
 
 	private MIDIFrame midi_frame;
 
@@ -182,10 +181,9 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 		// save_file = null;
 		load_recording_chooser = null;
 		recording_frame = null;
-		synthesis_frame = null;
 		midi_frame = null;
 
-		setLayout(new MigLayout("", "[266.00px]", "[14px][60.00px:125px:60.00px][400.00:n,fill][]"));
+		setLayout(new MigLayout("ins 5", "[340.00px]", "[14px][50.00px:50.00px:50.00px][400.00:n,fill]"));
 
 		// Add an overall title for this panel
 		JLabel label = new JLabel("RECORDINGS:");
@@ -197,38 +195,38 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 		setUpRecordingListTable();
 
 		recordings_table = new CustomJTable(controller.rtm_);
-		
+
 		recordings_table.getColumnModel().getColumn(0).setPreferredWidth(35);
-		recordings_table.getColumnModel().getColumn(1).setPreferredWidth(150);
+		recordings_table.getColumnModel().getColumn(1).setPreferredWidth(170);
 		recordings_table.getColumnModel().getColumn(2).setPreferredWidth(400);
-		
+
+		buttonsPanel = new JPanel();
+		add(buttonsPanel, "flowx,cell 0 1,grow");
+		buttonsPanel.setLayout(new MigLayout("ins 0", "[110.00px]2[110.00px]2[110.00px]", "[50.00px:50.00px:50.00px]"));
+		buttonsPanel.setBackground(GRAY);
 		add_recordings_button = new CustomJButton("Add Recordings");
-		add(add_recordings_button, "flowx,cell 0 1,grow");
-		add_recordings_button.addActionListener(controller.addRecordingsAction);
+		buttonsPanel.add(add_recordings_button, "cell 0 0,grow");
 
 		add_from_mic_button = new CustomJButton("Add from Mic");
-		add(add_from_mic_button, "cell 0 1,grow");
+		buttonsPanel.add(add_from_mic_button, "cell 1 0,grow");
+
+		delete_recordings_button = new CustomJButton("Delete Recordings");
+		buttonsPanel.add(delete_recordings_button, "cell 2 0,grow");
+		delete_recordings_button.addActionListener(controller.removeRecordingsAction);
 		add_from_mic_button.addActionListener(controller.recordFromMicAction);
-		
+		add_recordings_button.addActionListener(controller.addRecordingsAction);
 
 		controller.removeRecordingsAction.setModel(controller, recordings_table);
 		controller.playSamplesAction.setTable(recordings_table);
 		controller.playNowAction.setTable(recordings_table);
-		controller.editRecordingsAction.setTable(recordings_table, outer_frame);
 		controller.viewFileInfoAction.setTable(recordings_table);
 
 		// Set up and display the table
 		recordings_scroll_pane = new JScrollPane(recordings_table);
 		add(recordings_scroll_pane, "cell 0 2,grow");
 		recordings_scroll_pane.setBackground(OuterFrame.GRAY_BOXES_LINE);
-		recordings_scroll_pane.getViewport().setBackground(OuterFrame.GRAY);
+		recordings_scroll_pane.getViewport().setBackground(OuterFrame.GRAY_PANELS);
 
-		
-		delete_recordings_button = new CustomJButton("Delete Recordings");
-		add(delete_recordings_button, "cell 0 1,grow");
-		delete_recordings_button.addActionListener(controller.removeRecordingsAction);
-
-		
 		addTableMouseListener();
 		/*
 		controller.addBatchAction.setFilePath(values_save_path_text_field,
@@ -297,11 +295,11 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 							.getName(), files_to_add[i].getPath(),
 							audio_samples, false);
 				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null, e.getMessage(),
+					JOptionPane.showMessageDialog(controller.getFrame(), e.getMessage(),
 							"ERROR", JOptionPane.ERROR_MESSAGE);
 				}
 			} else {
-				JOptionPane.showMessageDialog(null, "The selected file "
+				JOptionPane.showMessageDialog(controller.getFrame(), "The selected file "
 						+ files_to_add[i].getName() + " does not exist.",
 						"ERROR", JOptionPane.ERROR_MESSAGE);
 			}
@@ -442,13 +440,13 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 						controller.dm_.recordingInfo[selected_rows[i]].file_path);
 				String data = jAudioFeatureExtractor.jAudioTools.AudioMethods
 						.getAudioFileFormatData(file);
-				JOptionPane.showMessageDialog(null, data, "FILE INFORMATION",
+				JOptionPane.showMessageDialog(controller.getFrame(), data, "FILE INFORMATION",
 						JOptionPane.INFORMATION_MESSAGE);
 			} catch (Exception e) {
 				String message = "Could not display file information for file "
 						+ controller.dm_.recordingInfo[selected_rows[i]].file_path
 						+ "\n" + e.getMessage();
-				JOptionPane.showMessageDialog(null, message, "ERROR",
+				JOptionPane.showMessageDialog(controller.getFrame(), message, "ERROR",
 						JOptionPane.ERROR_MESSAGE);
 			}
 		}
@@ -494,7 +492,7 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 						+ " is not playable.\n" + ex.getMessage());
 			}
 		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR",
+			JOptionPane.showMessageDialog(controller.getFrame(), ex.getMessage(), "ERROR",
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
@@ -551,7 +549,7 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 						+ " is not playable.\n" + ex.getMessage());
 			}
 		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR",
+			JOptionPane.showMessageDialog(controller.getFrame(), ex.getMessage(), "ERROR",
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}
@@ -609,8 +607,6 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 		outer_frame.repaint();
 	}
 
-	
-
 	/**
 	 * Allow the user to choose a save path for the feature_key_file XML file where feature values are to be saved. The
 	 * selected path is entered in the definitions_save_path_text_field.
@@ -622,7 +618,5 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 			definitions_save_path_text_field.setText(path);
 	}
 	*/
-	
-	
 
 }

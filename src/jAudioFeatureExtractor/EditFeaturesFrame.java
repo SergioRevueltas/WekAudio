@@ -2,7 +2,6 @@ package jAudioFeatureExtractor;
 
 import jAudioFeatureExtractor.AudioFeatures.FeatureExtractor;
 
-import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,12 +11,12 @@ import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 
 import net.miginfocom.swing.MigLayout;
 
 import com.srevueltas.gui.CustomJButton;
 import com.srevueltas.gui.CustomJLabel;
+import com.srevueltas.gui.CustomJTextArea;
 import com.srevueltas.gui.CustomJTextField;
 
 /**
@@ -52,7 +51,7 @@ public class EditFeaturesFrame extends JFrame implements ActionListener {
 
 	private CustomJLabel descriptionTitle;
 
-	private JTextArea infoTextArea;
+	private CustomJTextArea infoTextArea;
 
 	private CustomJButton save;
 
@@ -61,23 +60,29 @@ public class EditFeaturesFrame extends JFrame implements ActionListener {
 	private int row;
 
 	private FeatureExtractor fe_;
+	
+	private Controller controller;
 
 	/**
 	 * Create a new instance of this panel for editing a variable.
 	 * 
 	 * @param parent parent window which created this window
 	 * @param fe The feature which is being edited by this window
+	 * @param controller 
 	 */
-	public EditFeaturesFrame(FeatureExtractor fe) {
+	public EditFeaturesFrame(FeatureExtractor fe, Controller controller) {
+		//Icon from http://icons8.com/icons/#!/1391/audio-file
+		this.setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage("img/icon.png"));
 		this.fe_ = fe;
+		this.controller = controller;
 		String[] attributes = fe.getFeatureDefinition().attributes;
 		if (attributes.length != 0) {
 			this.setTitle("Edit Feature");
 		} else {
 			this.setTitle("Feature info");
 		}
-		this.setBounds(new Rectangle(400, 30, 500, 400));
-		this.getContentPane().setBackground(OuterFrame.GRAY);
+		this.setBounds(new Rectangle(200, 30, 500, 400));
+		this.getContentPane().setBackground(OuterFrame.GRAY_PANELS);
 		this.getContentPane().setLayout(new MigLayout("", "[67.00][]", "[93.00px:80.00px][60.00px:23px][]"));
 		this.setAlwaysOnTop(true);
 
@@ -88,17 +93,12 @@ public class EditFeaturesFrame extends JFrame implements ActionListener {
 			}
 		});
 		descriptionPanel = new JPanel();
-		descriptionPanel.setBackground(OuterFrame.GRAY);
+		descriptionPanel.setBackground(OuterFrame.GRAY_PANELS);
 		descriptionPanel.setLayout(new MigLayout("", "[550.00px:151px]", "[15px][58.00px:22px]"));
 		descriptionTitle = new CustomJLabel(fe.getFeatureDefinition().name + ":");
 		descriptionTitle.setFont(OuterFrame.H1_FONT);
-		infoTextArea = new JTextArea(fe.getFeatureDefinition().description);
-		infoTextArea.setFont(OuterFrame.NORMAL_FONT);
-		infoTextArea.setForeground(Color.WHITE);
-		infoTextArea.setWrapStyleWord(true);
-		infoTextArea.setLineWrap(true);
-		infoTextArea.setEditable(false);
-		infoTextArea.setBackground(this.getContentPane().getBackground());
+		infoTextArea = new CustomJTextArea(fe.getFeatureDefinition().description);
+
 		descriptionPanel.add(descriptionTitle, "cell 0 0,growx,aligny top");
 		descriptionPanel.add(infoTextArea, "cell 0 1,grow");
 		getContentPane().add(descriptionPanel, "cell 0 0,grow");
@@ -113,13 +113,13 @@ public class EditFeaturesFrame extends JFrame implements ActionListener {
 				inputBoxes[i].setText(fe_.getElement(i));
 				inputBoxLabels[i] = new CustomJLabel(attributes[i]);
 			} catch (Exception e1) {
-				JOptionPane.showMessageDialog(null, e1.getMessage(), "ERROR",
+				JOptionPane.showMessageDialog(controller.getFrame(), e1.getMessage(), "ERROR",
 						JOptionPane.ERROR_MESSAGE);
 			}
 		}
 
 		editingPanel = new JPanel();
-		editingPanel.setBackground(OuterFrame.GRAY);
+		editingPanel.setBackground(OuterFrame.GRAY_PANELS);
 		editingPanel.setLayout(new MigLayout("", "[][]", "[][]"));
 		for (int i = 0; i < inputBoxLabels.length; ++i) {
 			editingPanel.add(inputBoxLabels[i], "cell " + 0 + " " + i + ",grow");
@@ -161,6 +161,8 @@ public class EditFeaturesFrame extends JFrame implements ActionListener {
 	 */
 	private void cancel() {
 		setVisible(false);
+		this.controller.getFrame().setEnabled(true);
+		this.controller.getFrame().toFront();
 	}
 
 	/**
@@ -175,12 +177,12 @@ public class EditFeaturesFrame extends JFrame implements ActionListener {
 			} catch (Exception e) {
 				good = false;
 				e.printStackTrace();
-				JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR",
+				JOptionPane.showMessageDialog(controller.getFrame(), e.getMessage(), "ERROR",
 						JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		if (good) {
-			setVisible(false);
+			cancel();
 		}
 	}
 

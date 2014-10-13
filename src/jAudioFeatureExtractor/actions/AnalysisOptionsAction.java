@@ -28,6 +28,7 @@ public class AnalysisOptionsAction extends AbstractAction {
 	public AnalysisOptionsAction(Controller c) {
 		super("Analysis Options...");
 		controller = c;
+		analysis_options = null;
 	}
 
 	/**
@@ -35,8 +36,9 @@ public class AnalysisOptionsAction extends AbstractAction {
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (analysis_options == null) {
+			System.out.println("NEW frame Action");
 			analysis_options = new AnalysisOptionsFrame(controller);
-			controller.setObjectReferences(
+			controller.setObjectReferences(analysis_options,
 					analysis_options.getWindow_size_combo(),
 					analysis_options.getSlider_TextField());
 		}

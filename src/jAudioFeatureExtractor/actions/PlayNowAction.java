@@ -89,7 +89,7 @@ public class PlayNowAction extends AbstractAction {
 						+ " is not playable.\n" + ex.getMessage());
 			}
 		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR",
+			JOptionPane.showMessageDialog(controller.getFrame(), ex.getMessage(), "ERROR",
 					JOptionPane.ERROR_MESSAGE);
 		}
 	}

@@ -13,7 +13,7 @@ public class CustomJPanel extends JPanel{
 	public CustomJPanel() {
 		super();
 		Border border = BorderFactory.createLineBorder(OuterFrame.GRAY_BOXES_LINE, 1);
-		setBackground(OuterFrame.GRAY);
+		setBackground(OuterFrame.GRAY_PANELS);
 		setBorder(border);
 	}
 	

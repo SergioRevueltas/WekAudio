@@ -48,13 +48,12 @@ public class OuterFrame extends JFrame {
 	/* FIELDS ***************************************************************** */
 
 	static final long serialVersionUID = 1;
-	public static final Color BLUE = UIManager.getColor("MenuItem.selectionBackground");
-	public static final Color BLACK_BACKGROUND = UIManager.getColor("inactiveCaptionText");
+	//public static final Color BLUE = UIManager.getColor("MenuItem.selectionBackground");
 	public static final Color GRAY_BOXES_LINE = Color.LIGHT_GRAY;
-	public static final Color GRAY = Color.GRAY;
-	public static final Color GRAY2 = GRAY.brighter();
-	public static final Color GRAY3 = GRAY.darker();
-	public static final Color DARK_GRAY = Color.DARK_GRAY;
+	public static final Color GRAY_PANELS = Color.GRAY;
+	public static final Color GRAY_BACKGROUND = new Color(105, 105, 105);
+	//public static final Color BLACK_BACKGROUND = UIManager.getColor("inactiveCaptionText");
+	//public static final Color DARK_GRAY = Color.DARK_GRAY;
 	public static final Font NORMAL_FONT = new Font("Arial", Font.PLAIN, 12);
 	public static final Font H1_FONT = new Font("Arial", Font.BOLD, 14);
 
@@ -133,7 +132,7 @@ public class OuterFrame extends JFrame {
 		}
 			
 		// Set window title
-		setTitle("Sergio Revueltas PFC");
+		setTitle("WekAudio");
 
 		// Make quit when exit box pressed
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -147,18 +146,18 @@ public class OuterFrame extends JFrame {
 		bg.add(arff);
 		bg.add(ace);
 
-		getContentPane().setBackground(BLACK_BACKGROUND);
+		getContentPane().setBackground(GRAY_BACKGROUND);
 		Border border = BorderFactory.createLineBorder(GRAY_BOXES_LINE, 1);
 		
 		// Instantiate panels
 		recording_selector_panel = new RecordingSelectorPanel(this, c);
 		feature_selector_panel = new FeatureSelectorPanel(this, c);
 		dataMiningPanel = new DataMiningPanel(this, c);
-		feature_selector_panel.setBackground(GRAY);
+		feature_selector_panel.setBackground(GRAY_PANELS);
 		feature_selector_panel.setBorder(border);
-		recording_selector_panel.setBackground(GRAY);
+		recording_selector_panel.setBackground(GRAY_PANELS);
 		recording_selector_panel.setBorder(border);
-		dataMiningPanel.setBackground(GRAY);
+		dataMiningPanel.setBackground(GRAY_PANELS);
 		dataMiningPanel.setBorder(border);
 
 		controller.normalise = new JCheckBoxMenuItem("Normalise Recordings", true);
@@ -178,7 +177,7 @@ public class OuterFrame extends JFrame {
 		
 		JMenu fileMenu = new JMenu("File");
 		fileMenu.setForeground(Color.WHITE);
-		fileMenu.setBackground(BLACK_BACKGROUND);
+		fileMenu.setBackground(GRAY_BACKGROUND);
 		fileMenu.add(c.addRecordingsAction);
 		//recordingMenu.add(c.editRecordingsAction);
 		fileMenu.add(c.recordFromMicAction);
@@ -199,14 +198,14 @@ public class OuterFrame extends JFrame {
 		fileMenu.add(c.exitAction);
 		JMenu editMenu = new JMenu("Edit");
 		editMenu.setForeground(Color.WHITE);
-		editMenu.setBackground(BLACK_BACKGROUND);
+		editMenu.setBackground(GRAY_BACKGROUND);
 		editMenu.add(c.cutAction);
 		editMenu.add(c.copyAction);
 		editMenu.add(c.pasteAction);
 		
 		JMenu recordingMenu = new JMenu("Recording");
 		recordingMenu.setForeground(Color.WHITE);
-		recordingMenu.setBackground(BLACK_BACKGROUND);
+		recordingMenu.setBackground(GRAY_BACKGROUND);
 		
 		recordingMenu.add(c.removeRecordingsAction);
 		//recordingMenu.add(c.synthesizeAction);
@@ -216,7 +215,7 @@ public class OuterFrame extends JFrame {
 		
 		JMenu analysisMenu = new JMenu("Analysis");
 		analysisMenu.setForeground(Color.WHITE);
-		analysisMenu.setBackground(BLACK_BACKGROUND);
+		analysisMenu.setBackground(GRAY_BACKGROUND);
 		//analysisMenu.add(c.globalWindowChangeAction);
 		c.outputType = new JMenu("Output Format");
 		c.outputType.add(ace);
@@ -241,7 +240,7 @@ public class OuterFrame extends JFrame {
 		
 		JMenu helpMenu = new JMenu("Help");
 		helpMenu.setForeground(Color.WHITE);
-		helpMenu.setBackground(BLACK_BACKGROUND);
+		helpMenu.setBackground(GRAY_BACKGROUND);
 		//helpMenu.add(helpTopics);
 		helpMenu.add(c.aboutAction);
 
@@ -267,20 +266,22 @@ public class OuterFrame extends JFrame {
 		menu.add(analysisMenu);
 		//menu.add(playbackMenu);
 		menu.add(helpMenu);
-		getContentPane().setLayout(new MigLayout("", "[104px][503.00px:104px][502.00:n:450.00]", "[21px][74px]"));
+		getContentPane().setLayout(new MigLayout("ins 2 2 -7 -7", "[335.00px][335.00px][335.00px]", "[21px][500.00px]"));
 		getContentPane().add(recording_selector_panel, "cell 0 1,grow");
 		getContentPane().add(feature_selector_panel, "cell 1 1,grow");
 		getContentPane().add(dataMiningPanel,"cell 2 1,grow");
 		getContentPane().add(menu, "cell 0 0 3 1,alignx left,aligny top");
 	
-		//TODO change icon
-		this.setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage("jAudioLogo3-16.bmp"));
+		//Icon from http://icons8.com/icons/#!/1391/audio-file
+		this.setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage("img/icon.png"));
 		// Display GUI
-		pack();
+		//this.setMaximumSize(new Dimension(10, 10));
+		this.pack();
 		splash.endSplash();
 		splash = null;
-		setVisible(true);
-
+		this.setVisible(true);
+		this.setAlwaysOnTop(true);
+		this.setResizable(false);
 	}
 
 	/**
@@ -298,16 +299,15 @@ public class OuterFrame extends JFrame {
 	// helper class for creating a splashscreen from Graphic Java: Mastering the JFC: AWT
 	protected class SplashFrame extends Frame{
 			private java.awt.Window window = new java.awt.Window(this);
-			//TODO logo del pfc
-			private java.awt.Image image = java.awt.Toolkit.getDefaultToolkit().getImage("jAudioLogo3-400.jpg");
+			//Icon from http://icons8.com/icons/#!/1391/audio-file
+			private java.awt.Image image = java.awt.Toolkit.getDefaultToolkit().getImage("img/icon.png");
 			private ImageCanvas canvas;
 			
 			public void loadSplash(){
 				canvas = new ImageCanvas(image);
 				window.add(canvas,"Center");
-				Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-				window.setLocation(screenSize.width/2-200,screenSize.height/2-200);
-				window.setSize(400,400);
+				//Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+				window.setLocation(200,50);
 				window.pack();
 				window.show();
 				window.toFront();
@@ -337,7 +337,7 @@ public class OuterFrame extends JFrame {
 			paint(g);
 		}
 		public Dimension getPreferredSize(){
-			return new Dimension(400,400);
+			return new Dimension(512,512);
 		}	
 	}
 } 

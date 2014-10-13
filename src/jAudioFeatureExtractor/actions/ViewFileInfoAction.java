@@ -49,13 +49,13 @@ public class ViewFileInfoAction extends AbstractAction {
 				File file = new File(controller.dm_.recordingInfo[selected_rows[i]].file_path);
 				String data = jAudioFeatureExtractor.jAudioTools.AudioMethods
 						.getAudioFileFormatData(file);
-				JOptionPane.showMessageDialog(null, data, "FILE INFORMATION",
+				JOptionPane.showMessageDialog(controller.getFrame(), data, "FILE INFORMATION",
 						JOptionPane.INFORMATION_MESSAGE);
 			} catch (Exception e1) {
 				String message = "Could not display file information for file "
 						+ controller.dm_.recordingInfo[selected_rows[i]].file_path + "\n"
 						+ e1.getMessage();
-				JOptionPane.showMessageDialog(null, message, "ERROR",
+				JOptionPane.showMessageDialog(controller.getFrame(), message, "ERROR",
 						JOptionPane.ERROR_MESSAGE);
 			}
 		}

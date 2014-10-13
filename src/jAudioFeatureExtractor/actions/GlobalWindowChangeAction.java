@@ -1,5 +1,6 @@
 package jAudioFeatureExtractor.actions;
 
+import jAudioFeatureExtractor.Controller;
 import jAudioFeatureExtractor.DataModel;
 import jAudioFeatureExtractor.GlobalWindowChange;
 
@@ -19,15 +20,19 @@ public class GlobalWindowChangeAction extends AbstractAction {
 	private DataModel fm_;
 
 	private GlobalWindowChange gwb_;
+	
+	private Controller controller;
 
 	/**
 	 * Constructor that sets menu text and adds reference to the data model
 	 * where features are stored.
+	 * @param controller 
 	 * 
 	 * @param fm
 	 */
-	public GlobalWindowChangeAction(DataModel fm) {
+	public GlobalWindowChangeAction(Controller controller, DataModel fm) {
 		super("Global Window Change");
+		this.controller = controller;
 		fm_ = fm;
 	}
 
@@ -36,7 +41,7 @@ public class GlobalWindowChangeAction extends AbstractAction {
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (gwb_ == null) {
-			gwb_ = new GlobalWindowChange(fm_);
+			gwb_ = new GlobalWindowChange(controller, fm_);
 		}
 		gwb_.setVisible(true);
 	}

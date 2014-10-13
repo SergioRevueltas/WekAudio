@@ -75,7 +75,7 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 
 	static final long serialVersionUID = 1;
 
-	public static final Color GRAY = OuterFrame.GRAY;
+	public static final Color GRAY = OuterFrame.GRAY_PANELS;
 	/**
 	 * Holds a reference to the JPanel that holds objects of this class.
 	 */
@@ -89,6 +89,9 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 	private JPanel features_panel;
 
 	private JScrollPane features_scroll_pane;
+	
+	private JPanel buttonsPanel;
+
 
 	/**
 	 * GUI table-related fields
@@ -117,7 +120,7 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 	 */
 	private JFileChooser save_file_chooser;
 
-	private AggregatorFrame aggregator_editor = null;
+	private AggregatorsFrame aggregator_editor = null;
 
 	/**
 	 * Children Windows
@@ -198,6 +201,16 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 		controller.dm_.aggregators = new Aggregator[] {
 				// (Aggregator) (controller.dm_.aggregatorMap.get("Mean").clone()),
 				(Aggregator) (controller.dm_.aggregatorMap.get("Density Based Average").clone()) };
+		
+		
+		AnalysisOptionsFrame opFrame = controller.analisysOptionsAction.analysis_options;
+		if (opFrame == null) {
+			opFrame = new AnalysisOptionsFrame(controller);
+			controller.setObjectReferences(opFrame,
+					opFrame.getWindow_size_combo(),
+					opFrame.getSlider_TextField());
+		}
+		opFrame.loadDataFromController();
 	}
 
 	/* PUBLIC METHODS ********************************************************* */
@@ -219,12 +232,13 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 		AnalysisOptionsFrame opFrame = controller.analisysOptionsAction.analysis_options;
 		if (opFrame == null) {
 			opFrame = new AnalysisOptionsFrame(controller);
-			controller.setObjectReferences(
+			controller.setObjectReferences(opFrame,
 					opFrame.getWindow_size_combo(),
 					opFrame.getSlider_TextField());
 		}
 		opFrame.loadDataFromController();
 		opFrame.setVisible(true);
+		controller.getFrame().setEnabled(false);
 	}
 
 	/* PRIVATE METHODS ******************************************************** */
@@ -266,13 +280,13 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 					width[i]);
 		}
 		*/
-		features_table.getColumnModel().getColumn(0).setPreferredWidth(30);
-		features_table.getColumnModel().getColumn(1).setPreferredWidth(360);
-		features_table.getColumnModel().getColumn(2).setPreferredWidth(50);
+		features_table.getColumnModel().getColumn(0).setPreferredWidth(28);
+		features_table.getColumnModel().getColumn(1).setPreferredWidth(200);
+		features_table.getColumnModel().getColumn(2).setPreferredWidth(40);
 
-		features_table.getColumnModel().getColumn(0).setMinWidth(30);
-		features_table.getColumnModel().getColumn(1).setMinWidth(360);
-		features_table.getColumnModel().getColumn(2).setMinWidth(50);
+		features_table.getColumnModel().getColumn(0).setMinWidth(28);
+		features_table.getColumnModel().getColumn(1).setMinWidth(200);
+		features_table.getColumnModel().getColumn(2).setMinWidth(40);
 
 		// add handler for sorting panel
 		JTableHeader header = (JTableHeader) features_table.getTableHeader();
@@ -289,23 +303,27 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 				}
 			}
 		});
-		setLayout(new MigLayout("", "[:450px:250.00px][245.00:n]",
-				"[17px][60.00:51.00:60.00][400.00px:315.00px][125px]"));
+		setLayout(new MigLayout("ins 5", "[340px]", "[14px][50.00px:50.00px:50.00px][400.00:n,fill]"));
+
+		buttonsPanel = new JPanel();
+		add(buttonsPanel, "flowx,cell 0 1,grow");
+		buttonsPanel.setLayout(new MigLayout("ins 0", "[167.00px]2[167.00px]", "[50.00px:50.00px:50.00px]"));
+		buttonsPanel.setBackground(GRAY);
 
 		set_aggregators_button = new CustomJButton("Alter Aggregators");
-		add(set_aggregators_button, "flowx,cell 0 1,grow");
-		set_aggregators_button.addActionListener(this);
+		buttonsPanel.add(set_aggregators_button, "cell 0 0,grow");
 		config_button = new CustomJButton("Analysis Options");
-		add(config_button, "cell 1 1,grow");
+		buttonsPanel.add(config_button, "cell 1 0,grow");
 		config_button.addActionListener(this);
+		set_aggregators_button.addActionListener(this);
 
 		// Set up and display the table
 		features_scroll_pane = new JScrollPane(features_table);
 		features_panel = new JPanel(new GridLayout(1, 1));
 		features_panel.add(features_scroll_pane);
 		features_scroll_pane.setBackground(OuterFrame.GRAY_BOXES_LINE);
-		features_scroll_pane.getViewport().setBackground(OuterFrame.GRAY);
-		add(features_panel, "cell 0 2 2 1,grow");
+		features_scroll_pane.getViewport().setBackground(OuterFrame.GRAY_PANELS);
+		add(features_panel, "cell 0 2,grow");
 		controller.fstm_.fireTableDataChanged();
 		TableColumn tableColumn = features_table.getColumn(features_table.getColumnName(0));
 		// tableColumn.setCellRenderer(new FeatureDisplay());
@@ -331,6 +349,7 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 					row_clicked[0] = features_table
 							.rowAtPoint(event.getPoint());
 					editDialog(controller.dm_.features[row_clicked[0]]);
+					controller.getFrame().setEnabled(false);
 
 				} else {
 					features_table.repaint();
@@ -354,12 +373,15 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 	 * Creates and displays the Dialog for editing feature attributes.
 	 */
 	private void editDialog(FeatureExtractor fe) {
-		ef_ = new EditFeaturesFrame(fe);
+		ef_ = new EditFeaturesFrame(fe,controller);
 		ef_.setVisible(true);
 	}
 
 	private void launchAggEditTable() {
-		aggregator_editor = new AggregatorFrame(controller);
+		if (aggregator_editor == null){
+			aggregator_editor = new AggregatorsFrame(controller);
+		}
+		this.controller.getFrame().setEnabled(false);
 		aggregator_editor.setVisible(true);
 	}
 

@@ -1,7 +1,6 @@
 package jAudioFeatureExtractor.actions;
 
 import jAudioFeatureExtractor.Controller;
-import jAudioFeatureExtractor.FeatureSelectorPanel;
 import jAudioFeatureExtractor.FeatureSelectorTableModel;
 import jAudioFeatureExtractor.ACE.XMLParsers.FileFilterXML;
 import jAudioFeatureExtractor.ACE.XMLParsers.XMLDocumentParser;
@@ -15,7 +14,6 @@ import java.util.LinkedList;
 
 import javax.swing.AbstractAction;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
@@ -74,7 +72,7 @@ public class LoadAction extends AbstractAction {
 		}
 		// Process the user's entry
 		String path = null;
-		int dialog_result = save_file_chooser.showOpenDialog(null);
+		int dialog_result = save_file_chooser.showOpenDialog(this.controller.getFrame());
 		if (dialog_result == JFileChooser.APPROVE_OPTION) // only do if OK
 		// chosen
 		{
@@ -95,7 +93,7 @@ public class LoadAction extends AbstractAction {
 				to_save_to = new File(path);
 			}
 			if (!to_save_to.exists()) {
-				JOptionPane.showMessageDialog(null, "The file '"
+				JOptionPane.showMessageDialog(controller.getFrame(), "The file '"
 						+ to_save_to.getName() + "' does not exist", "ERROR",
 						JOptionPane.ERROR_MESSAGE);
 			} else {
@@ -157,7 +155,7 @@ public class LoadAction extends AbstractAction {
 					}
 					controller.dm_.aggregators = dest.toArray(new Aggregator[]{});
 				} catch (Exception e1) {
-					JOptionPane.showMessageDialog(null, e1.getMessage(),
+					JOptionPane.showMessageDialog(controller.getFrame(), e1.getMessage(),
 							"ERROR", JOptionPane.ERROR_MESSAGE);
 				}
 			}

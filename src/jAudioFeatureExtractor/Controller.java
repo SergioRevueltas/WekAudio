@@ -8,7 +8,6 @@ import jAudioFeatureExtractor.actions.AddRecordingAction;
 import jAudioFeatureExtractor.actions.AnalysisOptionsAction;
 import jAudioFeatureExtractor.actions.CopyAction;
 import jAudioFeatureExtractor.actions.CutAction;
-import jAudioFeatureExtractor.actions.EditRecordingsAction;
 import jAudioFeatureExtractor.actions.ExecuteBatchAction;
 import jAudioFeatureExtractor.actions.ExitAction;
 import jAudioFeatureExtractor.actions.GlobalWindowChangeAction;
@@ -26,7 +25,6 @@ import jAudioFeatureExtractor.actions.SamplingRateAction;
 import jAudioFeatureExtractor.actions.SaveAction;
 import jAudioFeatureExtractor.actions.SaveBatchAction;
 import jAudioFeatureExtractor.actions.StopPlayBackAction;
-import jAudioFeatureExtractor.actions.SynthesizeAction;
 import jAudioFeatureExtractor.actions.ViewBatchAction;
 import jAudioFeatureExtractor.actions.ViewFileInfoAction;
 
@@ -109,11 +107,7 @@ public class Controller implements ModelListener {
 
 	public AnalysisOptionsAction analisysOptionsAction = new AnalysisOptionsAction(this);
 	
-	/**
-	 * @see jAudioFeatureExtractor.actions.SynthesizeAction
-	 */
-	public SynthesizeAction synthesizeAction;
-
+	
 	/**
 	 * @see jAudioFeatureExtractor.actions.ViewFileInfoAction
 	 */
@@ -122,7 +116,7 @@ public class Controller implements ModelListener {
 	/**
 	 * @see jAudioFeatureExtractor.actions.AddRecordingAction
 	 */
-	public AddRecordingAction addRecordingsAction = new AddRecordingAction();
+	public AddRecordingAction addRecordingsAction = new AddRecordingAction(this);
 
 	/**
 	 * @see jAudioFeatureExtractor.actions.RemoveRecordingAction
@@ -165,14 +159,9 @@ public class Controller implements ModelListener {
 	public SamplingRateAction samplingRateAction = new SamplingRateAction();
 
 	/**
-	 * @see jAudioFeatureExtractor.actions.EditRecordingsAction
-	 */
-	public EditRecordingsAction editRecordingsAction;
-
-	/**
 	 * @see jAudioFeatureExtractor.actions.AboutAction
 	 */
-	public AboutAction aboutAction = new AboutAction();
+	public AboutAction aboutAction = new AboutAction(this);
 
 	/**
 	 * @see jAudioFeatureExtractor.actions.SaveBatchAction
@@ -275,6 +264,11 @@ public class Controller implements ModelListener {
 	
 	public int window_overlap_value = -1;
 
+	/**
+	 * OuterFrame reference
+	 */
+	private OuterFrame outerFrame;
+
 	
 
 	/**
@@ -283,6 +277,7 @@ public class Controller implements ModelListener {
 	 * components, requiring further inititalization in those GUI components
 	 */
 	public Controller() {
+		outerFrame = null;
 		dm_ = new DataModel("features.xml",this);
 		fstm_ = new FeatureSelectorTableModel(new Object[] {
 				new String("Save"), 
@@ -298,13 +293,11 @@ public class Controller implements ModelListener {
 		activeAgg_ = new ActiveAggTableModel();
 		saveAction = new SaveAction(this, fstm_);
 		loadAction = new LoadAction(this, fstm_);
-		globalWindowChangeAction = new GlobalWindowChangeAction(dm_);
+		globalWindowChangeAction = new GlobalWindowChangeAction(this, dm_);
 		addRecordingsAction.setModel(this);
-		synthesizeAction = new SynthesizeAction(this);
 		playSamplesAction = new PlaySamplesAction(this);
 		stopPlayBackAction = new StopPlayBackAction(this);
 		playNowAction = new PlayNowAction(this);
-		editRecordingsAction = new EditRecordingsAction(this);
 		viewFileInfoAction = new ViewFileInfoAction(this);
 		batches = new Vector<Batch>();
 		addBatchAction = new AddBatchAction(this);
@@ -336,17 +329,26 @@ public class Controller implements ModelListener {
 		fstm_.fireTableDataChanged();
 	}
 	
-	public void setObjectReferences(JComboBox<Integer> windowSizeCombo,
+	public void setObjectReferences(AnalysisOptionsFrame opFrame, JComboBox<Integer> windowSizeCombo,
 			JTextField overlapSliderTextField) {
 		this.window_size_index = windowSizeCombo.getSelectedIndex();
 		this.windowSizeCombo = windowSizeCombo;
 		this.window_overlap_value = Integer.parseInt(overlapSliderTextField.getText());		
+		this.analisysOptionsAction.analysis_options = opFrame;
 	}
 
 	
 	public int getWindow_overlap_value() {
 		return window_overlap_value;
+	}
+
+	public void setFrame(OuterFrame outerFrame) {
+		this.outerFrame = outerFrame;
+		
 	}	
+	public OuterFrame getFrame() {
+		return this.outerFrame;
+	}
 
 	
 }

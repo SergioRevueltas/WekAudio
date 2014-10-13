@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
 /**
  * Action for importing audio files into jAudio.
  * 
- * @author Daniel McEnnis
+ * @author Daniel McEnnis edited by Sergio Revueltas
  */
 public class AddRecordingAction extends AbstractAction {
 
@@ -24,11 +24,9 @@ public class AddRecordingAction extends AbstractAction {
 
 	private Controller controller;
 
-	/**
-	 * Generic constructor that provides menu item text.
-	 */
-	public AddRecordingAction() {
+	public AddRecordingAction(Controller controller) {
 		super("Add Recording...");
+		this.controller = controller;
 	}
 
 	/**
@@ -57,11 +55,13 @@ public class AddRecordingAction extends AbstractAction {
 	 * <p>
 	 * If a selected file path corresponds to a file that does not exist, then
 	 * an error message is displayed.
+	 * 
+	 * audioFiles folder added.
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (load_recording_chooser == null) {
 			load_recording_chooser = new JFileChooser();
-			load_recording_chooser.setCurrentDirectory(new File("."));
+			load_recording_chooser.setCurrentDirectory(new File(System.getProperty("user.dir")+"/audioFiles"));
 			load_recording_chooser
 					.setFileFilter(new jAudioFeatureExtractor.jAudioTools.FileFilterAudio());
 			load_recording_chooser
@@ -71,7 +71,8 @@ public class AddRecordingAction extends AbstractAction {
 		}
 
 		// Read the user's choice of load or cancel
-		int dialog_result = load_recording_chooser.showOpenDialog(null);
+		int dialog_result = load_recording_chooser.showOpenDialog(controller.getFrame());
+		load_recording_chooser.setLocation(30,30);
 
 		// Add the files to the table and to recording_list
 		if (dialog_result == JFileChooser.APPROVE_OPTION) // only do if OK
@@ -145,11 +146,11 @@ public class AddRecordingAction extends AbstractAction {
 							.getName(), toBeAdded[i].getPath(), audio_samples,
 							false);
 				} catch (Exception e) {
-					JOptionPane.showMessageDialog(null, e.getMessage(),
-							"ERROR", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(controller.getFrame(), e.getMessage(),
+							"Unsuported file.", JOptionPane.ERROR_MESSAGE);
 				}
 			} else {
-				JOptionPane.showMessageDialog(null, "The selected file "
+				JOptionPane.showMessageDialog(controller.getFrame(), "The selected file "
 						+ toBeAdded[i].getName() + " does not exist.", "ERROR",
 						JOptionPane.ERROR_MESSAGE);
 			}

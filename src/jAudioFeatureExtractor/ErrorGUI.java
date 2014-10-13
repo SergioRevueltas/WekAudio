@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
  * Generic executable code snippet designed to send an error report from an
  * execution thread to the main thread.
  * 
- * @author Daniel McEnnis
+ * @author Daniel McEnnis edited by Sergio Revueltas
  */
 class ErrorGUI implements Runnable {
 
@@ -34,7 +34,7 @@ class ErrorGUI implements Runnable {
 	 */
 	public void run() {
 		frame.setVisible(false);
-		JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR",
+		JOptionPane.showMessageDialog(frame, e.getMessage(), "ERROR",
 				JOptionPane.ERROR_MESSAGE);
 	}
 }

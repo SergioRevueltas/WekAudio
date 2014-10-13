@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -26,7 +28,7 @@ import com.srevueltas.gui.CustomJTextField;
  * @author Sergio Revueltas
  *
  */
-public class AnalysisOptionsFrame extends JFrame implements ActionListener{
+public class AnalysisOptionsFrame extends JFrame implements ActionListener {
 
 	static final long serialVersionUID = 1;
 	private Controller controller;
@@ -44,12 +46,15 @@ public class AnalysisOptionsFrame extends JFrame implements ActionListener{
 
 	public AnalysisOptionsFrame(Controller controller) {
 		super("Analysis options");
+		//Icon from http://icons8.com/icons/#!/1391/audio-file
+		this.setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage("img/icon.png"));
 		this.controller = controller;
-		setBounds(new Rectangle(400, 30, 400, 300));
+		setBounds(new Rectangle(250, 30, 400, 300));
 		setResizable(false);
-		getContentPane().setBackground(OuterFrame.GRAY);
+		getContentPane().setBackground(OuterFrame.GRAY_PANELS);
 		getContentPane().setLayout(
-				new MigLayout("", "[150.00:n:355.00][100.00:n][44.00][]", "[50.00:50.00][50.00:n][50.00:n][:462px:50.00px][][]"));
+				new MigLayout("", "[150.00:n:355.00][100.00:n][44.00][]",
+						"[50.00:50.00][50.00:n][50.00:n][:462px:50.00px][][]"));
 
 		sample_rate_label = new CustomJLabel("Sample Rate (KHz)");
 		sample_rate_combo = new JComboBox<String>();
@@ -57,7 +62,7 @@ public class AnalysisOptionsFrame extends JFrame implements ActionListener{
 		for (String item : sampleRateItems) {
 			sample_rate_combo.addItem(item);
 		}
-		//sample_rate_combo.setSelectedIndex(2);
+		// sample_rate_combo.setSelectedIndex(2);
 		if (controller.samplingRateAction.sampling_rates == null)
 			controller.samplingRateAction.setTarget(sample_rate_combo);
 		sample_rate_combo.setSelectedIndex(controller.samplingRateAction.getSelected());
@@ -89,8 +94,11 @@ public class AnalysisOptionsFrame extends JFrame implements ActionListener{
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				if (window_overlap_slider.getValueIsAdjusting()) {// slider value is still being adjusted
-					//int num = (int) (Math.rint((double) window_overlap_slider.getValue() / 10) * 10);// round to nearest 10
-					window_overlap_textField.setText(String.valueOf(window_overlap_slider.getValue()));// set textfield with value of nearest 10
+					// int num = (int) (Math.rint((double) window_overlap_slider.getValue() / 10) * 10);// round to
+					// nearest 10
+					window_overlap_textField.setText(String.valueOf(window_overlap_slider.getValue()));// set textfield
+																										// with value of
+																										// nearest 10
 				} else {// slider value has been set/no adjustments happenening
 					window_overlap_textField.setText(String.valueOf(window_overlap_slider.getValue()));
 				}
@@ -112,8 +120,25 @@ public class AnalysisOptionsFrame extends JFrame implements ActionListener{
 		cancel_button = new CustomJButton("Cancel");
 		getContentPane().add(cancel_button, "cell 1 5,alignx right");
 		cancel_button.addActionListener(this);
+		// Cause program to react when the exit box is pressed
+		addWindowListener(new WindowAdapter() {
+
+			public void windowClosing(WindowEvent e) {
+				cancel();
+			}
+		});
+
+		setAlwaysOnTop(true);
 	}
 
+	
+	private void cancel() {
+		this.setVisible(false);
+		this.controller.getFrame().setEnabled(true);
+		this.controller.getFrame().toFront();
+
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == save_button) {
@@ -121,106 +146,89 @@ public class AnalysisOptionsFrame extends JFrame implements ActionListener{
 			controller.window_size_index = window_size_combo.getSelectedIndex();
 			controller.window_overlap_value = Integer.parseInt(window_overlap_textField.getText());
 			controller.normalise.setSelected(normalise_checkbox.isSelected());
-			dispose();
-			
+			cancel();
+
 		} else if (e.getSource() == cancel_button) {
-			dispose();
+			cancel();
 		}
-		
+
 	}
-	
+
 	public void loadDataFromController() {
 		if (controller.samplingRateAction.sampling_rates == null) {
 			controller.samplingRateAction.setTarget(sample_rate_combo);
 		}
 		sample_rate_combo.setSelectedIndex(controller.samplingRateAction.getSelected());
 		window_size_combo.setSelectedIndex(controller.window_size_index);
-		window_overlap_textField.setText(controller.window_overlap_value+"");
+		window_overlap_textField.setText(controller.window_overlap_value + "");
 		window_overlap_slider.setValue(controller.window_overlap_value);
 		normalise_checkbox.setSelected(controller.normalise.isSelected());
 	}
 
-	
 	public Controller getController() {
 		return controller;
 	}
 
-	
 	public void setController(Controller controller) {
 		this.controller = controller;
 	}
 
-	
 	public JLabel getSample_rate_label() {
 		return sample_rate_label;
 	}
 
-	
 	public JLabel getWindow_size_label() {
 		return window_size_label;
 	}
 
-	
 	public JLabel getWindow_overlap_label() {
 		return window_overlap_label;
 	}
 
-	
 	public JLabel getNormalise_label() {
 		return normalise_label;
 	}
 
-	
 	public JComboBox<String> getSample_rate_combo() {
 		return sample_rate_combo;
 	}
 
-	
 	public void setSample_rate_combo(JComboBox<String> sample_rate_combo) {
 		this.sample_rate_combo = sample_rate_combo;
 	}
 
-	
 	public JComboBox<Integer> getWindow_size_combo() {
 		return window_size_combo;
 	}
 
-	
 	public void setWindow_size_combo(JComboBox<Integer> window_size_combo) {
 		this.window_size_combo = window_size_combo;
 	}
 
-	
 	public JSlider getWindow_overlap_slider() {
 		return window_overlap_slider;
 	}
 
-	
 	public void setWindow_overlap_slider(JSlider window_overlap_slider) {
 		this.window_overlap_slider = window_overlap_slider;
 	}
 
-	
 	public JTextField getSlider_TextField() {
 		return window_overlap_textField;
 	}
 
-	
 	public JCheckBox getNormalise_checkbox() {
 		return normalise_checkbox;
 	}
 
-	
 	public void setNormalise_checkbox(JCheckBox normalise_checkbox) {
 		this.normalise_checkbox = normalise_checkbox;
 	}
 
-	
 	public JButton getAccept_button() {
 		return save_button;
 	}
 
-	
 	public JButton getCancel_button() {
 		return cancel_button;
 	}

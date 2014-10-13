@@ -4,12 +4,13 @@
 package jAudioFeatureExtractor;
 
 import jAudioFeatureExtractor.Aggregators.Aggregator;
-import jAudioFeatureExtractor.Aggregators.Mean;
 
 import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -32,7 +33,7 @@ import com.srevueltas.gui.CustomJTable;
  * @author Daniel McEnnis edited by Sergio Revueltas
  *
  */
-public class AggregatorFrame extends JFrame implements ActionListener {
+public class AggregatorsFrame extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel jContentPane = null;
@@ -43,7 +44,7 @@ public class AggregatorFrame extends JFrame implements ActionListener {
 	private JPanel aggButtonPanel = null;
 	private CustomJButton aggAdd = null;
 	private CustomJButton aggRemove = null;
-	private AggEditorFrame aggEditorFrame = null;
+	private AggInfoFrame aggEditorFrame = null;
 	private Controller controller;
 	private CustomJButton saveButton = null;
 	private CustomJButton cancelButton = null;
@@ -54,7 +55,7 @@ public class AggregatorFrame extends JFrame implements ActionListener {
 	/**
 	 * This is the default constructor
 	 */
-	public AggregatorFrame(Controller c) {
+	public AggregatorsFrame(Controller c) {
 		super();
 
 		controller = c;
@@ -69,8 +70,25 @@ public class AggregatorFrame extends JFrame implements ActionListener {
 	private void initialize() {
 		this.setContentPane(getJContentPane());
 		this.setTitle("Aggregators");
-		this.setBounds(new Rectangle(30, 30, 750, 290));
+		//Icon from http://icons8.com/icons/#!/1391/audio-file
+		this.setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage("img/icon.png"));
+		this.setBounds(new Rectangle(30, 30, 630, 290));
 		this.setResizable(false);
+		this.setAlwaysOnTop(true);
+		// Cause program to react when the exit box is pressed
+		addWindowListener(new WindowAdapter() {
+
+			public void windowClosing(WindowEvent e) {
+				cancel();
+			}
+		});
+
+	}
+	
+	private void cancel(){
+		this.setVisible(false);
+		this.controller.getFrame().setEnabled(true);
+		this.controller.getFrame().toFront();
 	}
 
 	/**
@@ -81,17 +99,18 @@ public class AggregatorFrame extends JFrame implements ActionListener {
 	private JPanel getJContentPane() {
 		if (jContentPane == null) {
 			jContentPane = new JPanel();
-			jContentPane.setLayout(new MigLayout("", "[245.00px:452px][80.00:39.00][80.00px:32px][300.00:n]",
-					"[][198.00px:462px:185.00px][::34.00]"));
+			jContentPane.setLayout(new MigLayout("",
+					"[245.00px:452px:220.00px][80.00:39.00][80.00px:32px][300.00:n:220.00]",
+					"[][198.00px:462px:185.00px][::34.00][]"));
 			jContentPane.add(getLblCurrentAggregators(), "cell 0 0");
 			jContentPane.add(getLblAggregatorsList(), "cell 3 0");
 			jContentPane.add(getActiveAggList(), "cell 0 1,alignx left,aligny bottom");
 			jContentPane.add(getAggButtonPanel(), "cell 1 1 2 1,alignx center,aligny center");
 			jContentPane.add(getAggList(), "cell 3 1,alignx right,growy");
 			jContentPane.add(getLblErrorlabel(), "cell 0 2,alignx center");
-			jContentPane.add(getDoneButton(), "cell 1 2,growx");
-			jContentPane.setBackground(OuterFrame.BLACK_BACKGROUND);
-			jContentPane.add(getAbort(), "cell 2 2,growx");
+			jContentPane.setBackground(OuterFrame.GRAY_BACKGROUND);
+			jContentPane.add(getDoneButton(), "cell 1 3,growx");
+			jContentPane.add(getAbort(), "cell 2 3,growx");
 		}
 		return jContentPane;
 	}
@@ -105,8 +124,8 @@ public class AggregatorFrame extends JFrame implements ActionListener {
 		if (activeAggList == null) {
 			activeAggList = new JScrollPane();
 			activeAggList.setViewportView(getActiveAggTable());
-			activeAggList.setBackground(OuterFrame.GRAY);
-			activeAggList.getViewport().setBackground(OuterFrame.GRAY);
+			activeAggList.setBackground(OuterFrame.GRAY_PANELS);
+			activeAggList.getViewport().setBackground(OuterFrame.GRAY_PANELS);
 		}
 		return activeAggList;
 	}
@@ -129,9 +148,12 @@ public class AggregatorFrame extends JFrame implements ActionListener {
 					if (e.getClickCount() == 2) {
 						int row = activeAggTable.getSelectedRow();
 						if (row >= 0) {
-							aggEditorFrame = new AggEditorFrame((jAudioFeatureExtractor.Aggregators.Aggregator) controller.activeAgg_
-													.getAggregator(row), controller);
+							aggEditorFrame =
+									new AggInfoFrame(
+											(jAudioFeatureExtractor.Aggregators.Aggregator) controller.activeAgg_
+													.getAggregator(row), controller, AggregatorsFrame.this);
 							aggEditorFrame.setVisible(true);
+							AggregatorsFrame.this.setEnabled(false);
 							((ActiveAggTableModel) activeAggTable.getModel()).setAggregator(row, aggEditorFrame
 									.getAggregator(), aggEditorFrame.isEdited());
 						}
@@ -151,8 +173,8 @@ public class AggregatorFrame extends JFrame implements ActionListener {
 		if (aggList == null) {
 			aggList = new JScrollPane();
 			aggList.setViewportView(getAggListTable());
-			aggList.setBackground(OuterFrame.GRAY);
-			aggList.getViewport().setBackground(OuterFrame.GRAY);
+			aggList.setBackground(OuterFrame.GRAY_PANELS);
+			aggList.getViewport().setBackground(OuterFrame.GRAY_PANELS);
 		}
 		return aggList;
 	}
@@ -169,9 +191,9 @@ public class AggregatorFrame extends JFrame implements ActionListener {
 			controller.aggList_ = new AggListTableModel();
 			controller.aggList_.init(controller.dm_.aggregatorMap);
 			aggListTable.setModel(controller.aggList_);
-			aggListTable.getColumnModel().getColumn(0).setPreferredWidth(60);
-			aggListTable.getColumnModel().getColumn(0).setMaxWidth(60);
-			aggListTable.getColumnModel().getColumn(1).setPreferredWidth(150);
+			aggListTable.getColumnModel().getColumn(0).setPreferredWidth(250);
+			aggListTable.getColumnModel().getColumn(0).setMaxWidth(250);
+			// aggListTable.getColumnModel().getColumn(1).setPreferredWidth(150);
 			aggListTable.addMouseListener(new java.awt.event.MouseAdapter() {
 
 				public void mouseClicked(java.awt.event.MouseEvent e) {
@@ -208,7 +230,7 @@ public class AggregatorFrame extends JFrame implements ActionListener {
 			aggButtonPanel = new JPanel();
 			aggButtonPanel.setLayout(new MigLayout("", "[144.00px:59px:150.00px]", "[25px][]"));
 			aggButtonPanel.add(getAggAdd(), "cell 0 0,growx,aligny top");
-			aggButtonPanel.setBackground(OuterFrame.BLACK_BACKGROUND);
+			aggButtonPanel.setBackground(OuterFrame.GRAY_BACKGROUND);
 			aggButtonPanel.add(getAggRemove(), "cell 0 1,growx,aligny top");
 		}
 		return aggButtonPanel;
@@ -308,12 +330,14 @@ public class AggregatorFrame extends JFrame implements ActionListener {
 			if ((controller.activeAgg_.getAggregator() != null) && (controller.activeAgg_.getAggregator().length > 0)) {
 				controller.dm_.aggregators = controller.activeAgg_.getAggregator();
 				this.setVisible(false);
+				this.controller.getFrame().setEnabled(true);
+				this.controller.getFrame().toFront();
 			} else {
-				controller.dm_.aggregators = new Aggregator[] { new Mean() };
+				// controller.dm_.aggregators = new Aggregator[] { new Mean() };
 				lblErrorlabel.setVisible(true);
 			}
 		} else if (event.getSource() == cancelButton) {
-			this.setVisible(false);
+			cancel();
 		}
 	}
 
@@ -332,6 +356,7 @@ public class AggregatorFrame extends JFrame implements ActionListener {
 		}
 		return lblAggregatorsList;
 	}
+
 	private JLabel getLblErrorlabel() {
 		if (lblErrorlabel == null) {
 			lblErrorlabel = new CustomJLabel("errorLabel");
