@@ -132,7 +132,7 @@ public class OuterFrame extends JFrame {
 		}
 			
 		// Set window title
-		setTitle("Sergio Revueltas PFC");
+		setTitle("WekAudio");
 
 		// Make quit when exit box pressed
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -266,7 +266,7 @@ public class OuterFrame extends JFrame {
 		menu.add(analysisMenu);
 		//menu.add(playbackMenu);
 		menu.add(helpMenu);
-		getContentPane().setLayout(new MigLayout("", "[340.00px][340.00px][340.00px]", "[21px][500.00px]"));
+		getContentPane().setLayout(new MigLayout("ins 5 5 -5 -5", "[340.00px][340.00px][340.00px]", "[21px][500.00px]"));
 		getContentPane().add(recording_selector_panel, "cell 0 1,grow");
 		getContentPane().add(feature_selector_panel, "cell 1 1,grow");
 		getContentPane().add(dataMiningPanel,"cell 2 1,grow");
@@ -275,12 +275,13 @@ public class OuterFrame extends JFrame {
 		//Icon from http://icons8.com/icons/#!/1391/audio-file
 		this.setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage("img/icon.png"));
 		// Display GUI
-		pack();
+		//this.setMaximumSize(new Dimension(10, 10));
+		this.pack();
 		splash.endSplash();
 		splash = null;
-		setVisible(true);
-		setAlwaysOnTop(true);
-		setResizable(false);
+		this.setVisible(true);
+		this.setAlwaysOnTop(true);
+		this.setResizable(false);
 	}
 
 	/**

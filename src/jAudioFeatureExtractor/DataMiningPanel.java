@@ -96,7 +96,7 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 		this.controller = c;
 		// Set the file chooser to null initially
 		save_file_chooser = null;
-		setLayout(new MigLayout("", "[::340.00px]", "[23px][240.00px:240.00px:240.00px][240.00px:240.00px:240.00px]"));
+		setLayout(new MigLayout("", "[::340.00px]", "[23px][240.00px:240.00px:225.00px][240.00px:240.00px:240.00px,grow]"));
 
 		// Add an overall title for this panel
 		JLabel label = new CustomJLabel("DATA MINING:");
@@ -133,9 +133,9 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 		extract_features_button.setText("Train");
 
 		trainningResultsPanel = new JPanel();
-		trainPanel.add(trainningResultsPanel, "flowx,cell 0 3 3 1,growy");
+		trainPanel.add(trainningResultsPanel, "flowx,cell 0 3 3 1,grow");
 		trainningResultsPanel.setBackground(GRAY);
-		trainningResultsPanel.setLayout(new MigLayout("", "[300.00px]", "[120.00px:19px]"));
+		trainningResultsPanel.setLayout(new MigLayout("", "[::330.00,grow]", "[100.00px]"));
 
 		trainresultsTextarea = new CustomJTextArea();
 		trainresultsTextarea.setFont(new Font("Arial", Font.PLAIN, 10));
@@ -149,7 +149,7 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 
 		classifyPanel = new JPanel();
 		add(classifyPanel, "flowx,cell 0 2,growy");
-		classifyPanel.setLayout(new MigLayout("ins 0", "[grow][][]", "[][][50.00px:50.00px:50.00px][::111.00,grow,top]"));
+		classifyPanel.setLayout(new MigLayout("ins 0", "[grow][grow][]", "[][][50.00px][:61.00px:102.00px,grow,top]"));
 		classifyPanel.setBackground(GRAY);
 
 		lblFileToClassify = new CustomJLabel("File to classify");
@@ -181,7 +181,7 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 		
 		classificationResultsPanel = new JPanel();
 		classifyPanel.add(classificationResultsPanel, "cell 0 3 3 1,grow");
-		classificationResultsPanel.setLayout(new MigLayout("", "[::330.00,grow]", "[grow]"));
+		classificationResultsPanel.setLayout(new MigLayout("", "[::330.00,grow]", "[110.00px:110.00px,grow]"));
 		classificationResultsPanel.setBackground(GRAY);
 
 		
