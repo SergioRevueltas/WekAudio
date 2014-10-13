@@ -52,7 +52,7 @@ public class ViewFileInfoAction extends AbstractAction {
 	public void actionPerformed(ActionEvent e) {
 		int[] selected_rows = recordings_table.getSelectedRows();
 		if (selected_rows.length > 1) {
-			JOptionPane.showMessageDialog(controller.getFrame(), "Select one and only one file.", "Information",
+			JOptionPane.showMessageDialog(controller.getFrame(), "Select one file to show their properties or double click in it.", "Information",
 					JOptionPane.INFORMATION_MESSAGE);
 		} else {
 			for (int i = 0; i < selected_rows.length; i++) {
