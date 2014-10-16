@@ -176,7 +176,7 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 		this.controller = c;
 
 		// Initialize some fields to null
-		controller.dm_.recordingInfo = null;
+		controller.dm_.recordingsInfo = null;
 		controller.dm_.playback_thread = null;
 		save_file_chooser = null;
 		// save_file = null;
@@ -310,15 +310,15 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 		// removing
 		// null entries due to problems with invalid files
 		int number_old_recordings = 0;
-		if (controller.dm_.recordingInfo != null)
-			number_old_recordings = controller.dm_.recordingInfo.length;
+		if (controller.dm_.recordingsInfo != null)
+			number_old_recordings = controller.dm_.recordingsInfo.length;
 		int number_new_recordings = 0;
 		if (recording_info != null)
 			number_new_recordings = recording_info.length;
 		RecordingInfo[] temp_recording_list = new RecordingInfo[number_old_recordings
 				+ number_new_recordings];
 		for (int i = 0; i < number_old_recordings; i++)
-			temp_recording_list[i] = controller.dm_.recordingInfo[i];
+			temp_recording_list[i] = controller.dm_.recordingsInfo[i];
 		for (int i = 0; i < number_new_recordings; i++)
 			temp_recording_list[i + number_old_recordings] = recording_info[i];
 
@@ -339,13 +339,13 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 		Object[] results = jAudioFeatureExtractor.GeneralTools.GeneralMethods
 				.removeNullEntriesFromArray(temp_recording_list);
 		if (results != null) {
-			controller.dm_.recordingInfo = new RecordingInfo[results.length];
+			controller.dm_.recordingsInfo = new RecordingInfo[results.length];
 			for (int i = 0; i < results.length; i++)
-				controller.dm_.recordingInfo[i] = (RecordingInfo) results[i];
+				controller.dm_.recordingsInfo[i] = (RecordingInfo) results[i];
 		}
 
 		// Update the table to display the new recording_list
-		controller.rtm_.fillTable(controller.dm_.recordingInfo);
+		controller.rtm_.fillTable(controller.dm_.recordingsInfo);
 	}
 
 	/**
@@ -375,16 +375,16 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 	private void deleteRecordings() {
 		int[] selected_rows = recordings_table.getSelectedRows();
 		for (int i = 0; i < selected_rows.length; i++)
-			controller.dm_.recordingInfo[selected_rows[i]] = null;
+			controller.dm_.recordingsInfo[selected_rows[i]] = null;
 		Object[] results = jAudioFeatureExtractor.GeneralTools.GeneralMethods
-				.removeNullEntriesFromArray(controller.dm_.recordingInfo);
+				.removeNullEntriesFromArray(controller.dm_.recordingsInfo);
 		if (results != null) {
-			controller.dm_.recordingInfo = new RecordingInfo[results.length];
+			controller.dm_.recordingsInfo = new RecordingInfo[results.length];
 			for (int i = 0; i < results.length; i++)
-				controller.dm_.recordingInfo[i] = (RecordingInfo) results[i];
-			controller.rtm_.fillTable(controller.dm_.recordingInfo);
+				controller.dm_.recordingsInfo[i] = (RecordingInfo) results[i];
+			controller.rtm_.fillTable(controller.dm_.recordingsInfo);
 		} else {
-			controller.dm_.recordingInfo = null;
+			controller.dm_.recordingsInfo = null;
 			controller.rtm_.clearTable();
 		}
 	}
@@ -441,10 +441,10 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 		for (int i = 0; i < selected_rows.length; i++) {
 			try {
 				File file = new File(
-						controller.dm_.recordingInfo[selected_rows[i]].file_path);
+						controller.dm_.recordingsInfo[selected_rows[i]].file_path);
 				String data = jAudioFeatureExtractor.jAudioTools.AudioMethods
 						.getAudioFileFormatData(file);
-				fileInfoFrame = new FileInfoFrame(controller, controller.dm_.recordingInfo[selected_rows[i]].identifier,controller.dm_.recordingInfo[selected_rows[i]].file_path, data);
+				fileInfoFrame = new FileInfoFrame(controller, controller.dm_.recordingsInfo[selected_rows[i]].identifier,controller.dm_.recordingsInfo[selected_rows[i]].file_path, data);
 				fileInfoFrame.setVisible(true);
 				controller.getFrame().setEnabled(false);
 				/*
@@ -453,7 +453,7 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 						*/
 			} catch (Exception e) {
 				String message = "Could not display file information for file "
-						+ controller.dm_.recordingInfo[selected_rows[i]].file_path
+						+ controller.dm_.recordingsInfo[selected_rows[i]].file_path
 						+ "\n" + e.getMessage();
 				JOptionPane.showMessageDialog(controller.getFrame(), message, "ERROR",
 						JOptionPane.ERROR_MESSAGE);
@@ -472,7 +472,7 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 			if (selected_row < 0)
 				throw new Exception("No file selcected for playback.");
 			File play_file = new File(
-					controller.dm_.recordingInfo[selected_row].file_path);
+					controller.dm_.recordingsInfo[selected_row].file_path);
 
 			// Perform playback of the file
 			try {
@@ -516,7 +516,7 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 			int selected_row = recordings_table.getSelectedRow();
 			if (selected_row < 0)
 				throw new Exception("No file selcected for playback.");
-			RecordingInfo selected_audio = controller.dm_.recordingInfo[selected_row];
+			RecordingInfo selected_audio = controller.dm_.recordingsInfo[selected_row];
 
 			// Perform playback of the file
 			try {
@@ -606,11 +606,11 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 				new String("Path") };
 
 		int number_recordings = 0;
-		if (controller.dm_.recordingInfo != null)
-			number_recordings = controller.dm_.recordingInfo.length;
+		if (controller.dm_.recordingsInfo != null)
+			number_recordings = controller.dm_.recordingsInfo.length;
 		controller.rtm_ = new RecordingsTableModel(column_names,
 				number_recordings);
-		controller.rtm_.fillTable(controller.dm_.recordingInfo);
+		controller.rtm_.fillTable(controller.dm_.recordingsInfo);
 		controller.rtm_.fireTableDataChanged();
 		repaint();
 		outer_frame.repaint();

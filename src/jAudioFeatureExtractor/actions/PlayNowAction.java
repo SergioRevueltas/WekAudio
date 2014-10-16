@@ -60,7 +60,7 @@ public class PlayNowAction extends AbstractAction {
 			if (selected_row < 0)
 				throw new Exception("No file selcected for playback.");
 			File play_file = new File(
-					controller.dm_.recordingInfo[selected_row].file_path);
+					controller.dm_.recordingsInfo[selected_row].file_path);
 
 			// Perform playback of the file
 			try {

@@ -1,5 +1,7 @@
 package jAudioFeatureExtractor;
 
+import jAudioFeatureExtractor.DataTypes.RecordingInfo;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
@@ -128,18 +130,24 @@ public class ExtractionThread extends Thread implements Updater {
 		try {
 			SwingUtilities.invokeAndWait(suspendGUI);
 			
-			if (!toClassify) {
+			if (!toClassify) { //train
 				controller.dm_.validateFile(valuesSavePath);
 				File feature_values_save_file = new File(valuesSavePath);
 				FileOutputStream values_to = new FileOutputStream(feature_values_save_file);
 				controller.dm_.featureValue = values_to;
+				classificationResults = controller.dm_.extractAndClassify(windowSize, windowOverlap,
+						controller.samplingRateAction.getSamplingRate(),
+						controller.normalise.isSelected(), perWindow, perFile,
+						controller.dm_.recordingsInfo, controller.outputTypeAction
+						.getSelected(), toClassify, modelLoadPath);
+			} else { //classify
+				classificationResults = controller.dm_.extractAndClassify(windowSize, windowOverlap,
+						controller.samplingRateAction.getSamplingRate(),
+						controller.normalise.isSelected(), perWindow, perFile,
+						new RecordingInfo[]{controller.dm_.recordinInfo}, controller.outputTypeAction
+								.getSelected(), toClassify, modelLoadPath);
 			}
 			
-			classificationResults = controller.dm_.extractAndClassify(windowSize, windowOverlap,
-					controller.samplingRateAction.getSamplingRate(),
-					controller.normalise.isSelected(), perWindow, perFile,
-					controller.dm_.recordingInfo, controller.outputTypeAction
-							.getSelected(), toClassify, modelLoadPath);
 			if (!toClassify && classificationResults != null){
 				WekaManager.saveModel(controller, valuesSavePath, classifierName);
 			}

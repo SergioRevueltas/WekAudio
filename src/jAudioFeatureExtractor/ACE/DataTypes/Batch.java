@@ -358,7 +358,7 @@ public class Batch implements Serializable {
 				dm_.featureDefinitions[i] = dm_.features[i]
 						.getFeatureDefinition();
 			}
-			dm_.recordingInfo = this.recording;
+			dm_.recordingsInfo = this.recording;
 		} catch (Exception e) {
 			System.err.println("INTERNAL ERROR: " + e.getMessage());
 			e.printStackTrace();

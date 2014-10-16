@@ -57,12 +57,12 @@ public class ViewFileInfoAction extends AbstractAction {
 		} else {
 			for (int i = 0; i < selected_rows.length; i++) {
 				try {
-					File file = new File(controller.dm_.recordingInfo[selected_rows[i]].file_path);
+					File file = new File(controller.dm_.recordingsInfo[selected_rows[i]].file_path);
 					String data = jAudioFeatureExtractor.jAudioTools.AudioMethods
 							.getAudioFileFormatData(file);
 					fileInfoFrame =
-							new FileInfoFrame(controller, controller.dm_.recordingInfo[selected_rows[i]].identifier,
-									controller.dm_.recordingInfo[selected_rows[i]].file_path, data);
+							new FileInfoFrame(controller, controller.dm_.recordingsInfo[selected_rows[i]].identifier,
+									controller.dm_.recordingsInfo[selected_rows[i]].file_path, data);
 					fileInfoFrame.setVisible(true);
 					controller.getFrame().setEnabled(false);
 					/**
@@ -71,7 +71,7 @@ public class ViewFileInfoAction extends AbstractAction {
 					 */
 				} catch (Exception e1) {
 					String message = "Could not display file information for file "
-							+ controller.dm_.recordingInfo[selected_rows[i]].file_path + "\n"
+							+ controller.dm_.recordingsInfo[selected_rows[i]].file_path + "\n"
 							+ e1.getMessage();
 					JOptionPane.showMessageDialog(controller.getFrame(), message, "ERROR",
 							JOptionPane.ERROR_MESSAGE);

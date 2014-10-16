@@ -160,15 +160,15 @@ public class AddRecordingAction extends AbstractAction {
 		// removing
 		// null entries due to problems with invalid files
 		int number_old_recordings = 0;
-		if (controller.dm_.recordingInfo != null)
-			number_old_recordings = controller.dm_.recordingInfo.length;
+		if (controller.dm_.recordingsInfo != null)
+			number_old_recordings = controller.dm_.recordingsInfo.length;
 		int number_new_recordings = 0;
 		if (recording_info != null)
 			number_new_recordings = recording_info.length;
 		RecordingInfo[] temp_recording_list = new RecordingInfo[number_old_recordings
 				+ number_new_recordings];
 		for (int i = 0; i < number_old_recordings; i++)
-			temp_recording_list[i] = controller.dm_.recordingInfo[i];
+			temp_recording_list[i] = controller.dm_.recordingsInfo[i];
 		for (int i = 0; i < number_new_recordings; i++)
 			temp_recording_list[i + number_old_recordings] = recording_info[i];
 
@@ -189,13 +189,13 @@ public class AddRecordingAction extends AbstractAction {
 		Object[] results = jAudioFeatureExtractor.GeneralTools.GeneralMethods
 				.removeNullEntriesFromArray(temp_recording_list);
 		if (results != null) {
-			controller.dm_.recordingInfo = new RecordingInfo[results.length];
+			controller.dm_.recordingsInfo = new RecordingInfo[results.length];
 			for (int i = 0; i < results.length; i++)
-				controller.dm_.recordingInfo[i] = (RecordingInfo) results[i];
+				controller.dm_.recordingsInfo[i] = (RecordingInfo) results[i];
 		}
 
 		// Update the table to display the new recording_list
-		controller.rtm_.fillTable(controller.dm_.recordingInfo);
+		controller.rtm_.fillTable(controller.dm_.recordingsInfo);
 		controller.rtm_.fireTableDataChanged();
 	}
 

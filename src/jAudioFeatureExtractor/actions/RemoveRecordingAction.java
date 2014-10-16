@@ -48,16 +48,16 @@ public class RemoveRecordingAction extends AbstractAction {
 	public void actionPerformed(ActionEvent e) {
 		int[] selected_rows = recordingTable.getSelectedRows();
 		for (int i = 0; i < selected_rows.length; i++)
-			controller.dm_.recordingInfo[selected_rows[i]] = null;
+			controller.dm_.recordingsInfo[selected_rows[i]] = null;
 		Object[] results = jAudioFeatureExtractor.GeneralTools.GeneralMethods
-				.removeNullEntriesFromArray(controller.dm_.recordingInfo);
+				.removeNullEntriesFromArray(controller.dm_.recordingsInfo);
 		if (results != null) {
-			controller.dm_.recordingInfo = new RecordingInfo[results.length];
+			controller.dm_.recordingsInfo = new RecordingInfo[results.length];
 			for (int i = 0; i < results.length; i++)
-				controller.dm_.recordingInfo[i] = (RecordingInfo) results[i];
-			controller.rtm_.fillTable(controller.dm_.recordingInfo);
+				controller.dm_.recordingsInfo[i] = (RecordingInfo) results[i];
+			controller.rtm_.fillTable(controller.dm_.recordingsInfo);
 		} else {
-			controller.dm_.recordingInfo = null;
+			controller.dm_.recordingsInfo = null;
 			controller.rtm_.clearTable();
 		}
 	}

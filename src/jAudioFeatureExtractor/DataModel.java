@@ -85,7 +85,11 @@ public class DataModel {
 	/**
 	 * info on all recordings that are made avaiable for feature extraction
 	 */
-	public RecordingInfo[] recordingInfo;
+	public RecordingInfo[] recordingsInfo;
+	/**
+	 * info on all recordings that are made avaiable for feature extraction
+	 */
+	public RecordingInfo recordinInfo;
 
 	/**
 	 * thread for playing back a recording

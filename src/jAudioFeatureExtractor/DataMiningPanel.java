@@ -12,7 +12,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
-import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -53,11 +52,11 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 	/**
 	 * GUI buttons
 	 */
-	private JButton extract_features_button;
-	private JButton classify_button;
-	private JButton saveBrowseButton;
-	private JButton loadFileBrowseButton;
-	private JButton loadModelBrowseButton;
+	private CustomJButton extract_features_button;
+	private CustomJButton classify_button;
+	private CustomJButton saveBrowseButton;
+	private CustomJButton loadFileBrowseButton;
+	private CustomJButton loadModelBrowseButton;
 
 	/**
 	 * GUI dialog boxes
@@ -162,10 +161,12 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 		lblModelLoadPath.setFont(new Font("Arial", Font.BOLD, 12));
 
 		loadFileToClassifyTextField = new CustomJTextField();
+		loadFileToClassifyTextField.setEditable(false);
 		classifyPanel.add(loadFileToClassifyTextField, "cell 1 0");
 		loadFileToClassifyTextField.setColumns(50);
 		
 		loadModelTextField = new CustomJTextField();
+		loadModelTextField.setEditable(false);
 		classifyPanel.add(loadModelTextField, "cell 1 1");
 		loadModelTextField.setColumns(50);
 
@@ -284,13 +285,31 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 			double window_overlap_percentage = controller.getWindow_overlap_value();
 			double window_overlap_fraction = window_overlap_percentage / 100;
 
-			// Get the audio recordings to extract features from and throw an exception if there are none
-			RecordingInfo[] recordings = controller.dm_.recordingInfo;
 			
 			
-			if (recordings == null){
-				throw new Exception("No recordings available to extract features from.");
+			if(loadFileToClassifyTextField.getText().compareTo("") == 0){
+				JOptionPane.showMessageDialog(controller.getFrame(),"No recording selected above to classify." ,"Info" ,
+						JOptionPane.INFORMATION_MESSAGE);
+				return;
 			}
+			if(loadModelTextField.getText().compareTo("") == 0){
+				JOptionPane.showMessageDialog(controller.getFrame(),"No model selected above to classify." ,"Info" ,
+						JOptionPane.INFORMATION_MESSAGE);
+				return;
+			}
+			File file = load_file_chooser.getSelectedFile();
+			if(file == null){
+				JOptionPane.showMessageDialog(controller.getFrame(),"No recording selected above." ,"Info" ,
+						JOptionPane.INFORMATION_MESSAGE);
+				return;
+			}
+			//Get selected file info and override data model
+			controller.dm_.recordinInfo = new RecordingInfo(file.getName(), file.getPath(), null, false);
+			
+			// Get the audio recordings to extract features from and throw an exception if there are none
+			RecordingInfo[] recordings = new RecordingInfo[1];
+			recordings[0] = controller.dm_.recordinInfo;
+			 
 			// Find which features are selected to be saved
 			for (int i = 0; i < controller.dm_.defaults.length; i++) {
 				controller.dm_.defaults[i] = ((Boolean) controller.fstm_
@@ -348,7 +367,7 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 			// Get the audio recordings to extract features from and throw an
 			// exception
 			// if there are none
-			RecordingInfo[] recordings = controller.dm_.recordingInfo;
+			RecordingInfo[] recordings = controller.dm_.recordingsInfo;
 			if (recordings == null){
 				JOptionPane.showMessageDialog(controller.getFrame(), 
 						"No recordings available to extract features from.\n\n"
@@ -443,10 +462,10 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 				// only do if OK chosen
 				if (dialog_result == JFileChooser.APPROVE_OPTION) {
 					// Get the file the user chose
-					File to_load_model = load_file_chooser.getSelectedFile();
+					File to_load_audio_file = load_file_chooser.getSelectedFile();
 
 					// Make sure has .model extension
-					path = to_load_model.getPath();
+					path = to_load_audio_file.getPath();
 					int pos = path.lastIndexOf(".");
 					String ext = path.substring(pos, path.length());
 					// String ext = jAudioFeatureExtractor.GeneralTools.StringMethods.getExtension(path);

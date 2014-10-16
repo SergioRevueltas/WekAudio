@@ -58,7 +58,7 @@ public class PlaySamplesAction extends AbstractAction {
 			if (selected_row < 0)
 				throw new Exception("No file selcected for playback.");
 			// controller.stopPlayBackAction.setEnabled(true);
-			RecordingInfo selected_audio = controller.dm_.recordingInfo[selected_row];
+			RecordingInfo selected_audio = controller.dm_.recordingsInfo[selected_row];
 
 			// Perform playback of the file
 			try {
