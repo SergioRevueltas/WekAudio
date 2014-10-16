@@ -40,13 +40,15 @@ public class ExtractionThread extends Thread implements Updater {
 
 	boolean hasRun = false;
 
-	ProgressFrame progressFrame;
+	private ProgressFrame progressFrame;
 
 	boolean toClassify;
 	
-	String modelLoadPath;
+	private String modelLoadPath;
 	
-	ArrayList<String> classificationResults;
+	private ArrayList<String> classificationResults;
+
+	private String classifierName;
 
 	/**
 	 * This constructor constructs the thread, partially preparing it for execution
@@ -102,10 +104,11 @@ public class ExtractionThread extends Thread implements Updater {
 	 * @param windowOverlap Percent of the window that is duplicated between analysis windows
 	 * @param toClassify
 	 * @param modelLoadPath 
+	 * @param classifierName 
 	 */
 	public void setup(boolean perFile, boolean perWindow,
 			String valuesSavePath, String definitionSavePath, int windowSize,
-			double windowOverlap, boolean toClassify, String modelLoadPath) {
+			double windowOverlap, boolean toClassify, String modelLoadPath, String classifierName) {
 		this.perFile = perFile;
 		this.perWindow = perWindow;
 		this.valuesSavePath = valuesSavePath;
@@ -114,6 +117,7 @@ public class ExtractionThread extends Thread implements Updater {
 		this.windowOverlap = windowOverlap;
 		this.toClassify = toClassify;
 		this.modelLoadPath = modelLoadPath;
+		this.classifierName = classifierName;
 	}
 
 	/**
@@ -136,7 +140,7 @@ public class ExtractionThread extends Thread implements Updater {
 					controller.dm_.recordingInfo, controller.outputTypeAction
 							.getSelected(), toClassify, modelLoadPath);
 			if (!toClassify)
-				WekaManager.saveModel(valuesSavePath);
+				WekaManager.saveModel(controller, valuesSavePath, classifierName);
 			SwingUtilities.invokeLater(resumeGUI);
 		} catch (Exception e) {
 			e.printStackTrace();

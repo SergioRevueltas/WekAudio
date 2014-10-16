@@ -1,5 +1,7 @@
 package com.srevueltas.datamining;
 
+import jAudioFeatureExtractor.Controller;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -11,6 +13,22 @@ import java.io.ObjectOutputStream;
 
 import weka.classifiers.Classifier;
 import weka.classifiers.bayes.BayesNet;
+import weka.classifiers.bayes.NaiveBayes;
+import weka.classifiers.lazy.IBk;
+import weka.classifiers.lazy.KStar;
+import weka.classifiers.meta.AdaBoostM1;
+import weka.classifiers.meta.ClassificationViaRegression;
+import weka.classifiers.meta.CostSensitiveClassifier;
+import weka.classifiers.meta.FilteredClassifier;
+import weka.classifiers.misc.InputMappedClassifier;
+import weka.classifiers.rules.DecisionTable;
+import weka.classifiers.rules.JRip;
+import weka.classifiers.rules.OneR;
+import weka.classifiers.rules.ZeroR;
+import weka.classifiers.trees.HoeffdingTree;
+import weka.classifiers.trees.J48;
+import weka.classifiers.trees.REPTree;
+import weka.classifiers.trees.RandomForest;
 import weka.core.DenseInstance;
 import weka.core.Instance;
 import weka.core.Instances;
@@ -24,18 +42,18 @@ public class WekaManager {
 
 	/**
 	 * Serialize trainning set of instances into a BayesNet model
+	 * @param controller 
+	 * @param classifierName 
 	 */
-	public static void saveModel(String arffPath) {
+	public static void saveModel(Controller controller, String arffPath, String classifierName) {
 		int pos = arffPath.lastIndexOf(".");
 		String tmp = arffPath.substring(0, pos);
 		String modelPath = tmp + ".model";
 		
-		// create J48
-		//Classifier clsJ48 = new J48();	
-		
-		// create a BayesNet
-		Classifier cls = new BayesNet();
+		Classifier cls = loadSelectedClassifier(classifierName);
 
+		System.out.println(cls.getClass().toString());
+		
 		Instances inst = null;
 		ObjectOutputStream oos = null;
 		try {
@@ -55,7 +73,75 @@ public class WekaManager {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		printSummary(controller, cls);
 
+	}
+
+	private static Classifier loadSelectedClassifier(String classifierName) {
+		Classifier cls;
+		switch (classifierName) {
+		case "AdaBoostM1":
+			cls = new AdaBoostM1();
+			break;
+		case "BayesNet":
+			cls = new BayesNet();
+			break;
+		case "ClassificationViaRegression":
+			cls = new ClassificationViaRegression();
+			break;
+		case "CostSensitiveClassifier":
+			cls = new CostSensitiveClassifier();
+			break;
+		case "DecisionTable":
+			cls = new DecisionTable();
+			break;
+		case "FilteredClassifier":
+			cls = new FilteredClassifier();
+			break;
+		case "HoeffdingTree":
+			cls = new HoeffdingTree();
+			break;
+		case "InputMappedClassifier":
+			cls = new InputMappedClassifier();
+			break;
+		case "IBk":
+			cls = new IBk();
+			break;
+		case "J48":
+			cls = new J48();
+			break;
+		case "JRip":
+			cls = new JRip();
+			break;
+		case "KStar":
+			cls = new KStar();
+			break;
+		case "NaiveBayes":
+			cls = new NaiveBayes();
+			break;
+		case "OneR":
+			cls = new OneR();
+			break;
+		case "RandomForest":
+			cls = new RandomForest();
+			break;
+		case "REPTree":
+			cls = new REPTree();
+			break;
+		case "ZeroR":
+			cls = new ZeroR();
+			break;
+		default:
+			cls = new BayesNet();
+			break;
+		}
+		return cls;
+	}
+
+	private static void printSummary(Controller controller, Classifier cls) {
+		// TODO IMPRIMIR RESUMEN ENTRENAMIENTO
+		
 	}
 
 	/**

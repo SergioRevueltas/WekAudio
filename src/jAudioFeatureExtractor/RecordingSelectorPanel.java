@@ -424,7 +424,7 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 					row_clicked[0] = recordings_table.rowAtPoint(event
 							.getPoint());
 					viewRecordingInformation();
-					System.out.println("Clicked");
+					//System.out.println("Clicked");
 				} else {
 					controller.viewFileInfoAction.setEnabled(true);
 					controller.removeRecordingsAction.setEnabled(true);

@@ -205,6 +205,14 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 	 */
 	private void loadClassifiersCombo() {
 		this.cbClassifiers = new CustomJComboBox();
+		
+		String[] classifierItems =
+				new String[] { "AdaBoostM1",
+						"BayesNet","ClassificationViaRegression", "CostSensitiveClassifier",
+						"DecisionTable", "FilteredClassifier", "HoeffdingTree",
+						"IBk", "InputMappedClassifier", "J48", "JRip",
+						"KStar", "NaiveBayes", "OneR","RandomForest", "REPTree", "ZeroR" };
+		/*
 		String[] classifierItems =
 				new String[] { "AbstractClassifier", "AdaBoostM1",
 						"AdditiveRegression", "AttributeSelectedClassifier", "Bagging", "BayesNet",
@@ -230,6 +238,7 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 						"RuleSetModel", "SerializedClassifier", "SGD", "SGDText", "SimpleLinearRegression",
 						"SimpleLogistic", "SingleClassifierEnhancer", "SMO", "SMOreg", "Stacking",
 						"SupportVectorMachineModel", "TreeModel", "Vote", "VotedPerceptron", "ZeroR" };
+		*/
 		for (String item : classifierItems) {
 			cbClassifiers.addItem(item);
 		}
@@ -279,10 +288,9 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 			RecordingInfo[] recordings = controller.dm_.recordingInfo;
 			
 			
-			if (recordings == null)
-				throw new Exception(
-						"No recordings available to extract features from.");
-
+			if (recordings == null){
+				throw new Exception("No recordings available to extract features from.");
+			}
 			// Find which features are selected to be saved
 			for (int i = 0; i < controller.dm_.defaults.length; i++) {
 				controller.dm_.defaults[i] = ((Boolean) controller.fstm_
@@ -294,7 +302,7 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 
 			controller.extractionThread.setup(save_overall_recording_features,
 					save_features_for_each_window, "",
-					"", window_size, window_overlap_fraction, toClassify, loadModelTextField.getText());
+					"", window_size, window_overlap_fraction, toClassify, loadModelTextField.getText(), "");
 			// extract the features
 			controller.extractionThread.start();
 
@@ -318,6 +326,7 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 	 * Extract the features from all of the files added in the GUI. Use the features and feature settings entered in the
 	 * GUI. Save the results in a feature_vector_file and the features used in a feature_key_file. Daniel McEnnis
 	 * 05-09-05 Moved guts into FeatureModel Edited by Sergio Revueltas
+	 * Generate .arff and choosen classifier .model
 	 */
 	private void train(boolean toClassify) {
 		try {
@@ -352,6 +361,9 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 				controller.dm_.defaults[i] = ((Boolean) controller.fstm_
 						.getValueAt(i, 0)).booleanValue();
 			}
+			
+			//Get selected classifier
+			String classifierName = cbClassifiers.getSelectedItem().toString();
 
 			// threads can only execute once. Rebuild the thread here
 			controller.extractionThread = new ExtractionThread(controller,
@@ -359,7 +371,7 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 			// setup thread
 			controller.extractionThread.setup(save_overall_recording_features,
 					save_features_for_each_window, feature_values_save_path,
-					"", window_size, window_overlap_fraction, toClassify, "");
+					"", window_size, window_overlap_fraction, toClassify, "", classifierName);
 			// extract the features
 			controller.extractionThread.start();
 
