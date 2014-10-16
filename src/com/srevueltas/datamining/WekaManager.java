@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import javax.swing.JOptionPane;
+
 import weka.classifiers.Classifier;
 import weka.classifiers.bayes.BayesNet;
 import weka.classifiers.bayes.NaiveBayes;
@@ -32,6 +34,7 @@ import weka.classifiers.trees.RandomForest;
 import weka.core.DenseInstance;
 import weka.core.Instance;
 import weka.core.Instances;
+import weka.core.UnsupportedAttributeTypeException;
 import weka.core.Utils;
 
 /**
@@ -70,8 +73,12 @@ public class WekaManager {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		} catch (Exception e) {
+		} catch (UnsupportedAttributeTypeException e) {
 			e.printStackTrace();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(controller.getFrame(), "Weka cannot build selected classifier.\nPlease see the instructions in the Help menu.", "Info",
+					JOptionPane.INFORMATION_MESSAGE);
+			System.out.println(e.getMessage());
 		}
 		
 		printSummary(controller, cls);

@@ -1,6 +1,5 @@
 package jAudioFeatureExtractor.actions;
 
-import jAudioFeatureExtractor.BatchExecutionThread;
 import jAudioFeatureExtractor.Controller;
 import jAudioFeatureExtractor.OuterFrame;
 
@@ -37,8 +36,7 @@ public class ExecuteBatchAction extends AbstractAction {
 	 * Executes all currently defined batches.
 	 */
 	public void actionPerformed(ActionEvent e) {
-		BatchExecutionThread executionThread = new BatchExecutionThread(controller,outerFrame);
-		executionThread.start();
+		
 	}
 
 }

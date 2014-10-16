@@ -212,7 +212,7 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 						"DecisionTable", "FilteredClassifier", "HoeffdingTree",
 						"IBk", "InputMappedClassifier", "J48", "JRip",
 						"KStar", "NaiveBayes", "OneR","RandomForest", "REPTree", "ZeroR" };
-		/*
+		/* All who extends from Classifier
 		String[] classifierItems =
 				new String[] { "AbstractClassifier", "AdaBoostM1",
 						"AdditiveRegression", "AttributeSelectedClassifier", "Bagging", "BayesNet",
@@ -349,12 +349,22 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 			// exception
 			// if there are none
 			RecordingInfo[] recordings = controller.dm_.recordingInfo;
-			if (recordings == null) {
-				throw new Exception("No recordings available to extract features from.\n\n"
+			if (recordings == null){
+				JOptionPane.showMessageDialog(controller.getFrame(), 
+						"No recordings available to extract features from.\n\n"
 						+ "Add recordings from disk or mic in the first panel.\n"
-						+ "Check out help menu to get more info.");
-				
+						+ "Please, check out help menu to get more info.", "No recordings selected",
+						JOptionPane.INFORMATION_MESSAGE);
+				return ;
 			}
+			if (recordings.length == 1){
+				JOptionPane.showMessageDialog(controller.getFrame(), 
+						"You have to add more than one audio file.\n"
+						+ "Please, check out help menu to get more info.", "Info",
+						JOptionPane.INFORMATION_MESSAGE);
+				return ;
+			}
+			
 
 			// Find which features are selected to be saved
 			for (int i = 0; i < controller.dm_.defaults.length; i++) {

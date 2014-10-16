@@ -23,6 +23,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Set;
 
+import javax.swing.JOptionPane;
+
 import com.srevueltas.datamining.WekaManager;
 
 /**
@@ -101,10 +103,10 @@ public class DataModel {
 	/**
 	 * Initializes each of the arrays with all available efeatures. Place to add new features.
 	 * 
-	 * @param ml reference to a controller that will handle table updates.
+	 * @param c reference to a controller that will handle table updates.
 	 */
-	public DataModel(String featureXMLLocation, ModelListener ml) {
-		ml_ = ml;
+	public DataModel(String featureXMLLocation, ModelListener c) {
+		ml_ = c;
 		cancel_ = new Cancel();
 		LinkedList<MetaFeatureFactory> metaExtractors = new LinkedList<MetaFeatureFactory>();
 
@@ -224,18 +226,34 @@ public class DataModel {
 		// exception
 		// if there are none
 		RecordingInfo[] recordings = info;
-		if (recordings == null)
-			throw new Exception(
-					"No recordings available to extract features from.");
+		if (recordings == null){
+			return null;
+		}
 		ArrayList<String> listFileNames = null;
 		// Obtain set of file names to create classes in arff
 		if (!toClassify) {
 			Set<String> setFileNames = new HashSet<String>();
+			boolean areTypos = false;
 			for (RecordingInfo r : recordings) {
-				setFileNames
-						.add(r.file_path.substring(r.file_path.lastIndexOf("\\") + 1, r.file_path.lastIndexOf(" ")));
+				
+				try {
+					setFileNames.add(r.file_path.substring(r.file_path.lastIndexOf("\\") + 1, r.file_path.lastIndexOf(" ")));					
+				} catch (Exception e) {
+					areTypos = true;
+				}
+				if (areTypos){
+					JOptionPane.showMessageDialog(((Controller)ml_).getFrame(), "You select incorrect file names format.\nPlease see the instructions in the Help menu.", "Info",
+							JOptionPane.INFORMATION_MESSAGE);
+					return null;
+				}
+				
 			}
 			listFileNames = new ArrayList<String>(setFileNames);
+			if (listFileNames.size() < 2){
+				JOptionPane.showMessageDialog(((Controller)ml_).getFrame(), "You have to add at least 2 classes of sounds.\nPlease see the instructions in the Help menu.", "Info",
+						JOptionPane.INFORMATION_MESSAGE);
+				return null;
+			}
 			Collections.sort(listFileNames);
 			System.out.println("SetFileNames: "+ listFileNames.toString());
 		}
@@ -281,6 +299,8 @@ public class DataModel {
 						+ WekaManager.classify(modelLoadPath, feature_values_per_file.get(i)) + "\n");
 			}
 		} else {
+			//to notify that all works fine
+			classPerFile = new ArrayList<String>();
 			// Finalize saved XML files
 			processor.finalize();
 		}

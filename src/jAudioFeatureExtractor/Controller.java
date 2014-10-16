@@ -249,11 +249,6 @@ public class Controller implements ModelListener {
 	public ExtractionThread extractionThread;
 
 	/**
-	 * @see jAudioFeatureExtractor.BatchExecutionThread
-	 */
-	public BatchExecutionThread batchExecutionThread;
-
-	/**
 	 * holds all currently defined batches.
 	 */
 	public Vector<Batch> batches;

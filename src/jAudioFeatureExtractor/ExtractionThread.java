@@ -71,9 +71,10 @@ public class ExtractionThread extends Thread implements Updater {
 		resumeGUI = new Runnable() {
 
 			public void run() {
-				outerFrame.setEnabled(true);
 				progressFrame.setVisible(false);
-				if (!toClassify) {
+				outerFrame.setEnabled(true);
+				outerFrame.toFront();
+				if (!toClassify && classificationResults != null) {
 					JOptionPane.showMessageDialog(controller.getFrame(),
 							"Features successfully extracted and saved.", "DONE",
 							JOptionPane.INFORMATION_MESSAGE);
@@ -139,13 +140,15 @@ public class ExtractionThread extends Thread implements Updater {
 					controller.normalise.isSelected(), perWindow, perFile,
 					controller.dm_.recordingInfo, controller.outputTypeAction
 							.getSelected(), toClassify, modelLoadPath);
-			if (!toClassify)
+			if (!toClassify && classificationResults != null){
 				WekaManager.saveModel(controller, valuesSavePath, classifierName);
+			}
 			SwingUtilities.invokeLater(resumeGUI);
-		} catch (Exception e) {
-			e.printStackTrace();
-			errorGUI.e = e;
-			SwingUtilities.invokeLater(errorGUI);
+		} 
+		catch (Exception e) {
+			JOptionPane.showMessageDialog(controller.getFrame(), 
+					"No valid arff save path selected.", "Info",
+					JOptionPane.INFORMATION_MESSAGE);
 			SwingUtilities.invokeLater(resumeGUI);
 		}
 		hasRun = true;
