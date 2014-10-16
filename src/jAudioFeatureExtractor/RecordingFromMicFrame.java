@@ -413,7 +413,7 @@ public class RecordingFromMicFrame extends JFrame implements ActionListener, Thr
 		// or of going back to make a recording.
 		if (last_recorded_audio == null)
 		{
-			int end = JOptionPane.showConfirmDialog(controller.getFrame(),
+			int end = JOptionPane.showConfirmDialog(this,
 					"No recording has been made.\nDo you wish to make a recording?",
 					"WARNING",
 					JOptionPane.YES_NO_OPTION);
