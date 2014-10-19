@@ -383,15 +383,15 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 			RecordingInfo[] recordings = controller.dm_.recordingsInfo;
 			if (recordings == null){
 				JOptionPane.showMessageDialog(controller.getFrame(), 
-						"No recordings available to extract features from.\n\n"
-						+ "Add recordings from disk or mic in the first panel.\n"
+						"No recordings selected to extract features from.\n"
+						+ "Add at least 10 audio files from disk or mic in the first panel.\n"
 						+ "Please, check out help menu to get more info.", "No recordings selected",
 						JOptionPane.INFORMATION_MESSAGE);
 				return ;
 			}
 			if (recordings.length < 10){
 				JOptionPane.showMessageDialog(controller.getFrame(), 
-						"You have to add at least 10 audio files.\n"
+						"You have to add at least 10 audio files with the proper file name format.\n"
 						+ "Please, check out help menu to get more info.", "Info",
 						JOptionPane.INFORMATION_MESSAGE);
 				return ;

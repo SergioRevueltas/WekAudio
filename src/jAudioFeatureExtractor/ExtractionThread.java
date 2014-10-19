@@ -89,7 +89,7 @@ public class ExtractionThread extends Thread implements Updater {
 					trainingTextArea.setCaretPosition(0);
 					
 					JOptionPane.showMessageDialog(controller.getFrame(),
-							"Features successfully extracted and saved.", "Congrats",
+							"Features successfully extracted and saved.", "Congrats!!",
 							JOptionPane.INFORMATION_MESSAGE);
 							
 				} //classify 
