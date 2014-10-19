@@ -299,8 +299,10 @@ public class DataModel {
 		if (toClassify) {
 			classPerFile = new ArrayList<String>();
 			for (int i = 0; i < feature_values_per_file.size(); i++) {
-				classPerFile.add("File " + i + ": "
-						+ WekaManager.classify(modelLoadPath, feature_values_per_file.get(i)) + "\n");
+				//classPerFile.add("File " + i + ": "	+ WekaManager.classify(modelLoadPath, feature_values_per_file.get(i)) + "\n");
+				classPerFile.add(WekaManager.classify(modelLoadPath, feature_values_per_file.get(i)));
+				
+				
 			}
 		} else {
 			//to notify that all works fine
