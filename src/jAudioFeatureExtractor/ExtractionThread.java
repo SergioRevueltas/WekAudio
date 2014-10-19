@@ -86,6 +86,7 @@ public class ExtractionThread extends Thread implements Updater {
 								//controller.getWekaStatistics().getStaticsDetails()
 								);
 					cjta.setVisible(true);
+					cjta.setCaretPosition(0);
 					
 					JOptionPane.showMessageDialog(controller.getFrame(),
 							"Features successfully extracted and saved.", "DONE",
