@@ -109,8 +109,7 @@ public class AudioFormatJFrame extends JFrame implements ActionListener {
 		settings_panel.setBackground(OuterFrame.GRAY_PANELS);
 		button_panel = new JPanel();
 		button_panel.setBackground(OuterFrame.GRAY_PANELS);
-		settings_panel.setLayout(new MigLayout("", "[133px][133px]",
-				"[23px][23px][23px][23px][23px][23px][23px][23px][23px][]"));
+		settings_panel.setLayout(new MigLayout("", "[133px][133px]", "[23px][::15px][23px][::15px][23px][::15px][23px][::15px][23px]"));
 		settings_panel.add(new CustomJLabel("Sampling Rate (Hz):"), "cell 0 0,grow");
 
 		// Instantiate channels GUI elements
@@ -183,8 +182,7 @@ public class AudioFormatJFrame extends JFrame implements ActionListener {
 		ok_button.addActionListener(this);
 		button_panel.add(ok_button);
 		button_panel.add(cancel_button);
-		content_pane.setLayout(new MigLayout("", "[500.00px,grow]", "[grow][grow][grow]"));
-		this.setLocation(60,60);
+		content_pane.setLayout(new MigLayout("", "[400.00px,grow]", "[grow][::240.00,grow][grow]"));
 		quality_panel = new JPanel();
 		quality_panel.setBackground(OuterFrame.GRAY_PANELS);
 		content_pane.add(quality_panel, "cell 0 0,grow");
@@ -206,6 +204,7 @@ public class AudioFormatJFrame extends JFrame implements ActionListener {
 		content_pane.add(settings_panel, "cell 0 1,alignx center,aligny top");
 		content_pane.add(button_panel, "cell 0 2,growx,aligny top");
 
+		this.setLocation(290,130);
 		// Prepare for display
 		pack();
 	}

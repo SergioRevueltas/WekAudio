@@ -72,7 +72,7 @@ public class AggregatorsFrame extends JFrame implements ActionListener {
 		this.setTitle("Aggregators");
 		//Icon from http://icons8.com/icons/#!/1391/audio-file
 		this.setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage("img/icon.png"));
-		this.setBounds(new Rectangle(195, 150, 630, 290));
+		this.setBounds(new Rectangle(195, 140, 630, 290));
 		this.setResizable(false);
 		this.setAlwaysOnTop(true);
 		// Cause program to react when the exit box is pressed

@@ -249,7 +249,7 @@ public class RecordingFromMicFrame extends JFrame implements ActionListener, Thr
 		// Display GUI
 		this.pack();
 		this.setAlwaysOnTop(true);
-		this.setLocation(30, 30);
+		this.setLocation(250, 95);
 		this.setVisible(true);
 	}
 
