@@ -98,7 +98,7 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 		this.controller = c;
 		// Set the file chooser to null initially
 		save_file_chooser = null;
-		setLayout(new MigLayout("", "[::340.00px]", "[23px][240.00px:240.00px:240.00px][240.00px:240.00px:219.00px]"));
+		setLayout(new MigLayout("", "[::340.00px]", "[23px][300.00px:n:300.00px][::180.00px]"));
 
 		// Add an overall title for this panel
 		JLabel label = new CustomJLabel("DATA MINING:");
@@ -153,7 +153,7 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 
 		classifyPanel = new JPanel();
 		add(classifyPanel, "flowx,cell 0 2,growy");
-		classifyPanel.setLayout(new MigLayout("ins 0", "[::90.00,grow][::191.00,grow][]", "[][][50.00px][][::80.00px,grow,top]"));
+		classifyPanel.setLayout(new MigLayout("ins 0", "[::90.00,grow][::191.00,grow][]", "[][][50.00px:50.00px:50.00px][][50.00px:n:50.00px,grow,top]"));
 		classifyPanel.setBackground(GRAY);
 
 		lblFileToClassify = new CustomJLabel("File to classify");
