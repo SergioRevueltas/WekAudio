@@ -10,6 +10,8 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import com.srevueltas.datamining.WekaManager;
+import com.srevueltas.datamining.WekaStatistic;
+import com.srevueltas.gui.CustomJTextArea;
 
 /**
  * This is a thread for executing the DataModel.extractFeatures without tying up the swing dispatch thread.
@@ -76,14 +78,36 @@ public class ExtractionThread extends Thread implements Updater {
 				progressFrame.setVisible(false);
 				outerFrame.setEnabled(true);
 				outerFrame.toFront();
+				// train
 				if (!toClassify && classificationResults != null) {
+					CustomJTextArea trainingTextArea = outerFrame.dataMiningPanel.getTrainningResultsTextArea();
+					trainingTextArea.setText(controller.getWekaStatistics().getConfusionMatrix() +
+								controller.getWekaStatistics().getSummary()
+								//controller.getWekaStatistics().getStaticsDetails()
+								);
+					trainingTextArea.setVisible(true);
+					trainingTextArea.setCaretPosition(0);
+					
 					JOptionPane.showMessageDialog(controller.getFrame(),
-							"Features successfully extracted and saved.", "DONE",
+							"Features successfully extracted and saved.", "Congrats",
 							JOptionPane.INFORMATION_MESSAGE);
-				} else if (classificationResults != null){
+							
+				} //classify 
+				else if (classificationResults != null){
+					CustomJTextArea classificationTextArea = outerFrame.dataMiningPanel.getClassificationResultsTextArea();
+					if (classificationResults.size() > 0) {
+						classificationTextArea.setText(classificationResults.get(0));
+						outerFrame.dataMiningPanel.getLblClassificationDone().setVisible(true);
+					} else {
+						classificationTextArea.setText("No data available.");
+					}
+					classificationTextArea.setVisible(true);
+					//classificationTextArea.setCaretPosition(0);
+					/*					
 					JOptionPane.showMessageDialog(controller.getFrame(),
-							classificationResults.toString(), "Classification done",
+							"Classification done.", "Info",
 							JOptionPane.INFORMATION_MESSAGE);
+					*/
 				}
 			}
 		};
@@ -149,7 +173,8 @@ public class ExtractionThread extends Thread implements Updater {
 			}
 			
 			if (!toClassify && classificationResults != null){
-				WekaManager.saveModel(controller, valuesSavePath, classifierName);
+				WekaStatistic wekaStatistic = WekaManager.saveModel(controller, valuesSavePath, classifierName);
+				controller.setWekaStatistics(wekaStatistic);
 			}
 			SwingUtilities.invokeLater(resumeGUI);
 		} 
@@ -157,6 +182,7 @@ public class ExtractionThread extends Thread implements Updater {
 			JOptionPane.showMessageDialog(controller.getFrame(), 
 					"No valid arff save path selected.", "Info",
 					JOptionPane.INFORMATION_MESSAGE);
+			e.printStackTrace();
 			SwingUtilities.invokeLater(resumeGUI);
 		}
 		hasRun = true;

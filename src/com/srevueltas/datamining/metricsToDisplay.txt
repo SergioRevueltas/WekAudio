@@ -1,0 +1,25 @@
+correct
+incorrect
+kappa
+total cost
+average cost
+kb relative
+kb information
+correlation
+complexity 0
+complexity scheme
+complexity improvement
+mae
+rmse
+rae
+rrse
+coverage
+region size
+tp rate
+fp rate
+precision
+recall
+f-measure
+mcc
+roc area
+prc area

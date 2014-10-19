@@ -36,6 +36,8 @@ import javax.swing.JComboBox;
 import javax.swing.JMenu;
 import javax.swing.JTextField;
 
+import com.srevueltas.datamining.WekaStatistic;
+
 /**
  * Controller is a master location for all actions and non-gui components. Not
  * the best design, but it works.
@@ -264,6 +266,8 @@ public class Controller implements ModelListener {
 	 */
 	private OuterFrame outerFrame;
 
+	private WekaStatistic wekaStatistics;
+
 	
 
 	/**
@@ -300,6 +304,7 @@ public class Controller implements ModelListener {
 		loadBatchAction = new LoadBatchAction(this);
 		removeBatchAction = new RemoveBatchAction(this);
 		viewBatchAction = new ViewBatchAction(this);
+		wekaStatistics = new WekaStatistic();
 	}
 
 	/**
@@ -343,6 +348,16 @@ public class Controller implements ModelListener {
 	}	
 	public OuterFrame getFrame() {
 		return this.outerFrame;
+	}
+
+	public void setWekaStatistics(WekaStatistic wekaStatistic) {
+		this.wekaStatistics = wekaStatistic;
+		
+	}
+
+	
+	public WekaStatistic getWekaStatistics() {
+		return wekaStatistics;
 	}
 
 	

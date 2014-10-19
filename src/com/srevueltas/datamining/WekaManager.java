@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 import weka.classifiers.Classifier;
 import weka.classifiers.bayes.BayesNet;
 import weka.classifiers.bayes.NaiveBayes;
+import weka.classifiers.evaluation.Evaluation;
 import weka.classifiers.lazy.IBk;
 import weka.classifiers.lazy.KStar;
 import weka.classifiers.meta.AdaBoostM1;
@@ -31,6 +32,7 @@ import weka.classifiers.trees.HoeffdingTree;
 import weka.classifiers.trees.J48;
 import weka.classifiers.trees.REPTree;
 import weka.classifiers.trees.RandomForest;
+import weka.core.Debug.Random;
 import weka.core.DenseInstance;
 import weka.core.Instance;
 import weka.core.Instances;
@@ -47,15 +49,16 @@ public class WekaManager {
 	 * Serialize trainning set of instances into a BayesNet model
 	 * @param controller 
 	 * @param classifierName 
+	 * @return 
 	 */
-	public static void saveModel(Controller controller, String arffPath, String classifierName) {
+	public static WekaStatistic saveModel(Controller controller, String arffPath, String classifierName) {
 		int pos = arffPath.lastIndexOf(".");
 		String tmp = arffPath.substring(0, pos);
 		String modelPath = tmp + ".model";
 		
 		Classifier cls = loadSelectedClassifier(classifierName);
 
-		System.out.println(cls.getClass().toString());
+		System.out.println("SELECTED CLASSIFIER: " + cls.getClass().toString());
 		
 		Instances inst = null;
 		ObjectOutputStream oos = null;
@@ -81,7 +84,8 @@ public class WekaManager {
 			System.out.println(e.getMessage());
 		}
 		
-		printSummary(controller, cls);
+		WekaStatistic wekaStatistic = runEval(controller, cls, inst);
+		return wekaStatistic;
 
 	}
 
@@ -146,9 +150,22 @@ public class WekaManager {
 		return cls;
 	}
 
-	private static void printSummary(Controller controller, Classifier cls) {
-		// TODO IMPRIMIR RESUMEN ENTRENAMIENTO
-		
+	private static WekaStatistic runEval(Controller controller, Classifier cls, Instances inst) {
+		Evaluation eval = null;
+		WekaStatistic wekaStatistic = null;
+		try {
+			eval = new Evaluation(inst);
+			Random rand = new Random(1);  // using seed = 1
+			int folds = 10;
+			eval.crossValidateModel(cls, inst, folds, rand);
+			
+			wekaStatistic = new WekaStatistic(cls, eval);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		//String resultInfo = cls.toString();
+		return wekaStatistic;
 	}
 
 	/**

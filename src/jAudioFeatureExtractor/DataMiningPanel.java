@@ -16,6 +16,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -47,8 +48,9 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 	 */
 	private JPanel trainPanel;
 	private JPanel classifyPanel;
-	private JPanel trainningResultsPanel;
+	//private JPanel trainningResultsPanel;
 	private JPanel classificationResultsPanel;
+	private JScrollPane trainResultsScrollPane;
 	/**
 	 * GUI buttons
 	 */
@@ -72,6 +74,7 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 	private CustomJLabel lblFileToClassify;
 	private CustomJLabel lblArffSavePath;
 	private CustomJLabel lblModelLoadPath;
+	private CustomJLabel lblClassificationDone;
 
 	private CustomJTextField arffSavePathTextField;
 	private CustomJTextField loadFileToClassifyTextField;
@@ -79,9 +82,9 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 	private CustomJComboBox cbClassifiers;
 	private CustomJTextArea trainresultsTextarea;
 	private CustomJTextArea classificationResultsTextArea;
+	
 
 	/* CONSTRUCTOR ************************************************************ */
-
 	/**
 	 * Set up frame.
 	 * <p>
@@ -95,7 +98,7 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 		this.controller = c;
 		// Set the file chooser to null initially
 		save_file_chooser = null;
-		setLayout(new MigLayout("", "[::340.00px]", "[23px][240.00px:240.00px:225.00px][240.00px:240.00px:240.00px,grow]"));
+		setLayout(new MigLayout("", "[::340.00px]", "[23px][300.00px:n:300.00px][::180.00px]"));
 
 		// Add an overall title for this panel
 		JLabel label = new CustomJLabel("DATA MINING:");
@@ -105,7 +108,7 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 
 		trainPanel = new JPanel();
 		add(trainPanel, "flowx,cell 0 1,grow");
-		trainPanel.setLayout(new MigLayout("ins 0", "[grow][grow][]", "[][][50.00px:50.00px:50.00px][grow]"));
+		trainPanel.setLayout(new MigLayout("ins 0", "[grow][grow][]", "[][][50.00px:50.00px:50.00px][140.00px:n,grow]"));
 		trainPanel.setBackground(GRAY);
 
 		lblClassifiers = new CustomJLabel("Classifier");
@@ -131,24 +134,26 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 		trainPanel.add(extract_features_button, "cell 0 2 3 1,grow");
 		extract_features_button.setText("Train");
 
-		trainningResultsPanel = new JPanel();
-		trainPanel.add(trainningResultsPanel, "flowx,cell 0 3 3 1,grow");
-		trainningResultsPanel.setBackground(GRAY);
-		trainningResultsPanel.setLayout(new MigLayout("", "[::330.00,grow]", "[100.00px]"));
+		//trainningResultsPanel = new JPanel();
+		//trainPanel.add(trainningResultsPanel, "flowx,cell 0 3 3 1,grow");
+		//trainningResultsPanel.setBackground(GRAY);
+		//trainningResultsPanel.setLayout(new MigLayout("", "[::330.00,grow]", "[:100.00px:100.00px]"));
 
 		trainresultsTextarea = new CustomJTextArea();
-		trainresultsTextarea.setFont(new Font("Arial", Font.PLAIN, 10));
-		trainningResultsPanel.add(trainresultsTextarea, "cell 0 0,grow");
-		trainresultsTextarea.setText("train Results Text Area slkdfglñkdfjg ñldfkgj ñldkgj dlfñkgj ñldskg"
-				+ "asdfsadf sadfasd fsda fasd f asdf sda fsda f sdafjasdlkfjasñlk sdlkj fsdlkñj fsaldñk flñksd");
-		trainresultsTextarea.setVisible(false);
+		trainResultsScrollPane = new JScrollPane(trainresultsTextarea);
+		trainresultsTextarea.setFont(new Font("Arial", Font.PLAIN, 10));		
+		trainPanel.add(trainResultsScrollPane, "flowx,cell 0 3 3 1,grow");
+		trainresultsTextarea.setVisible(true);
+		//trainningResultsPanel.add(trainResultsScrollPane, "cell 0 0,grow");		
+		//trainresultsTextarea.setText("train Results Text Area slkdfglñkdfjg ñldfkgj ñldkgj dlfñkgj ñldskg"
+		//		+ "asdfsadf sadfasd fsda fasd f asdf sda fsda f sdafjasdlkfjasñlk sdlkj fsdlkñj fsaldñk flñksd");
 		
 		extract_features_button.addActionListener(this);
 		saveBrowseButton.addActionListener(this);
 
 		classifyPanel = new JPanel();
 		add(classifyPanel, "flowx,cell 0 2,growy");
-		classifyPanel.setLayout(new MigLayout("ins 0", "[grow][grow][]", "[][][50.00px][:61.00px:102.00px,grow,top]"));
+		classifyPanel.setLayout(new MigLayout("ins 0", "[::90.00,grow][::191.00,grow][]", "[][][50.00px:50.00px:50.00px][][50.00px:n:50.00px,grow,top]"));
 		classifyPanel.setBackground(GRAY);
 
 		lblFileToClassify = new CustomJLabel("File to classify");
@@ -180,18 +185,25 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 		classify_button = new CustomJButton("Classify");
 		classifyPanel.add(classify_button, "cell 0 2 3 1,grow");
 		
+		lblClassificationDone = new CustomJLabel("Classification done. The class of the audio file is:");
+		lblClassificationDone.setFont(new Font("Arial", Font.PLAIN, 10));
+		classifyPanel.add(lblClassificationDone, "cell 0 3 3 1");
+		lblClassificationDone.setVisible(false);
+		
 		classificationResultsPanel = new JPanel();
-		classifyPanel.add(classificationResultsPanel, "cell 0 3 3 1,grow");
-		classificationResultsPanel.setLayout(new MigLayout("", "[::330.00,grow]", "[110.00px:110.00px,grow]"));
+		classifyPanel.add(classificationResultsPanel, "cell 0 4 3 1,grow");
+		classificationResultsPanel.setLayout(new MigLayout("", "[grow]", "[grow]"));
 		classificationResultsPanel.setBackground(GRAY);
-
+		
 		
 		classificationResultsTextArea = new CustomJTextArea();
-		classificationResultsTextArea.setFont(new Font("Arial", Font.PLAIN, 10));
-		classificationResultsPanel.add(classificationResultsTextArea, "cell 0 0,grow");
-		classificationResultsTextArea.setText("train Results Text Area slkdfglñkdfjg ñldfkgj ñldkgj dlfñkgj ñldskg"
-				+ "asdfsadf sadfasd fsda fasd f asdf sda fsda f sdafjasdlkfjasñlk sdlkj fsdlkñj fsaldñk flñksd");
-		classificationResultsTextArea.setVisible(false);
+		classificationResultsTextArea.setWrapStyleWord(true);
+		classificationResultsTextArea.setLineWrap(false);
+		classificationResultsPanel.add(classificationResultsTextArea, "cell 0 0,alignx center,aligny center");
+		classificationResultsTextArea.setFont(new Font("Arial", Font.BOLD, 20));	
+		classificationResultsTextArea.setVisible(true);
+		//classificationResultsTextArea.setText("train Results Text Area slkdfglñkdfjg ñldfkgj ñldkgj dlfñkgj ñldskg"
+		//		+ "asdfsadf sadfasd fsda fasd f asdf sda fsda f sdafjasdlkfjasñlk sdlkj fsdlkñj fsaldñk flñksd");
 		
 		classify_button.addActionListener(this);
 		loadModelBrowseButton.addActionListener(this);
@@ -199,6 +211,7 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 		controller.dm_.aggregators = new Aggregator[] {
 				// (Aggregator) (controller.dm_.aggregatorMap.get("Mean").clone()),
 				(Aggregator) (controller.dm_.aggregatorMap.get("Density Based Average").clone()) };
+		
 	}
 
 	/**
@@ -587,4 +600,21 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 		return path;
 	}
 
+	
+
+	public CustomJTextArea getTrainningResultsTextArea() {
+		return trainresultsTextarea;
+	}
+
+	public CustomJTextArea getClassificationResultsTextArea() {
+		return classificationResultsTextArea;
+	}
+
+	
+	public CustomJLabel getLblClassificationDone() {
+		return lblClassificationDone;
+	}
+
+
+	
 }
