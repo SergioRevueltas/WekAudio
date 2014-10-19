@@ -268,6 +268,7 @@ public class Controller implements ModelListener {
 
 	private WekaStatistic wekaStatistics;
 
+	public AboutFrame aboutFrame;
 	
 
 	/**
@@ -305,6 +306,7 @@ public class Controller implements ModelListener {
 		removeBatchAction = new RemoveBatchAction(this);
 		viewBatchAction = new ViewBatchAction(this);
 		wekaStatistics = new WekaStatistic();
+		aboutFrame = new AboutFrame(this);
 	}
 
 	/**
