@@ -152,17 +152,15 @@ public class WekaManager {
 
 	private static WekaStatistic runEval(Controller controller, Classifier cls, Instances inst) {
 		Evaluation eval = null;
-		WekaStatistic wekaStatistic = new WekaStatistic();
+		WekaStatistic wekaStatistic = null;
 		try {
 			eval = new Evaluation(inst);
 			Random rand = new Random(1);  // using seed = 1
 			int folds = 10;
 			eval.crossValidateModel(cls, inst, folds, rand);
-			// save statics
-			wekaStatistic.setSummary(eval.toSummaryString());
-			wekaStatistic.setConfusionMatrix(eval.toMatrixString());
-			wekaStatistic.setModel(cls.toString());
-			wekaStatistic.setStaticsDetails(eval.toClassDetailsString());
+			
+			wekaStatistic = new WekaStatistic(cls, eval);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
