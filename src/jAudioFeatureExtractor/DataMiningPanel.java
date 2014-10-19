@@ -200,7 +200,7 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 		classificationResultsTextArea.setWrapStyleWord(true);
 		classificationResultsTextArea.setLineWrap(false);
 		classificationResultsPanel.add(classificationResultsTextArea, "cell 0 0,alignx center,aligny center");
-		classificationResultsTextArea.setFont(new Font("Arial", Font.BOLD, 20));	
+		classificationResultsTextArea.setFont(new Font("Arial", Font.BOLD, 24));	
 		classificationResultsTextArea.setVisible(true);
 		//classificationResultsTextArea.setText("train Results Text Area slkdfglñkdfjg ñldfkgj ñldkgj dlfñkgj ñldskg"
 		//		+ "asdfsadf sadfasd fsda fasd f asdf sda fsda f sdafjasdlkfjasñlk sdlkj fsdlkñj fsaldñk flñksd");
@@ -389,9 +389,9 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 						JOptionPane.INFORMATION_MESSAGE);
 				return ;
 			}
-			if (recordings.length == 1){
+			if (recordings.length < 10){
 				JOptionPane.showMessageDialog(controller.getFrame(), 
-						"You have to add more than one audio file.\n"
+						"You have to add at least 10 audio files.\n"
 						+ "Please, check out help menu to get more info.", "Info",
 						JOptionPane.INFORMATION_MESSAGE);
 				return ;
