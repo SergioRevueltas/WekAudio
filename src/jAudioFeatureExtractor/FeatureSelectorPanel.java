@@ -378,9 +378,9 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 	}
 
 	private void launchAggEditTable() {
-		if (aggregator_editor == null){
-			aggregator_editor = new AggregatorsFrame(controller);
-		}
+		//if (aggregator_editor == null){
+		//}
+		aggregator_editor = new AggregatorsFrame(controller);
 		this.controller.getFrame().setEnabled(false);
 		aggregator_editor.setVisible(true);
 	}

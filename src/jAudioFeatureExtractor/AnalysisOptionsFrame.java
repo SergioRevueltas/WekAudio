@@ -49,7 +49,7 @@ public class AnalysisOptionsFrame extends JFrame implements ActionListener {
 		//Icon from http://icons8.com/icons/#!/1391/audio-file
 		this.setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage("img/icon.png"));
 		this.controller = controller;
-		setBounds(new Rectangle(250, 30, 400, 300));
+		setBounds(new Rectangle(310, 130, 400, 300));
 		setResizable(false);
 		getContentPane().setBackground(OuterFrame.GRAY_PANELS);
 		getContentPane().setLayout(
