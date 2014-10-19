@@ -16,6 +16,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -47,7 +48,7 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 	 */
 	private JPanel trainPanel;
 	private JPanel classifyPanel;
-	private JPanel trainningResultsPanel;
+	//private JPanel trainningResultsPanel;
 	private JPanel classificationResultsPanel;
 	/**
 	 * GUI buttons
@@ -79,6 +80,7 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 	private CustomJComboBox cbClassifiers;
 	private CustomJTextArea trainresultsTextarea;
 	private CustomJTextArea classificationResultsTextArea;
+	private JScrollPane trainResultsScrollPane;
 
 	/* CONSTRUCTOR ************************************************************ */
 
@@ -131,17 +133,19 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 		trainPanel.add(extract_features_button, "cell 0 2 3 1,grow");
 		extract_features_button.setText("Train");
 
-		trainningResultsPanel = new JPanel();
-		trainPanel.add(trainningResultsPanel, "flowx,cell 0 3 3 1,grow");
-		trainningResultsPanel.setBackground(GRAY);
-		trainningResultsPanel.setLayout(new MigLayout("", "[::330.00,grow]", "[100.00px]"));
+		//trainningResultsPanel = new JPanel();
+		//trainPanel.add(trainningResultsPanel, "flowx,cell 0 3 3 1,grow");
+		//trainningResultsPanel.setBackground(GRAY);
+		//trainningResultsPanel.setLayout(new MigLayout("", "[::330.00,grow]", "[:100.00px:100.00px]"));
 
 		trainresultsTextarea = new CustomJTextArea();
-		trainresultsTextarea.setFont(new Font("Arial", Font.PLAIN, 10));
-		trainningResultsPanel.add(trainresultsTextarea, "cell 0 0,grow");
-		trainresultsTextarea.setText("train Results Text Area slkdfglñkdfjg ñldfkgj ñldkgj dlfñkgj ñldskg"
-				+ "asdfsadf sadfasd fsda fasd f asdf sda fsda f sdafjasdlkfjasñlk sdlkj fsdlkñj fsaldñk flñksd");
-		trainresultsTextarea.setVisible(false);
+		trainResultsScrollPane = new JScrollPane(trainresultsTextarea);
+		trainresultsTextarea.setFont(new Font("Arial", Font.PLAIN, 10));		
+		trainPanel.add(trainResultsScrollPane, "flowx,cell 0 3 3 1,grow");
+		trainresultsTextarea.setVisible(true);
+		//trainningResultsPanel.add(trainResultsScrollPane, "cell 0 0,grow");		
+		//trainresultsTextarea.setText("train Results Text Area slkdfglñkdfjg ñldfkgj ñldkgj dlfñkgj ñldskg"
+		//		+ "asdfsadf sadfasd fsda fasd f asdf sda fsda f sdafjasdlkfjasñlk sdlkj fsdlkñj fsaldñk flñksd");
 		
 		extract_features_button.addActionListener(this);
 		saveBrowseButton.addActionListener(this);
@@ -199,6 +203,7 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 		controller.dm_.aggregators = new Aggregator[] {
 				// (Aggregator) (controller.dm_.aggregatorMap.get("Mean").clone()),
 				(Aggregator) (controller.dm_.aggregatorMap.get("Density Based Average").clone()) };
+		
 	}
 
 	/**
@@ -587,4 +592,15 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 		return path;
 	}
 
+	
+
+	public CustomJTextArea getTrainningResultsTextArea() {
+		return trainresultsTextarea;
+	}
+
+	
+	
+
+
+	
 }

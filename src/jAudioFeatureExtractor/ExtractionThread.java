@@ -10,6 +10,8 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import com.srevueltas.datamining.WekaManager;
+import com.srevueltas.datamining.WekaStatistic;
+import com.srevueltas.gui.CustomJTextArea;
 
 /**
  * This is a thread for executing the DataModel.extractFeatures without tying up the swing dispatch thread.
@@ -76,11 +78,21 @@ public class ExtractionThread extends Thread implements Updater {
 				progressFrame.setVisible(false);
 				outerFrame.setEnabled(true);
 				outerFrame.toFront();
+				// train
 				if (!toClassify && classificationResults != null) {
+					CustomJTextArea cjta = outerFrame.dataMiningPanel.getTrainningResultsTextArea();
+					cjta.setText(controller.getWekaStatistics().getConfusionMatrix() +
+								controller.getWekaStatistics().getSummary()
+								//controller.getWekaStatistics().getStaticsDetails()
+								);
+					cjta.setVisible(true);
+					
 					JOptionPane.showMessageDialog(controller.getFrame(),
 							"Features successfully extracted and saved.", "DONE",
 							JOptionPane.INFORMATION_MESSAGE);
-				} else if (classificationResults != null){
+							
+				} //classify 
+				else if (classificationResults != null){
 					JOptionPane.showMessageDialog(controller.getFrame(),
 							classificationResults.toString(), "Classification done",
 							JOptionPane.INFORMATION_MESSAGE);
@@ -149,7 +161,8 @@ public class ExtractionThread extends Thread implements Updater {
 			}
 			
 			if (!toClassify && classificationResults != null){
-				WekaManager.saveModel(controller, valuesSavePath, classifierName);
+				WekaStatistic wekaStatistic = WekaManager.saveModel(controller, valuesSavePath, classifierName);
+				controller.setWekaStatistics(wekaStatistic);
 			}
 			SwingUtilities.invokeLater(resumeGUI);
 		} 
