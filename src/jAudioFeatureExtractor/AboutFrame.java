@@ -17,6 +17,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Map;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -88,6 +90,7 @@ public class AboutFrame extends JFrame {
 	private JLabel lblWekaauthors;
 	private JPanel panel;
 	private JButton btnWekaaudio;
+	private JButton btnFacebook;
 
 	/**
 	 * This is the default constructor
@@ -105,7 +108,7 @@ public class AboutFrame extends JFrame {
 	 */
 	private void initialize() {
 		this.setContentPane(getJContentPane());
-		this.setTitle("About");
+		this.setTitle("About WekaAudio");
 		// Icon from http://icons8.com/icons/#!/1391/audio-file
 		this.setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage("img/icon.png"));
 		this.setBounds(new Rectangle(260, 60, 500, 440));
@@ -160,10 +163,7 @@ public class AboutFrame extends JFrame {
 		if (descriptionPanel == null) {
 			descriptionPanel = new JPanel();
 			descriptionPanel
-					.setLayout(new MigLayout(
-							"",
-							"[330.00px:n:330.00px,grow][120.00:n,grow]",
-							"[25.00px:n:25.00px][30.00px:n:30.00px][][25.00px:n:25.00px][25.00px:n:25.00px][][20.00px:n:20.00px][25.00px:n:25.00px][][30.00px:n:30.00px][20.00px:n:20.00px][10.00px:n:10.00px][][15.00px:n:15.00px,grow][][]"));
+					.setLayout(new MigLayout("", "[330.00px:n:330.00px,grow][120.00:n,grow]", "[15.00px:n:15.00px][30.00px:n:30.00px][][15.00px:n:15.00px][25.00px:n:25.00px][][15.00px:n:15.00px][25.00px:n:25.00px][][30.00px:n:30.00px][20.00px:n:20.00px][15.00px:n:15.00px][50.00px:n:50.00px][20.00px:n:20.00px][]"));
 			descriptionPanel.setBackground(OuterFrame.GRAY_PANELS);
 			descriptionTitle = new CustomJLabel("WekaAudio");
 			descriptionTitle.setFont(new Font("Arial", Font.BOLD, 20));
@@ -179,7 +179,7 @@ public class AboutFrame extends JFrame {
 			descriptionPanel.add(getLblAuthor(), "cell 0 10 2 1,alignx center,aligny bottom");
 			descriptionPanel.add(getLblAuthorlocation(), "cell 0 11 2 1,alignx center,aligny top");
 			descriptionPanel.add(getOKbutton(), "cell 0 14 2 1,alignx center");
-			descriptionPanel.add(getPanel(), "cell 0 12 2 1,alignx center,aligny center");
+			descriptionPanel.add(getPanel(), "cell 0 12 2 1,alignx center,aligny top");
 		}
 		return descriptionPanel;
 	}
@@ -222,9 +222,9 @@ public class AboutFrame extends JFrame {
 	private JLabel getLblLicense() {
 		if (lblLicense == null) {
 			lblLicense = new CustomJLabel("GNU General Public License version 2.0 (GPLv2)");
-					//new CustomJLabel(
-						//	"<html><a href=\"http://www.google.es\">GNU General Public License version 2.0 (GPLv2)</a></html>.");
-			Font font = new Font("Arial", Font.PLAIN, 11); 
+			// new CustomJLabel(
+			// "<html><a href=\"http://www.google.es\">GNU General Public License version 2.0 (GPLv2)</a></html>.");
+			Font font = new Font("Arial", Font.PLAIN, 11);
 			lblLicense.setFont(font);
 			lblLicense.setForeground(Color.BLUE);
 			lblLicense.setEnabled(true);
@@ -248,8 +248,8 @@ public class AboutFrame extends JFrame {
 
 				@Override
 				public void mousePressed(MouseEvent e) {
-					Font font = new Font("Arial", Font.BOLD, 11); 
-					Map<TextAttribute,Integer> attributes = (Map<TextAttribute, Integer>) font.getAttributes();
+					Font font = new Font("Arial", Font.BOLD, 11);
+					Map<TextAttribute, Integer> attributes = (Map<TextAttribute, Integer>) font.getAttributes();
 					attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
 					lblLicense.setFont(font.deriveFont(attributes));
 					lblLicense.setForeground(Color.magenta.darker());
@@ -266,8 +266,8 @@ public class AboutFrame extends JFrame {
 
 				@Override
 				public void mouseEntered(MouseEvent e) {
-					Font font = new Font("Arial", Font.BOLD, 11); 
-					Map<TextAttribute,Integer> attributes = (Map<TextAttribute, Integer>) font.getAttributes();
+					Font font = new Font("Arial", Font.BOLD, 11);
+					Map<TextAttribute, Integer> attributes = (Map<TextAttribute, Integer>) font.getAttributes();
 					attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
 					lblLicense.setFont(font.deriveFont(attributes));
 
@@ -289,6 +289,7 @@ public class AboutFrame extends JFrame {
 	private JLabel getLblWeka() {
 		if (lblWeka == null) {
 			lblWeka = new CustomJLabel("Data Mining Software powered by Weka.");
+			lblWeka.setFont(new Font("Arial", Font.BOLD, 12));
 		}
 		return lblWeka;
 	}
@@ -296,6 +297,7 @@ public class AboutFrame extends JFrame {
 	private JLabel getLblJaudio() {
 		if (lblJaudio == null) {
 			lblJaudio = new CustomJLabel("Fork from jAudio project.");
+			lblJaudio.setFont(new Font("Arial", Font.BOLD, 14));
 		}
 		return lblJaudio;
 	}
@@ -324,28 +326,36 @@ public class AboutFrame extends JFrame {
 
 	private JButton getBtnTwitter() {
 		if (btnTwitter == null) {
-			btnTwitter = new JButton("twitter");
+			Icon normalIcon = new ImageIcon("img/twitterNormal100ppp.png");
+			Icon pressedIcon = new ImageIcon("img/twitterSelected100ppp.png");
+			btnTwitter = new CustomJButton(normalIcon, pressedIcon);
 		}
 		return btnTwitter;
 	}
 
 	private JButton getBtnGithub() {
 		if (btnGithub == null) {
-			btnGithub = new JButton("GitHub");
+			Icon normalIcon = new ImageIcon("img/githubNormal100ppp.png");
+			Icon pressedIcon = new ImageIcon("img/githubSelected100ppp.png");
+			btnGithub = new CustomJButton(normalIcon, pressedIcon);
 		}
 		return btnGithub;
 	}
 
 	private JButton getBtnGoogleplus() {
 		if (btnGoogleplus == null) {
-			btnGoogleplus = new JButton("googlePlus");
+			Icon normalIcon = new ImageIcon("img/gplusNormal100ppp.png");
+			Icon pressedIcon = new ImageIcon("img/gplusSelected100ppp.png");
+			btnGoogleplus = new CustomJButton(normalIcon, pressedIcon);
 		}
 		return btnGoogleplus;
 	}
 
 	private JButton getBtnLinkedin() {
 		if (btnLinkedin == null) {
-			btnLinkedin = new JButton("linkedin");
+			Icon normalIcon = new ImageIcon("img/linkedinNormal100ppp.png");
+			Icon pressedIcon = new ImageIcon("img/linkedinSelected100ppp.png");
+			btnLinkedin = new CustomJButton(normalIcon, pressedIcon);
 		}
 		return btnLinkedin;
 	}
@@ -362,11 +372,12 @@ public class AboutFrame extends JFrame {
 		if (panel == null) {
 			panel = new JPanel();
 			panel.setBackground(OuterFrame.GRAY_PANELS);
-			panel.setLayout(new MigLayout("", "[][][][]", "[]"));
+			panel.setLayout(new MigLayout("", "[][][][][]", "[]"));
 			panel.add(getBtnGithub(), "cell 0 0,alignx center,aligny center");
 			panel.add(getBtnTwitter(), "flowy,cell 1 0");
-			panel.add(getBtnGoogleplus(), "cell 2 0");
-			panel.add(getBtnLinkedin(), "cell 3 0");
+			panel.add(getBtnFacebook(), "cell 2 0");
+			panel.add(getBtnGoogleplus(), "cell 3 0");
+			panel.add(getBtnLinkedin(), "cell 4 0");
 		}
 		return panel;
 	}
@@ -376,5 +387,13 @@ public class AboutFrame extends JFrame {
 			btnWekaaudio = new JButton("wekaAudio");
 		}
 		return btnWekaaudio;
+	}
+	private JButton getBtnFacebook() {
+		if (btnFacebook == null) {
+			Icon normalIcon = new ImageIcon("img/facebookNormal100ppp.png");
+			Icon pressedIcon = new ImageIcon("img/facebookSelected100ppp.png");
+			btnFacebook = new CustomJButton(normalIcon, pressedIcon);
+		}
+		return btnFacebook;
 	}
 }
