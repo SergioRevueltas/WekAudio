@@ -3,10 +3,19 @@
  */
 package jAudioFeatureExtractor;
 
+import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.font.TextAttribute;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -63,7 +72,7 @@ public class AboutFrame extends JFrame {
 	private JPanel chosenFeaturePanel = null;
 
 	private JPanel featureListPanel = null;
-	
+
 	private JLabel lblAuthor;
 	private JLabel lblAuthorlocation;
 	private JLabel lblLicense;
@@ -97,7 +106,7 @@ public class AboutFrame extends JFrame {
 	private void initialize() {
 		this.setContentPane(getJContentPane());
 		this.setTitle("About");
-		//Icon from http://icons8.com/icons/#!/1391/audio-file
+		// Icon from http://icons8.com/icons/#!/1391/audio-file
 		this.setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage("img/icon.png"));
 		this.setBounds(new Rectangle(260, 60, 500, 440));
 		this.getContentPane().setBackground(OuterFrame.GRAY_PANELS);
@@ -113,13 +122,12 @@ public class AboutFrame extends JFrame {
 
 	}
 
-	private void cancel(){
+	private void cancel() {
 		this.setVisible(false);
 		controller.getFrame().setEnabled(true);
 		controller.getFrame().toFront();
 	}
 
-	
 	/**
 	 * This method initializes jContentPane
 	 * 
@@ -140,12 +148,8 @@ public class AboutFrame extends JFrame {
 			jContentPane.setLayout(new MigLayout("", "[520.00px]", "[400.00px:n:400.00px,grow]"));
 			jContentPane.add(getDescription(), "cell 0 0,grow");
 		}
-		return jContentPane; 
+		return jContentPane;
 	}
-
-
-
-
 
 	/**
 	 * This method initializes Description
@@ -155,7 +159,11 @@ public class AboutFrame extends JFrame {
 	private JPanel getDescription() {
 		if (descriptionPanel == null) {
 			descriptionPanel = new JPanel();
-			descriptionPanel.setLayout(new MigLayout("", "[330.00px:n:330.00px,grow][120.00:n,grow]", "[25.00px:n:25.00px][30.00px:n:30.00px][][25.00px:n:25.00px][25.00px:n:25.00px][][20.00px:n:20.00px][25.00px:n:25.00px][][30.00px:n:30.00px][20.00px:n:20.00px][10.00px:n:10.00px][][15.00px:n:15.00px,grow][][]"));
+			descriptionPanel
+					.setLayout(new MigLayout(
+							"",
+							"[330.00px:n:330.00px,grow][120.00:n,grow]",
+							"[25.00px:n:25.00px][30.00px:n:30.00px][][25.00px:n:25.00px][25.00px:n:25.00px][][20.00px:n:20.00px][25.00px:n:25.00px][][30.00px:n:30.00px][20.00px:n:20.00px][10.00px:n:10.00px][][15.00px:n:15.00px,grow][][]"));
 			descriptionPanel.setBackground(OuterFrame.GRAY_PANELS);
 			descriptionTitle = new CustomJLabel("WekaAudio");
 			descriptionTitle.setFont(new Font("Arial", Font.BOLD, 20));
@@ -168,7 +176,7 @@ public class AboutFrame extends JFrame {
 			descriptionPanel.add(getLblWeka(), "cell 0 7,alignx center,aligny bottom");
 			descriptionPanel.add(getBtnWeka(), "cell 1 7 1 2,grow");
 			descriptionPanel.add(getLblWekaauthors(), "cell 0 8,alignx center,aligny top");
-			descriptionPanel.add(getLblAuthor(),"cell 0 10 2 1,alignx center,aligny bottom");
+			descriptionPanel.add(getLblAuthor(), "cell 0 10 2 1,alignx center,aligny bottom");
 			descriptionPanel.add(getLblAuthorlocation(), "cell 0 11 2 1,alignx center,aligny top");
 			descriptionPanel.add(getOKbutton(), "cell 0 14 2 1,alignx center");
 			descriptionPanel.add(getPanel(), "cell 0 12 2 1,alignx center,aligny center");
@@ -195,9 +203,6 @@ public class AboutFrame extends JFrame {
 		return cancelButton;
 	}
 
-
-
-
 	private JLabel getLblAuthor() {
 		if (lblAuthor == null) {
 			lblAuthor = new CustomJLabel("\tCreated by Sergio Revueltas.\n");
@@ -205,6 +210,7 @@ public class AboutFrame extends JFrame {
 		}
 		return lblAuthor;
 	}
+
 	private JLabel getLblAuthorlocation() {
 		if (lblAuthorlocation == null) {
 			lblAuthorlocation = new CustomJLabel("University of Almeria, Spain. (2014)");
@@ -212,25 +218,88 @@ public class AboutFrame extends JFrame {
 		}
 		return lblAuthorlocation;
 	}
+
 	private JLabel getLblLicense() {
 		if (lblLicense == null) {
 			lblLicense = new CustomJLabel("GNU General Public License version 2.0 (GPLv2)");
-			lblLicense.setFont(new Font("Arial", Font.PLAIN, 10));
+					//new CustomJLabel(
+						//	"<html><a href=\"http://www.google.es\">GNU General Public License version 2.0 (GPLv2)</a></html>.");
+			Font font = new Font("Arial", Font.PLAIN, 11); 
+			lblLicense.setFont(font);
+			lblLicense.setForeground(Color.BLUE);
+			lblLicense.setEnabled(true);
+			lblLicense.setFocusable(true);
+			lblLicense.addMouseListener(new MouseListener() {
+
+				@Override
+				public void mouseReleased(MouseEvent e) {
+					lblLicense.setFont(new Font("Arial", Font.PLAIN, 11));
+					lblLicense.setForeground(Color.BLUE);
+					try {
+						java.awt.Desktop.getDesktop().browse(new URI("http://www.gnu.org/licenses/gpl-2.0.html"));
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (URISyntaxException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+
+				@Override
+				public void mousePressed(MouseEvent e) {
+					Font font = new Font("Arial", Font.BOLD, 11); 
+					Map<TextAttribute,Integer> attributes = (Map<TextAttribute, Integer>) font.getAttributes();
+					attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+					lblLicense.setFont(font.deriveFont(attributes));
+					lblLicense.setForeground(Color.magenta.darker());
+
+				}
+
+				@Override
+				public void mouseExited(MouseEvent e) {
+					Cursor cursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
+					setCursor(cursor);
+					lblLicense.setForeground(Color.BLUE);
+					lblLicense.setFont(new Font("Arial", Font.PLAIN, 11));
+				}
+
+				@Override
+				public void mouseEntered(MouseEvent e) {
+					Font font = new Font("Arial", Font.BOLD, 11); 
+					Map<TextAttribute,Integer> attributes = (Map<TextAttribute, Integer>) font.getAttributes();
+					attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+					lblLicense.setFont(font.deriveFont(attributes));
+
+					lblLicense.setForeground(Color.BLUE);
+					Cursor cursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
+					setCursor(cursor);
+				}
+
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					// TODO Auto-generated method stub
+
+				}
+			});
 		}
 		return lblLicense;
 	}
+
 	private JLabel getLblWeka() {
 		if (lblWeka == null) {
 			lblWeka = new CustomJLabel("Data Mining Software powered by Weka.");
 		}
 		return lblWeka;
 	}
+
 	private JLabel getLblJaudio() {
 		if (lblJaudio == null) {
 			lblJaudio = new CustomJLabel("Fork from jAudio project.");
 		}
 		return lblJaudio;
 	}
+
 	private JLabel getLblJaudioauthors() {
 		if (lblJaudioauthors == null) {
 			lblJaudioauthors = new CustomJLabel("Created by Daniel McEnnis and Cory McKay.");
@@ -238,42 +307,49 @@ public class AboutFrame extends JFrame {
 		}
 		return lblJaudioauthors;
 	}
+
 	private JButton getBtnJaudio() {
 		if (btnJaudio == null) {
 			btnJaudio = new JButton("jAudio");
 		}
 		return btnJaudio;
 	}
+
 	private JButton getBtnWeka() {
 		if (btnWeka == null) {
 			btnWeka = new JButton("weka");
 		}
 		return btnWeka;
 	}
+
 	private JButton getBtnTwitter() {
 		if (btnTwitter == null) {
 			btnTwitter = new JButton("twitter");
 		}
 		return btnTwitter;
 	}
+
 	private JButton getBtnGithub() {
 		if (btnGithub == null) {
 			btnGithub = new JButton("GitHub");
 		}
 		return btnGithub;
 	}
+
 	private JButton getBtnGoogleplus() {
 		if (btnGoogleplus == null) {
 			btnGoogleplus = new JButton("googlePlus");
 		}
 		return btnGoogleplus;
 	}
+
 	private JButton getBtnLinkedin() {
 		if (btnLinkedin == null) {
 			btnLinkedin = new JButton("linkedin");
 		}
 		return btnLinkedin;
 	}
+
 	private JLabel getLblWekaauthors() {
 		if (lblWekaauthors == null) {
 			lblWekaauthors = new CustomJLabel("The University of Waikato");
@@ -281,6 +357,7 @@ public class AboutFrame extends JFrame {
 		}
 		return lblWekaauthors;
 	}
+
 	private JPanel getPanel() {
 		if (panel == null) {
 			panel = new JPanel();
@@ -293,6 +370,7 @@ public class AboutFrame extends JFrame {
 		}
 		return panel;
 	}
+
 	private JButton getBtnWekaaudio() {
 		if (btnWekaaudio == null) {
 			btnWekaaudio = new JButton("wekaAudio");
