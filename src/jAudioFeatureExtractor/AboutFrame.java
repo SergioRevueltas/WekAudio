@@ -111,7 +111,7 @@ public class AboutFrame extends JFrame {
 		this.setTitle("About WekaAudio");
 		// Icon from http://icons8.com/icons/#!/1391/audio-file
 		this.setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage("img/icon.png"));
-		this.setBounds(new Rectangle(260, 60, 500, 440));
+		this.setBounds(new Rectangle(260, 60, 500, 470));
 		this.getContentPane().setBackground(OuterFrame.GRAY_PANELS);
 		// this.getContentPane().setLayout(new MigLayout("", "[67.00][]", "[93.00px:80.00px][60.00px:23px][]"));
 		this.setAlwaysOnTop(true);
@@ -163,7 +163,7 @@ public class AboutFrame extends JFrame {
 		if (descriptionPanel == null) {
 			descriptionPanel = new JPanel();
 			descriptionPanel
-					.setLayout(new MigLayout("", "[330.00px:n:330.00px,grow][120.00:n,grow]", "[15.00px:n:15.00px][30.00px:n:30.00px][][15.00px:n:15.00px][25.00px:n:25.00px][][15.00px:n:15.00px][25.00px:n:25.00px][][30.00px:n:30.00px][20.00px:n:20.00px][15.00px:n:15.00px][50.00px:n:50.00px][20.00px:n:20.00px][]"));
+					.setLayout(new MigLayout("", "[330.00px:n:330.00px,grow][120.00:n,grow]", "[15.00px:n:15.00px][30.00px:n:30.00px][][15.00px:n:15.00px][25.00px:n:25.00px][][15.00px:n:15.00px][25.00px:n:25.00px][][40.00px:n:40.00px][20.00px:n:20.00px][15.00px:n:15.00px][60.00px:n:60.00px][20.00px:n:20.00px][]"));
 			descriptionPanel.setBackground(OuterFrame.GRAY_PANELS);
 			descriptionTitle = new CustomJLabel("WekaAudio");
 			descriptionTitle.setFont(new Font("Arial", Font.BOLD, 20));
@@ -313,6 +313,8 @@ public class AboutFrame extends JFrame {
 	private JButton getBtnJaudio() {
 		if (btnJaudio == null) {
 			btnJaudio = new JButton("jAudio");
+			//Icon normalIcon = new ImageIcon("img/jAudioLogo.jpg");
+			//btnJaudio = new CustomJButton(normalIcon, normalIcon, normalIcon);
 		}
 		return btnJaudio;
 	}
@@ -380,7 +382,7 @@ public class AboutFrame extends JFrame {
 		if (panel == null) {
 			panel = new JPanel();
 			panel.setBackground(OuterFrame.GRAY_PANELS);
-			panel.setLayout(new MigLayout("", "[][][][][]", "[]"));
+			panel.setLayout(new MigLayout("", "[][][][][]", "[40.00:n:40.00]"));
 			panel.add(getBtnGithub(), "cell 0 0,alignx center,aligny center");
 			panel.add(getBtnTwitter(), "flowy,cell 1 0");
 			panel.add(getBtnFacebook(), "cell 2 0");
