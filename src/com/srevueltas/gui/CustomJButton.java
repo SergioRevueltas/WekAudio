@@ -35,6 +35,7 @@ public class CustomJButton extends JButton implements ActionListener, MouseListe
 
 	private Icon normalIcon;
 	private Icon selectedIcon;
+	private Icon pressedIcon;
 
 	/**
 	 * @wbp.parser.constructor
@@ -60,10 +61,11 @@ public class CustomJButton extends JButton implements ActionListener, MouseListe
 		setContentAreaFilled(false);
 	}
 
-	public CustomJButton(Icon normalIcon, Icon pressedIcon) {
+	public CustomJButton(Icon normalIcon, Icon selectedIcon, Icon pressedIcon) {
 		super();
 		this.normalIcon = normalIcon;
-		this.selectedIcon = pressedIcon;
+		this.selectedIcon = selectedIcon;
+		this.pressedIcon = pressedIcon;
 		this.setBackground(OuterFrame.GRAY_PANELS);
 		this.hovered = false;
 		this.clicked = false;
@@ -71,7 +73,12 @@ public class CustomJButton extends JButton implements ActionListener, MouseListe
 		this.addMouseListener(this);
 		this.setMargin(new Insets(0, 0, 0, 0));
 		this.setFocusable(false);
-		setFocusPainted(false);
+		this.setFocusPainted(false);
+		this.setRequestFocusEnabled(false);
+		this.setOpaque(false);
+		this.setOpaque(false);
+		this.setBorderPainted(false);
+		this.setRolloverEnabled(false);
 
 	}
 
@@ -100,12 +107,13 @@ public class CustomJButton extends JButton implements ActionListener, MouseListe
 			g2d.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 7, 7);
 		} else {
 			if (clicked) {
-				this.setIcon(selectedIcon);
+				this.setIcon(pressedIcon);
 			} else if (hovered) {
 				this.setIcon(selectedIcon);
 			} else {
 				this.setIcon(normalIcon);
 			}
+			g2d.setColor(OuterFrame.GRAY_PANELS);
 		}
 		super.paintComponent(g);
 

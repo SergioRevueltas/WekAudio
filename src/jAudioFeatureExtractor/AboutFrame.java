@@ -248,7 +248,7 @@ public class AboutFrame extends JFrame {
 
 				@Override
 				public void mousePressed(MouseEvent e) {
-					Font font = new Font("Arial", Font.BOLD, 11);
+					Font font = new Font("Arial", Font.PLAIN, 11);
 					Map<TextAttribute, Integer> attributes = (Map<TextAttribute, Integer>) font.getAttributes();
 					attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
 					lblLicense.setFont(font.deriveFont(attributes));
@@ -266,7 +266,7 @@ public class AboutFrame extends JFrame {
 
 				@Override
 				public void mouseEntered(MouseEvent e) {
-					Font font = new Font("Arial", Font.BOLD, 11);
+					Font font = new Font("Arial", Font.PLAIN, 11);
 					Map<TextAttribute, Integer> attributes = (Map<TextAttribute, Integer>) font.getAttributes();
 					attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
 					lblLicense.setFont(font.deriveFont(attributes));
@@ -327,8 +327,10 @@ public class AboutFrame extends JFrame {
 	private JButton getBtnTwitter() {
 		if (btnTwitter == null) {
 			Icon normalIcon = new ImageIcon("img/twitterNormal100ppp.png");
-			Icon pressedIcon = new ImageIcon("img/twitterSelected100ppp.png");
-			btnTwitter = new CustomJButton(normalIcon, pressedIcon);
+			Icon selectedIcon = new ImageIcon("img/twitterSelected100ppp.png");
+			Icon pressedIcon = new ImageIcon("img/twitterPressed100ppp.png");
+
+			btnTwitter = new CustomJButton(normalIcon, selectedIcon, pressedIcon);
 		}
 		return btnTwitter;
 	}
@@ -336,8 +338,10 @@ public class AboutFrame extends JFrame {
 	private JButton getBtnGithub() {
 		if (btnGithub == null) {
 			Icon normalIcon = new ImageIcon("img/githubNormal100ppp.png");
-			Icon pressedIcon = new ImageIcon("img/githubSelected100ppp.png");
-			btnGithub = new CustomJButton(normalIcon, pressedIcon);
+			Icon selectedIcon = new ImageIcon("img/githubSelected100ppp.png");
+			Icon pressedIcon = new ImageIcon("img/githubPressed100ppp.png");
+
+			btnGithub = new CustomJButton(normalIcon, selectedIcon, pressedIcon);
 		}
 		return btnGithub;
 	}
@@ -345,8 +349,10 @@ public class AboutFrame extends JFrame {
 	private JButton getBtnGoogleplus() {
 		if (btnGoogleplus == null) {
 			Icon normalIcon = new ImageIcon("img/gplusNormal100ppp.png");
-			Icon pressedIcon = new ImageIcon("img/gplusSelected100ppp.png");
-			btnGoogleplus = new CustomJButton(normalIcon, pressedIcon);
+			Icon selectedIcon = new ImageIcon("img/gplusSelected100ppp.png");
+			Icon pressedIcon = new ImageIcon("img/gplusPressed100ppp.png");
+
+			btnGoogleplus = new CustomJButton(normalIcon, selectedIcon, pressedIcon);
 		}
 		return btnGoogleplus;
 	}
@@ -354,8 +360,10 @@ public class AboutFrame extends JFrame {
 	private JButton getBtnLinkedin() {
 		if (btnLinkedin == null) {
 			Icon normalIcon = new ImageIcon("img/linkedinNormal100ppp.png");
-			Icon pressedIcon = new ImageIcon("img/linkedinSelected100ppp.png");
-			btnLinkedin = new CustomJButton(normalIcon, pressedIcon);
+			Icon selectedIcon = new ImageIcon("img/linkedinSelected100ppp.png");
+			Icon pressedIcon = new ImageIcon("img/linkedinPressed100ppp.png");
+
+			btnLinkedin = new CustomJButton(normalIcon, selectedIcon, pressedIcon);
 		}
 		return btnLinkedin;
 	}
@@ -391,8 +399,10 @@ public class AboutFrame extends JFrame {
 	private JButton getBtnFacebook() {
 		if (btnFacebook == null) {
 			Icon normalIcon = new ImageIcon("img/facebookNormal100ppp.png");
-			Icon pressedIcon = new ImageIcon("img/facebookSelected100ppp.png");
-			btnFacebook = new CustomJButton(normalIcon, pressedIcon);
+			Icon selectedIcon = new ImageIcon("img/facebookSelected100ppp.png");
+			Icon pressedIcon = new ImageIcon("img/facebookPressed100ppp.png");
+
+			btnFacebook = new CustomJButton(normalIcon, selectedIcon, pressedIcon);
 		}
 		return btnFacebook;
 	}
