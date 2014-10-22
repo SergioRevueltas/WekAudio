@@ -199,10 +199,10 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 
 		recordings_table.getColumnModel().getColumn(0).setMinWidth(25);
 		recordings_table.getColumnModel().getColumn(1).setMinWidth(110);
-		
+
 		recordings_table.getColumnModel().getColumn(0).setMaxWidth(25);
 		recordings_table.getColumnModel().getColumn(1).setMaxWidth(110);
-		
+
 		recordings_table.getColumnModel().getColumn(2).setPreferredWidth(400);
 
 		buttonsPanel = new JPanel();
@@ -428,7 +428,9 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 					row_clicked[0] = recordings_table.rowAtPoint(event
 							.getPoint());
 					viewRecordingInformation();
-					//System.out.println("Clicked");
+					// System.out.println("Clicked");
+				} else if (event.equals(MouseEvent.BUTTON2)) {
+					// TODO manejar evento de botno derecho
 				} else {
 					controller.viewFileInfoAction.setEnabled(true);
 					controller.removeRecordingsAction.setEnabled(true);
@@ -442,25 +444,29 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 	 */
 	private void viewRecordingInformation() {
 		int[] selected_rows = recordings_table.getSelectedRows();
-		for (int i = 0; i < selected_rows.length; i++) {
-			try {
-				File file = new File(
-						controller.dm_.recordingsInfo[selected_rows[i]].file_path);
-				String data = jAudioFeatureExtractor.jAudioTools.AudioMethods
-						.getAudioFileFormatData(file);
-				fileInfoFrame = new FileInfoFrame(controller, controller.dm_.recordingsInfo[selected_rows[i]].identifier,controller.dm_.recordingsInfo[selected_rows[i]].file_path, data);
-				fileInfoFrame.setVisible(true);
-				controller.getFrame().setEnabled(false);
-				/*
-				JOptionPane.showMessageDialog(controller.getFrame(), data, "FILE INFORMATION",
-						JOptionPane.INFORMATION_MESSAGE);
-						*/
-			} catch (Exception e) {
-				String message = "Could not display file information for file "
-						+ controller.dm_.recordingsInfo[selected_rows[i]].file_path
-						+ "\n" + e.getMessage();
-				JOptionPane.showMessageDialog(controller.getFrame(), message, "ERROR",
-						JOptionPane.ERROR_MESSAGE);
+		if (selected_rows.length == 1) {
+			for (int i = 0; i < selected_rows.length; i++) {
+				try {
+					File file = new File(
+							controller.dm_.recordingsInfo[selected_rows[i]].file_path);
+					String data = jAudioFeatureExtractor.jAudioTools.AudioMethods
+							.getAudioFileFormatData(file);
+					fileInfoFrame =
+							new FileInfoFrame(controller, controller.dm_.recordingsInfo[selected_rows[i]].identifier,
+									controller.dm_.recordingsInfo[selected_rows[i]].file_path, data);
+					fileInfoFrame.setVisible(true);
+					controller.getFrame().setEnabled(false);
+					/*
+					JOptionPane.showMessageDialog(controller.getFrame(), data, "FILE INFORMATION",
+							JOptionPane.INFORMATION_MESSAGE);
+							*/
+				} catch (Exception e) {
+					String message = "Could not display file information for file "
+							+ controller.dm_.recordingsInfo[selected_rows[i]].file_path
+							+ "\n" + e.getMessage();
+					JOptionPane.showMessageDialog(controller.getFrame(), message, "ERROR",
+							JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		}
 	}
