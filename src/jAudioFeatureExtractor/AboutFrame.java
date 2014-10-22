@@ -195,7 +195,7 @@ public class AboutFrame extends JFrame implements ActionListener{
 			descriptionPanel
 					.setLayout(new MigLayout("", "[330.00px:n:330.00px,grow][120.00:n,grow]", "[10.00px:n:10.00px][30.00px:n:30.00px][12.00:n][30.00px:n:30.00px][5.00px:n:5.00px][30.00px:n:30.00px][30.00px:n:30.00px][5.00px:n:5.00px][30.00px:n:30.00px][30.00px:n:30.00px][40.00px:n:40.00px][20.00px:n:20.00px][15.00px:n:15.00px][60.00px:n:60.00px][16.00px:n:16.00px][]"));
 			descriptionPanel.setBackground(OuterFrame.GRAY_PANELS);
-			descriptionTitle = new CustomJLabel("WekaAudio");
+			descriptionTitle = new CustomJLabel("WekAudio");
 			descriptionTitle.setFont(new Font("Arial", Font.BOLD, 32));
 			descriptionPanel.add(descriptionTitle, "cell 0 1,alignx center,aligny bottom");
 			descriptionPanel.add(getBtnWekaaudio(), "cell 1 1 1 3,alignx center,aligny center");
