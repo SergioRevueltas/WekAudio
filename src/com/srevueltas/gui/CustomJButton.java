@@ -76,7 +76,6 @@ public class CustomJButton extends JButton implements ActionListener, MouseListe
 		this.setFocusPainted(false);
 		this.setRequestFocusEnabled(false);
 		this.setOpaque(false);
-		this.setOpaque(false);
 		this.setBorderPainted(false);
 		this.setRolloverEnabled(false);
 
