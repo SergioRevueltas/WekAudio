@@ -91,6 +91,9 @@ public class AboutFrame extends JFrame {
 	private JPanel panel;
 	private JButton btnWekaaudio;
 	private JButton btnFacebook;
+	
+	private boolean entered;
+
 
 	/**
 	 * This is the default constructor
@@ -231,12 +234,15 @@ public class AboutFrame extends JFrame {
 			lblLicense.setFocusable(true);
 			lblLicense.addMouseListener(new MouseListener() {
 
+
 				@Override
 				public void mouseReleased(MouseEvent e) {
 					lblLicense.setFont(new Font("Arial", Font.PLAIN, 11));
 					lblLicense.setForeground(Color.BLUE);
 					try {
-						java.awt.Desktop.getDesktop().browse(new URI("http://www.gnu.org/licenses/gpl-2.0.html"));
+						if(entered){
+							java.awt.Desktop.getDesktop().browse(new URI("http://www.gnu.org/licenses/gpl-2.0.html"));
+						}
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -262,6 +268,7 @@ public class AboutFrame extends JFrame {
 					setCursor(cursor);
 					lblLicense.setForeground(Color.BLUE);
 					lblLicense.setFont(new Font("Arial", Font.PLAIN, 11));
+					entered = false;
 				}
 
 				@Override
@@ -274,6 +281,7 @@ public class AboutFrame extends JFrame {
 					lblLicense.setForeground(Color.BLUE);
 					Cursor cursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
 					setCursor(cursor);
+					entered = true;
 				}
 
 				@Override
