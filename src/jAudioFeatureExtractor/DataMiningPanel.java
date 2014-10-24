@@ -4,6 +4,8 @@ import jAudioFeatureExtractor.ACE.XMLParsers.FileFilterARFF;
 import jAudioFeatureExtractor.ACE.XMLParsers.FileFilterMODEL;
 import jAudioFeatureExtractor.Aggregators.Aggregator;
 import jAudioFeatureExtractor.DataTypes.RecordingInfo;
+import jAudioFeatureExtractor.jAudioTools.AudioMethods;
+import jAudioFeatureExtractor.jAudioTools.AudioMethodsPlayback;
 import jAudioFeatureExtractor.jAudioTools.FileFilterAudio;
 
 import java.awt.Color;
@@ -12,6 +14,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.SourceDataLine;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -20,6 +24,7 @@ import javax.swing.JScrollPane;
 
 import net.miginfocom.swing.MigLayout;
 
+import com.srevueltas.core.ThreadCompleteListener;
 import com.srevueltas.gui.CustomJButton;
 import com.srevueltas.gui.CustomJComboBox;
 import com.srevueltas.gui.CustomJLabel;
@@ -30,7 +35,7 @@ import com.srevueltas.gui.CustomJTextField;
  * 
  * @author Sergio Revueltas
  */
-public class DataMiningPanel extends JPanel implements ActionListener {
+public class DataMiningPanel extends JPanel implements ActionListener, ThreadCompleteListener {
 
 	/* FIELDS ***************************************************************** */
 
@@ -42,13 +47,16 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 	 */
 	private Controller controller;
 	public OuterFrame outer_frame;
-
+	/**
+	 * Thread for playing back recorded audio. Null if nothing playing.
+	 */
+	private AudioMethodsPlayback.PlayThread playback_thread;
 	/**
 	 * GUI Panels
 	 */
 	private JPanel trainPanel;
 	private JPanel classifyPanel;
-	//private JPanel trainningResultsPanel;
+	// private JPanel trainningResultsPanel;
 	private JPanel classificationResultsPanel;
 	private JScrollPane trainResultsScrollPane;
 	/**
@@ -59,6 +67,7 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 	private CustomJButton saveBrowseButton;
 	private CustomJButton loadFileBrowseButton;
 	private CustomJButton loadModelBrowseButton;
+	private CustomJButton play_recording_button;
 
 	/**
 	 * GUI dialog boxes
@@ -82,7 +91,6 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 	private CustomJComboBox cbClassifiers;
 	private CustomJTextArea trainresultsTextarea;
 	private CustomJTextArea classificationResultsTextArea;
-	
 
 	/* CONSTRUCTOR ************************************************************ */
 	/**
@@ -108,7 +116,8 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 
 		trainPanel = new JPanel();
 		add(trainPanel, "flowx,cell 0 1,grow");
-		trainPanel.setLayout(new MigLayout("ins 0", "[grow][grow][]", "[][][50.00px:50.00px:50.00px][140.00px:n,grow]"));
+		trainPanel
+				.setLayout(new MigLayout("ins 0", "[grow][grow][]", "[][][50.00px:50.00px:50.00px][140.00px:n,grow]"));
 		trainPanel.setBackground(GRAY);
 
 		lblClassifiers = new CustomJLabel("Classifier");
@@ -134,84 +143,87 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 		trainPanel.add(extract_features_button, "cell 0 2 3 1,grow");
 		extract_features_button.setText("Train");
 
-		//trainningResultsPanel = new JPanel();
-		//trainPanel.add(trainningResultsPanel, "flowx,cell 0 3 3 1,grow");
-		//trainningResultsPanel.setBackground(GRAY);
-		//trainningResultsPanel.setLayout(new MigLayout("", "[::330.00,grow]", "[:100.00px:100.00px]"));
+		// trainningResultsPanel = new JPanel();
+		// trainPanel.add(trainningResultsPanel, "flowx,cell 0 3 3 1,grow");
+		// trainningResultsPanel.setBackground(GRAY);
+		// trainningResultsPanel.setLayout(new MigLayout("", "[::330.00,grow]", "[:100.00px:100.00px]"));
 
 		trainresultsTextarea = new CustomJTextArea();
 		trainResultsScrollPane = new JScrollPane(trainresultsTextarea);
-		trainresultsTextarea.setFont(new Font("Arial", Font.PLAIN, 10));		
+		trainresultsTextarea.setFont(new Font("Arial", Font.PLAIN, 10));
 		trainPanel.add(trainResultsScrollPane, "flowx,cell 0 3 3 1,grow");
 		trainresultsTextarea.setVisible(true);
-		//trainningResultsPanel.add(trainResultsScrollPane, "cell 0 0,grow");		
-		//trainresultsTextarea.setText("train Results Text Area slkdfglñkdfjg ñldfkgj ñldkgj dlfñkgj ñldskg"
-		//		+ "asdfsadf sadfasd fsda fasd f asdf sda fsda f sdafjasdlkfjasñlk sdlkj fsdlkñj fsaldñk flñksd");
-		
+		// trainningResultsPanel.add(trainResultsScrollPane, "cell 0 0,grow");
+		// trainresultsTextarea.setText("train Results Text Area slkdfglñkdfjg ñldfkgj ñldkgj dlfñkgj ñldskg"
+		// + "asdfsadf sadfasd fsda fasd f asdf sda fsda f sdafjasdlkfjasñlk sdlkj fsdlkñj fsaldñk flñksd");
+
 		extract_features_button.addActionListener(this);
 		saveBrowseButton.addActionListener(this);
 
 		classifyPanel = new JPanel();
 		add(classifyPanel, "flowx,cell 0 2,growy");
-		classifyPanel.setLayout(new MigLayout("ins 0", "[::90.00,grow][::191.00,grow][]", "[][][50.00px:50.00px:50.00px][][50.00px:n:50.00px,grow,top]"));
+		classifyPanel.setLayout(new MigLayout("ins 0", "[92.00px:n:92.00px,grow][191:n,grow][50px:n,grow][]",
+				"[][][50.00px:50.00px:50.00px][][40.00px:n:50.00px,grow,top]"));
 		classifyPanel.setBackground(GRAY);
 
-		lblFileToClassify = new CustomJLabel("File to classify");
-		classifyPanel.add(lblFileToClassify, "cell 0 0,alignx trailing");
-		lblFileToClassify.setFont(new Font("Arial", Font.BOLD, 12));
-
-		
 		lblModelLoadPath = new CustomJLabel("Model Load Path");
-		classifyPanel.add(lblModelLoadPath, "cell 0 1,alignx trailing");
+		classifyPanel.add(lblModelLoadPath, "cell 0 0,alignx trailing");
 		lblModelLoadPath.setFont(new Font("Arial", Font.BOLD, 12));
+
+		loadModelTextField = new CustomJTextField();
+		loadModelTextField.setEditable(false);
+		classifyPanel.add(loadModelTextField, "flowx,cell 1 0 2 1");
+		loadModelTextField.setColumns(50);
+
+		lblFileToClassify = new CustomJLabel("File to classify");
+		classifyPanel.add(lblFileToClassify, "cell 0 1,alignx trailing");
+		lblFileToClassify.setFont(new Font("Arial", Font.BOLD, 12));
 
 		loadFileToClassifyTextField = new CustomJTextField();
 		loadFileToClassifyTextField.setEditable(false);
-		classifyPanel.add(loadFileToClassifyTextField, "cell 1 0");
+		classifyPanel.add(loadFileToClassifyTextField, "flowx,cell 1 1,alignx left");
 		loadFileToClassifyTextField.setColumns(50);
-		
-		loadModelTextField = new CustomJTextField();
-		loadModelTextField.setEditable(false);
-		classifyPanel.add(loadModelTextField, "cell 1 1");
-		loadModelTextField.setColumns(50);
+		// classificationResultsTextArea.setText("train Results Text Area slkdfglñkdfjg ñldfkgj ñldkgj dlfñkgj ñldskg"
+		// + "asdfsadf sadfasd fsda fasd f asdf sda fsda f sdafjasdlkfjasñlk sdlkj fsdlkñj fsaldñk flñksd");
 
-		loadFileBrowseButton = new CustomJButton("Browse");
-		classifyPanel.add(loadFileBrowseButton, "cell 2 0");
-		loadFileBrowseButton.addActionListener(this);
-		
-		loadModelBrowseButton = new CustomJButton("Browse");
-		classifyPanel.add(loadModelBrowseButton, "cell 2 1");
+		play_recording_button = new CustomJButton("Play");
+		classifyPanel.add(play_recording_button, "cell 2 1,growx");
+		play_recording_button.addActionListener(this);
 
 		classify_button = new CustomJButton("Classify");
 		classifyPanel.add(classify_button, "cell 0 2 3 1,grow");
-		
+
 		lblClassificationDone = new CustomJLabel("Classification done. The class of the audio file is:");
 		lblClassificationDone.setFont(new Font("Arial", Font.PLAIN, 10));
 		classifyPanel.add(lblClassificationDone, "cell 0 3 3 1");
 		lblClassificationDone.setVisible(false);
-		
+
 		classificationResultsPanel = new JPanel();
 		classifyPanel.add(classificationResultsPanel, "cell 0 4 3 1,grow");
 		classificationResultsPanel.setLayout(new MigLayout("", "[grow]", "[grow]"));
 		classificationResultsPanel.setBackground(GRAY);
-		
-		
+
 		classificationResultsTextArea = new CustomJTextArea();
 		classificationResultsTextArea.setWrapStyleWord(true);
 		classificationResultsTextArea.setLineWrap(false);
-		classificationResultsPanel.add(classificationResultsTextArea, "cell 0 0,alignx center,aligny center");
-		classificationResultsTextArea.setFont(new Font("Arial", Font.BOLD, 24));	
+		classificationResultsPanel.add(classificationResultsTextArea, "flowx,cell 0 0,alignx center,aligny center");
+		classificationResultsTextArea.setFont(new Font("Arial", Font.BOLD, 24));
 		classificationResultsTextArea.setVisible(true);
-		//classificationResultsTextArea.setText("train Results Text Area slkdfglñkdfjg ñldfkgj ñldkgj dlfñkgj ñldskg"
-		//		+ "asdfsadf sadfasd fsda fasd f asdf sda fsda f sdafjasdlkfjasñlk sdlkj fsdlkñj fsaldñk flñksd");
-		
-		classify_button.addActionListener(this);
+
+		loadModelBrowseButton = new CustomJButton("Browse");
+		classifyPanel.add(loadModelBrowseButton, "cell 1 0 2 1,alignx right");
+
+		loadFileBrowseButton = new CustomJButton("Browse");
+		classifyPanel.add(loadFileBrowseButton, "cell 1 1");
+		loadFileBrowseButton.addActionListener(this);
 		loadModelBrowseButton.addActionListener(this);
+
+		classify_button.addActionListener(this);
 
 		controller.dm_.aggregators = new Aggregator[] {
 				// (Aggregator) (controller.dm_.aggregatorMap.get("Mean").clone()),
 				(Aggregator) (controller.dm_.aggregatorMap.get("Density Based Average").clone()) };
-		
+
 	}
 
 	/**
@@ -219,13 +231,13 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 	 */
 	private void loadClassifiersCombo() {
 		this.cbClassifiers = new CustomJComboBox();
-		
+
 		String[] classifierItems =
 				new String[] { "AdaBoostM1",
-						"BayesNet","ClassificationViaRegression", "CostSensitiveClassifier",
+						"BayesNet", "ClassificationViaRegression", "CostSensitiveClassifier",
 						"DecisionTable", "FilteredClassifier", "HoeffdingTree",
 						"IBk", "InputMappedClassifier", "J48", "JRip",
-						"KStar", "NaiveBayes", "OneR","RandomForest", "REPTree", "ZeroR" };
+						"KStar", "NaiveBayes", "OneR", "RandomForest", "REPTree", "ZeroR" };
 		/* All who extends from Classifier
 		String[] classifierItems =
 				new String[] { "AbstractClassifier", "AdaBoostM1",
@@ -269,17 +281,79 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 	 * @param event The event that is to be reacted to.
 	 */
 	public void actionPerformed(ActionEvent event) {
-		if (event.getSource().equals(extract_features_button))
-			train(false);
-		else if (event.getSource().equals(classify_button)) {
-			classifyInstances(true);
-		} else if (event.getSource().equals(saveBrowseButton)) {
-			browseFeatureValuesSavePath();
-		} else if (event.getSource().equals(loadModelBrowseButton)) {
-			browseModelLoadPath();
-		} else if (event.getSource().equals(loadFileBrowseButton)) {
-			browseFileLoadPath();
+		if (event.getSource().equals(play_recording_button)) {
+			if (playback_thread != null) {
+				stopRecording();
+			} else {
+				play();
+			}
+		} else {
+			stopRecording();
+			if (event.getSource().equals(extract_features_button))
+				train(false);
+			else if (event.getSource().equals(classify_button)) {
+				classifyInstances(true);
+			} else if (event.getSource().equals(saveBrowseButton)) {
+				browseFeatureValuesSavePath();
+			} else if (event.getSource().equals(loadModelBrowseButton)) {
+				browseModelLoadPath();
+			} else if (event.getSource().equals(loadFileBrowseButton)) {
+				browseFileLoadPath();
+			} else // React to the play_recording_button
+			if (event.getSource().equals(play_recording_button)) {
+				if (playback_thread != null) {
+					stopRecording();
+				} else {
+					play();
+				}
+			}
 		}
+	}
+
+	/**
+	 * Stop any recording in progress. Store the recorded data in the last_recorded_audio field. Set the record_thread>
+	 * field to null.
+	 */
+	private void stopRecording()
+	{
+		if (playback_thread != null) {
+			playback_thread.stopPlaying();
+			play_recording_button.setText("Play");
+		}
+		playback_thread = null;
+	}
+
+	/**
+	 * Begin playback of last recorded audio, if any. Stop any playback or recording currently in progress
+	 */
+	private void play() {
+		// stopRecording();
+		if (load_file_chooser != null) {
+			if (load_file_chooser.getSelectedFile() != null) {
+				String filePath = load_file_chooser.getSelectedFile().getAbsolutePath();
+				try {
+					AudioInputStream ais = AudioMethods.getInputStream(new File(filePath));
+					SourceDataLine source_data_line = AudioMethods.getSourceDataLine(ais.getFormat(), null);
+					playback_thread =
+							AudioMethodsPlayback.playAudioInputStreamInterruptible(ais, source_data_line);
+					playback_thread.addListener(this);
+					play_recording_button.setText("Stop");
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(controller.getFrame(), "Could not play because:\n" + e.getMessage(),
+							"ERROR",
+							JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Callback when PlayThread ends
+	 */
+	@Override
+	public void notifyOfThreadComplete(Thread thread) {
+		play_recording_button.setText("Play");
+		playback_thread = null;
 	}
 
 	/* PRIVATE METHODS ******************************************************** */
@@ -298,31 +372,30 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 			double window_overlap_percentage = controller.getWindow_overlap_value();
 			double window_overlap_fraction = window_overlap_percentage / 100;
 
-			
-			
-			if(loadFileToClassifyTextField.getText().compareTo("") == 0){
-				JOptionPane.showMessageDialog(controller.getFrame(),"No recording selected above to classify." ,"Info" ,
+			if (loadFileToClassifyTextField.getText().compareTo("") == 0) {
+				JOptionPane.showMessageDialog(controller.getFrame(), "No recording selected above to classify.",
+						"Info",
 						JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}
-			if(loadModelTextField.getText().compareTo("") == 0){
-				JOptionPane.showMessageDialog(controller.getFrame(),"No model selected above to classify." ,"Info" ,
+			if (loadModelTextField.getText().compareTo("") == 0) {
+				JOptionPane.showMessageDialog(controller.getFrame(), "No model selected above to classify.", "Info",
 						JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}
 			File file = load_file_chooser.getSelectedFile();
-			if(file == null){
-				JOptionPane.showMessageDialog(controller.getFrame(),"No recording selected above." ,"Info" ,
+			if (file == null) {
+				JOptionPane.showMessageDialog(controller.getFrame(), "No recording selected above.", "Info",
 						JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}
-			//Get selected file info and override data model
+			// Get selected file info and override data model
 			controller.dm_.recordinInfo = new RecordingInfo(file.getName(), file.getPath(), null, false);
-			
+
 			// Get the audio recordings to extract features from and throw an exception if there are none
 			RecordingInfo[] recordings = new RecordingInfo[1];
 			recordings[0] = controller.dm_.recordinInfo;
-			 
+
 			// Find which features are selected to be saved
 			for (int i = 0; i < controller.dm_.defaults.length; i++) {
 				controller.dm_.defaults[i] = ((Boolean) controller.fstm_
@@ -357,8 +430,7 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 	/**
 	 * Extract the features from all of the files added in the GUI. Use the features and feature settings entered in the
 	 * GUI. Save the results in a feature_vector_file and the features used in a feature_key_file. Daniel McEnnis
-	 * 05-09-05 Moved guts into FeatureModel Edited by Sergio Revueltas
-	 * Generate .arff and choosen classifier .model
+	 * 05-09-05 Moved guts into FeatureModel Edited by Sergio Revueltas Generate .arff and choosen classifier .model
 	 */
 	private void train(boolean toClassify) {
 		try {
@@ -381,30 +453,29 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 			// exception
 			// if there are none
 			RecordingInfo[] recordings = controller.dm_.recordingsInfo;
-			if (recordings == null){
-				JOptionPane.showMessageDialog(controller.getFrame(), 
+			if (recordings == null) {
+				JOptionPane.showMessageDialog(controller.getFrame(),
 						"No recordings selected to extract features from.\n"
-						+ "Add at least 10 audio files from disk or mic in the first panel.\n"
-						+ "Please, check out help menu to get more info.", "No recordings selected",
+								+ "Add at least 10 audio files from disk or mic in the first panel.\n"
+								+ "Please, check out help menu to get more info.", "No recordings selected",
 						JOptionPane.INFORMATION_MESSAGE);
-				return ;
+				return;
 			}
-			if (recordings.length < 10){
-				JOptionPane.showMessageDialog(controller.getFrame(), 
+			if (recordings.length < 10) {
+				JOptionPane.showMessageDialog(controller.getFrame(),
 						"You have to add at least 10 audio files with the proper file name format.\n"
-						+ "Please, check out help menu to get more info.", "Info",
+								+ "Please, check out help menu to get more info.", "Info",
 						JOptionPane.INFORMATION_MESSAGE);
-				return ;
+				return;
 			}
-			
 
 			// Find which features are selected to be saved
 			for (int i = 0; i < controller.dm_.defaults.length; i++) {
 				controller.dm_.defaults[i] = ((Boolean) controller.fstm_
 						.getValueAt(i, 0)).booleanValue();
 			}
-			
-			//Get selected classifier
+
+			// Get selected classifier
 			String classifierName = cbClassifiers.getSelectedItem().toString();
 
 			// threads can only execute once. Rebuild the thread here
@@ -450,7 +521,7 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 			loadModelTextField.setText(path);
 
 	}
-	
+
 	private void browseFileLoadPath() {
 		String path = chooseFilePath();
 		if (path != null)
@@ -460,39 +531,39 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 
 	private String chooseFilePath() {
 		// Create the JFileChooser if it does not already exist
-				if (load_file_chooser == null) {
-					load_file_chooser = new JFileChooser();
-					load_file_chooser.setCurrentDirectory(new File("audioFiles/"));
-					load_file_chooser.setFileFilter(new FileFilterAudio());
-					load_file_chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-					load_file_chooser.setMultiSelectionEnabled(false);
-					load_file_chooser.setLocation(30, 30);
-				}
+		if (load_file_chooser == null) {
+			load_file_chooser = new JFileChooser();
+			load_file_chooser.setCurrentDirectory(new File("audioFiles/"));
+			load_file_chooser.setFileFilter(new FileFilterAudio());
+			load_file_chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+			load_file_chooser.setMultiSelectionEnabled(false);
+			load_file_chooser.setLocation(30, 30);
+		}
 
-				// Process the user's entry
-				String path = null;
-				int dialog_result = load_file_chooser.showOpenDialog(this.controller.getFrame());
-				// only do if OK chosen
-				if (dialog_result == JFileChooser.APPROVE_OPTION) {
-					// Get the file the user chose
-					File to_load_audio_file = load_file_chooser.getSelectedFile();
+		// Process the user's entry
+		String path = null;
+		int dialog_result = load_file_chooser.showOpenDialog(this.controller.getFrame());
+		// only do if OK chosen
+		if (dialog_result == JFileChooser.APPROVE_OPTION) {
+			// Get the file the user chose
+			File to_load_audio_file = load_file_chooser.getSelectedFile();
 
-					// Make sure has .model extension
-					path = to_load_audio_file.getPath();
-					int pos = path.lastIndexOf(".");
-					String ext = path.substring(pos, path.length());
-					// String ext = jAudioFeatureExtractor.GeneralTools.StringMethods.getExtension(path);
-					if (ext == null) {
-						path += ".wav";
-					} else if (!ext.equals(".wav")) {
-						String tmpPath = path.substring(0, pos);
-						path = tmpPath + ".wav";
-					}
-					loadFileToClassifyTextField.setText(path);
-				}
+			// Make sure has .model extension
+			path = to_load_audio_file.getPath();
+			int pos = path.lastIndexOf(".");
+			String ext = path.substring(pos, path.length());
+			// String ext = jAudioFeatureExtractor.GeneralTools.StringMethods.getExtension(path);
+			if (ext == null) {
+				path += ".wav";
+			} else if (!ext.equals(".wav")) {
+				String tmpPath = path.substring(0, pos);
+				path = tmpPath + ".wav";
+			}
+			loadFileToClassifyTextField.setText(path);
+		}
 
-				// Return the selected file path
-				return path;
+		// Return the selected file path
+		return path;
 	}
 
 	/**
@@ -600,8 +671,6 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 		return path;
 	}
 
-	
-
 	public CustomJTextArea getTrainningResultsTextArea() {
 		return trainresultsTextarea;
 	}
@@ -610,11 +679,8 @@ public class DataMiningPanel extends JPanel implements ActionListener {
 		return classificationResultsTextArea;
 	}
 
-	
 	public CustomJLabel getLblClassificationDone() {
 		return lblClassificationDone;
 	}
 
-
-	
 }
