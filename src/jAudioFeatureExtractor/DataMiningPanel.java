@@ -162,8 +162,7 @@ public class DataMiningPanel extends JPanel implements ActionListener, ThreadCom
 
 		classifyPanel = new JPanel();
 		add(classifyPanel, "flowx,cell 0 2,growy");
-		classifyPanel.setLayout(new MigLayout("ins 0", "[92.00px:n:92.00px,grow][191:n,grow][50px:n,grow][]",
-				"[][][50.00px:50.00px:50.00px][][40.00px:n:50.00px,grow,top]"));
+		classifyPanel.setLayout(new MigLayout("ins 0", "[92.00px:n:92.00px,grow][199:n,grow][42px:n:42px,grow][]", "[][][50.00px:50.00px:50.00px][][40.00px:n:50.00px,grow,top]"));
 		classifyPanel.setBackground(GRAY);
 
 		lblModelLoadPath = new CustomJLabel("Model Load Path");
@@ -524,8 +523,9 @@ public class DataMiningPanel extends JPanel implements ActionListener, ThreadCom
 
 	private void browseFileLoadPath() {
 		String path = chooseFilePath();
-		if (path != null)
+		if (path != null) {
 			loadFileToClassifyTextField.setText(path);
+		}
 
 	}
 
