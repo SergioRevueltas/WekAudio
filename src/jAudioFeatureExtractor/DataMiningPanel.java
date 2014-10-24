@@ -95,7 +95,7 @@ public class DataMiningPanel extends JPanel implements ActionListener, ThreadCom
 	/* CONSTRUCTOR ************************************************************ */
 	/**
 	 * Set up frame.
-	 * <p>
+	 * <p> 
 	 * Daniel McEnnis 05-08-05 Added GlobalWindowChange button
 	 * 
 	 * @param outer_frame The GUI element that contains this object.
@@ -106,7 +106,7 @@ public class DataMiningPanel extends JPanel implements ActionListener, ThreadCom
 		this.controller = c;
 		// Set the file chooser to null initially
 		save_file_chooser = null;
-		setLayout(new MigLayout("", "[::340.00px]", "[23px][300.00px:n:300.00px][::180.00px]"));
+		setLayout(new MigLayout("", "[::340.00px]", "[23px][350.00px:n:350.00px][grow]"));
 
 		// Add an overall title for this panel
 		JLabel label = new CustomJLabel("DATA MINING:");
@@ -162,7 +162,7 @@ public class DataMiningPanel extends JPanel implements ActionListener, ThreadCom
 
 		classifyPanel = new JPanel();
 		add(classifyPanel, "flowx,cell 0 2,growy");
-		classifyPanel.setLayout(new MigLayout("ins 0", "[92.00px:n:92.00px,grow][199:n,grow][42px:n:42px,grow][]", "[][][50.00px:50.00px:50.00px][][40.00px:n:50.00px,grow,top]"));
+		classifyPanel.setLayout(new MigLayout("ins 0", "[92.00px:n:92.00px,grow][180:n,grow][37px:n:37px,grow]", "[][][50.00px:50.00px:50.00px][][][grow,top]"));
 		classifyPanel.setBackground(GRAY);
 
 		lblModelLoadPath = new CustomJLabel("Model Load Path");
@@ -194,19 +194,19 @@ public class DataMiningPanel extends JPanel implements ActionListener, ThreadCom
 
 		lblClassificationDone = new CustomJLabel("Classification done. The class of the audio file is:");
 		lblClassificationDone.setFont(new Font("Arial", Font.PLAIN, 10));
-		classifyPanel.add(lblClassificationDone, "cell 0 3 3 1");
+		classifyPanel.add(lblClassificationDone, "cell 0 4 3 1");
 		lblClassificationDone.setVisible(false);
 
 		classificationResultsPanel = new JPanel();
-		classifyPanel.add(classificationResultsPanel, "cell 0 4 3 1,grow");
+		classifyPanel.add(classificationResultsPanel, "cell 0 5 3 1,grow");
 		classificationResultsPanel.setLayout(new MigLayout("", "[grow]", "[grow]"));
-		classificationResultsPanel.setBackground(GRAY);
+		classificationResultsPanel.setBackground(GRAY); 
 
 		classificationResultsTextArea = new CustomJTextArea();
 		classificationResultsTextArea.setWrapStyleWord(true);
 		classificationResultsTextArea.setLineWrap(false);
 		classificationResultsPanel.add(classificationResultsTextArea, "flowx,cell 0 0,alignx center,aligny center");
-		classificationResultsTextArea.setFont(new Font("Arial", Font.BOLD, 24));
+		classificationResultsTextArea.setFont(new Font("Arial", Font.BOLD, 30));
 		classificationResultsTextArea.setVisible(true);
 
 		loadModelBrowseButton = new CustomJButton("Browse");

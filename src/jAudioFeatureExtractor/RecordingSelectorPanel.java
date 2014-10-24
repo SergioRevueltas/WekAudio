@@ -184,7 +184,7 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 		recording_frame = null;
 		midi_frame = null;
 
-		setLayout(new MigLayout("ins 5", "[340.00px]", "[14px][50.00px:50.00px:50.00px][400.00:n,fill]"));
+		setLayout(new MigLayout("ins 5", "[340.00px]", "[14px][50.00px:50.00px:50.00px][400.00:n,grow,fill]"));
 
 		// Add an overall title for this panel
 		JLabel label = new JLabel("RECORDINGS:");

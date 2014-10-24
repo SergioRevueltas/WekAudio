@@ -266,7 +266,7 @@ public class OuterFrame extends JFrame {
 		menu.add(analysisMenu);
 		//menu.add(playbackMenu);
 		menu.add(helpMenu);
-		getContentPane().setLayout(new MigLayout("ins 2 2 -7 -7", "[335.00px][335.00px][335.00px]", "[21px][500.00px]"));
+		getContentPane().setLayout(new MigLayout("ins 2 2 -7 -7", "[335.00px][335.00px][335.00px]", "[21px][650.00px:650.00px:650.00px]"));
 		getContentPane().add(recording_selector_panel, "cell 0 1,grow");
 		getContentPane().add(feature_selector_panel, "cell 1 1,grow");
 		getContentPane().add(dataMiningPanel,"cell 2 1,grow");
@@ -275,12 +275,13 @@ public class OuterFrame extends JFrame {
 		//Icon from http://icons8.com/icons/#!/1391/audio-file
 		this.setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage("img/icon.png"));
 		// Display GUI
-		//this.setMaximumSize(new Dimension(10, 10));
+		this.setMaximumSize(new Dimension(1024, 768));
+		this.setMinimumSize(new Dimension(1024, 7));
 		this.pack();
 		splash.endSplash();
 		splash = null;
 		this.setVisible(true);
-		this.setAlwaysOnTop(true);
+		//this.setAlwaysOnTop(true);
 		this.setResizable(false);
 	}
 

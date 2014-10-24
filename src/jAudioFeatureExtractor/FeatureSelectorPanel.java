@@ -303,7 +303,7 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 				}
 			}
 		});
-		setLayout(new MigLayout("ins 5", "[340px]", "[14px][50.00px:50.00px:50.00px][400.00:n,fill]"));
+		setLayout(new MigLayout("ins 5", "[340px]", "[14px][50.00px:50.00px:50.00px][400.00:n,grow,fill]"));
 
 		buttonsPanel = new JPanel();
 		add(buttonsPanel, "flowx,cell 0 1,grow");
