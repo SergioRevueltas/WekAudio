@@ -7,6 +7,7 @@
 package jAudioFeatureExtractor.jAudioTools;
 
 import jAudioFeatureExtractor.Cancel;
+import jAudioFeatureExtractor.Controller;
 import jAudioFeatureExtractor.ExplicitCancel;
 import jAudioFeatureExtractor.Updater;
 import jAudioFeatureExtractor.ACE.DataTypes.FeatureDefinition;
@@ -22,6 +23,7 @@ import java.util.LinkedList;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
+import javax.swing.JOptionPane;
 
 /**
  * This class is used to pre-process and extract features from audio recordings. An object of this class should be
@@ -116,6 +118,8 @@ public class FeatureProcessor {
 
 	private boolean toClassify;
 
+	private Controller controller;
+
 	/* CONSTRUCTOR ************************************************************ */
 
 	/**
@@ -149,9 +153,9 @@ public class FeatureProcessor {
 			int outputType,
 			Cancel cancel,
 			AggregatorContainer container,
-			boolean toClassify)
+			boolean toClassify, Controller c)
 			throws Exception {
-
+		this.controller = c;
 		this.toClassify = toClassify;
 		this.cancel = cancel;
 		this.preEmphasis = false;
@@ -190,8 +194,8 @@ public class FeatureProcessor {
 			throw new Exception(
 					"INTERNAL ERROR - only ARFF and ACE output files are supported");
 		}
-		
-		if(!toClassify) {
+
+		if (!toClassify) {
 			values_writer = new DataOutputStream(feature_values_save_path);
 		} else {
 			values_writer = null;
@@ -236,63 +240,69 @@ public class FeatureProcessor {
 	 */
 	public double[][][] extractFeatures(File recording_file, Updater updater, ArrayList<String> listFileNames)
 			throws Exception {
+		// TODO check if cancel button is pressed
+
 		// Pre-process the recording and extract the samples from the audio
 		this.updater = updater;
 		double[] samples = preProcessRecording(recording_file);
+		if (samples != null) {
 
-		if (cancel.isCancel()) {
-			throw new ExplicitCancel("Killed after loading data");
-		}
-		// Calculate the window start indices
-		LinkedList<Integer> window_start_indices_list = new LinkedList<Integer>();
-		int this_start = 0;
-		while (this_start < samples.length) {
-			window_start_indices_list.add(new Integer(this_start));
-			this_start += window_size - window_overlap_offset;
-		}
-		Integer[] window_start_indices_I = window_start_indices_list
-				.toArray(new Integer[1]);
-		int[] window_start_indices = new int[window_start_indices_I.length];
+			if (cancel.isCancel()) {
+				throw new ExplicitCancel("Killed after loading data");
+			}
+			// Calculate the window start indices
+			LinkedList<Integer> window_start_indices_list = new LinkedList<Integer>();
+			int this_start = 0;
+			while (this_start < samples.length) {
+				window_start_indices_list.add(new Integer(this_start));
+				this_start += window_size - window_overlap_offset;
+			}
 
-		// if were using a progress bar, set its max update
-		if (updater != null) {
-			updater.setFileLength(window_start_indices.length);
-		}
+			Integer[] window_start_indices_I = window_start_indices_list
+					.toArray(new Integer[1]);
+			int[] window_start_indices = new int[window_start_indices_I.length];
 
-		for (int i = 0; i < window_start_indices.length; i++)
-			window_start_indices[i] = window_start_indices_I[i].intValue();
+			// if were using a progress bar, set its max update
+			if (updater != null) {
+				updater.setFileLength(window_start_indices.length);
+			}
 
-		// Extract the feature values from the samples
-		double[][][] window_feature_values = getFeatures(samples,
-				window_start_indices);
+			for (int i = 0; i < window_start_indices.length; i++)
+				window_start_indices[i] = window_start_indices_I[i].intValue();
 
-		if (save_overall_recording_features) {
-			aggregator.add(feature_extractors, features_to_save);
-			aggregator.aggregate(window_feature_values);
-		}
-		if (!toClassify) {
-			// Save the feature values for this recording
-			if (outputType == 0) {
-				saveACEFeatureVectorsForARecording(window_feature_values,
-						window_start_indices, recording_file.getPath(),
-						aggregator);
-			} else if (outputType == 1) {
-				saveARFFFeatureVectorsForARecording(window_feature_values,
-						window_start_indices, recording_file.getPath(),
-						aggregator, listFileNames);
+			// Extract the feature values from the samples
+			double[][][] window_feature_values = getFeatures(samples,
+					window_start_indices);
+
+			if (save_overall_recording_features) {
+				aggregator.add(feature_extractors, features_to_save);
+				aggregator.aggregate(window_feature_values);
+			}
+			if (!toClassify) {
+				// Save the feature values for this recording
+				if (outputType == 0) {
+					saveACEFeatureVectorsForARecording(window_feature_values,
+							window_start_indices, recording_file.getPath(),
+							aggregator);
+				} else if (outputType == 1) {
+					saveARFFFeatureVectorsForARecording(window_feature_values,
+							window_start_indices, recording_file.getPath(),
+							aggregator, listFileNames);
+				}
+			}
+			// Save the feature definitions
+			/*
+			if (!definitions_written && (outputType == 0)) {
+				saveFeatureDefinitions(window_feature_values, aggregator);
+			}
+			 */
+			if (toClassify) {
+				return window_feature_values;
+			} else {
+				return null;
 			}
 		}
-		// Save the feature definitions
-		/*
-		if (!definitions_written && (outputType == 0)) {
-			saveFeatureDefinitions(window_feature_values, aggregator);
-		}
-		 */
-		if (toClassify) {
-			return window_feature_values;
-		} else {
-			return null;
-		}
+		return null;
 	}
 
 	/**
@@ -502,61 +512,71 @@ public class FeatureProcessor {
 	 * @throws Exception An exception is thrown if a problem occurs during file reading or pre- processing.
 	 */
 	private double[] preProcessRecording(File recording_file) throws Exception {
-		// Get the original audio and its format
-		AudioInputStream original_stream = AudioSystem
-				.getAudioInputStream(recording_file);
-		AudioFormat original_format = original_stream.getFormat();
+		double[] samples = null;
+		try {
 
-		// Set the bit depth
-		int bit_depth = original_format.getSampleSizeInBits();
-		if (bit_depth != 8 && bit_depth != 16)
-			bit_depth = 16;
+			// Get the original audio and its format
+			AudioInputStream original_stream = AudioSystem
+					.getAudioInputStream(recording_file);
+			AudioFormat original_format = original_stream.getFormat();
 
-		// If the audio is not PCM signed big endian, then convert it to PCM
-		// signed
-		// This is particularly necessary when dealing with MP3s
-		AudioInputStream second_stream = original_stream;
-		if (original_format.getEncoding() != AudioFormat.Encoding.PCM_SIGNED
-				|| original_format.isBigEndian() == false) {
-			AudioFormat new_format = new AudioFormat(
-					AudioFormat.Encoding.PCM_SIGNED, original_format
-							.getSampleRate(), bit_depth, original_format
-							.getChannels(), original_format.getChannels()
-							* (bit_depth / 8), original_format.getSampleRate(),
-					true);
-			second_stream = AudioSystem.getAudioInputStream(new_format,
-					original_stream);
+			// Set the bit depth
+			int bit_depth = original_format.getSampleSizeInBits();
+			if (bit_depth != 8 && bit_depth != 16)
+				bit_depth = 16;
+
+			// If the audio is not PCM signed big endian, then convert it to PCM
+			// signed
+			// This is particularly necessary when dealing with MP3s
+			AudioInputStream second_stream = original_stream;
+			if (original_format.getEncoding() != AudioFormat.Encoding.PCM_SIGNED
+					|| original_format.isBigEndian() == false) {
+				AudioFormat new_format = new AudioFormat(
+						AudioFormat.Encoding.PCM_SIGNED, original_format
+								.getSampleRate(), bit_depth, original_format
+								.getChannels(), original_format.getChannels()
+								* (bit_depth / 8), original_format.getSampleRate(),
+						true);
+				second_stream = AudioSystem.getAudioInputStream(new_format,
+						original_stream);
+			}
+
+			// Convert to the set sampling rate, if it is not already at this
+			// sampling rate.
+			// Also, convert to an appropriate bit depth if necessary.
+			AudioInputStream new_stream = second_stream;
+			if (original_format.getSampleRate() != (float) sampling_rate
+					|| bit_depth != original_format.getSampleSizeInBits()) {
+				AudioFormat new_format = new AudioFormat(
+						AudioFormat.Encoding.PCM_SIGNED, (float) sampling_rate,
+						bit_depth, original_format.getChannels(), original_format
+								.getChannels()
+								* (bit_depth / 8), original_format.getSampleRate(),
+						true);
+				new_stream = AudioSystem.getAudioInputStream(new_format,
+						second_stream);
+			}
+
+			// Extract data from the AudioInputStream
+			AudioSamples audio_data = new AudioSamples(new_stream, recording_file
+					.getPath(), false);
+
+			// Normalise samples if this option has been requested
+			if (normalise)
+				audio_data.normalizeMixedDownSamples();
+
+			// Return all channels compressed into one
+			samples = audio_data.getSamplesMixedDown();
+
+			if (preEmphasis)
+				preEmphasis(samples);
+
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(controller.getFrame(), "Bad file: " + recording_file.getName() + "\nPress to continue the process without this file.", "Info",
+					JOptionPane.INFORMATION_MESSAGE);
+			System.out.println("Bad file: " + recording_file.getName());
+			// e.printStackTrace();
 		}
-
-		// Convert to the set sampling rate, if it is not already at this
-		// sampling rate.
-		// Also, convert to an appropriate bit depth if necessary.
-		AudioInputStream new_stream = second_stream;
-		if (original_format.getSampleRate() != (float) sampling_rate
-				|| bit_depth != original_format.getSampleSizeInBits()) {
-			AudioFormat new_format = new AudioFormat(
-					AudioFormat.Encoding.PCM_SIGNED, (float) sampling_rate,
-					bit_depth, original_format.getChannels(), original_format
-							.getChannels()
-							* (bit_depth / 8), original_format.getSampleRate(),
-					true);
-			new_stream = AudioSystem.getAudioInputStream(new_format,
-					second_stream);
-		}
-
-		// Extract data from the AudioInputStream
-		AudioSamples audio_data = new AudioSamples(new_stream, recording_file
-				.getPath(), false);
-
-		// Normalise samples if this option has been requested
-		if (normalise)
-			audio_data.normalizeMixedDownSamples();
-
-		// Return all channels compressed into one
-		double[] samples = audio_data.getSamplesMixedDown();
-
-		if (preEmphasis)
-			preEmphasis(samples);
 		return samples;
 
 	}

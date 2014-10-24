@@ -115,9 +115,19 @@ public class ExtractionThread extends Thread implements Updater {
 		updateGUI = new UpdateGUI();
 
 		c.dm_.setUpdater(this);
-		progressFrame = new ProgressFrame();
+		progressFrame = new ProgressFrame(c);
 		errorGUI = new ErrorGUI(progressFrame);
 		classificationResults = null;
+	}
+
+	
+	public ProgressFrame getProgressFrame() {
+		return progressFrame;
+	}
+
+	
+	public void setProgressFrame(ProgressFrame progressFrame) {
+		this.progressFrame = progressFrame;
 	}
 
 	/**
@@ -151,6 +161,7 @@ public class ExtractionThread extends Thread implements Updater {
 	 * Execute the thread, suspending the main frame, extracting the features, then enabling the main frame.
 	 */
 	public void run() {
+		controller.feIsRunning = true;
 		try {
 			SwingUtilities.invokeAndWait(suspendGUI);
 			
@@ -185,6 +196,7 @@ public class ExtractionThread extends Thread implements Updater {
 			e.printStackTrace();
 			SwingUtilities.invokeLater(resumeGUI);
 		}
+		controller.feIsRunning = true;
 		hasRun = true;
 	}
 

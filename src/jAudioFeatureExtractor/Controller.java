@@ -269,6 +269,8 @@ public class Controller implements ModelListener {
 	private WekaStatistic wekaStatistics;
 
 	public AboutFrame aboutFrame;
+
+	public boolean feIsRunning;
 	
 
 	/**
@@ -277,6 +279,7 @@ public class Controller implements ModelListener {
 	 * components, requiring further inititalization in those GUI components
 	 */
 	public Controller() {
+		feIsRunning = false;
 		outerFrame = null;
 		dm_ = new DataModel("features.xml",this);
 		fstm_ = new FeatureSelectorTableModel(new Object[] {

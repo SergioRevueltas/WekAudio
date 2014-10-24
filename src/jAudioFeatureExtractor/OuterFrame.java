@@ -280,7 +280,7 @@ public class OuterFrame extends JFrame {
 		splash.endSplash();
 		splash = null;
 		this.setVisible(true);
-		//this.setAlwaysOnTop(true);
+		this.setAlwaysOnTop(true);
 		this.setResizable(false);
 	}
 

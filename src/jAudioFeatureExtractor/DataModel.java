@@ -37,7 +37,7 @@ public class DataModel {
 	/**
 	 * Reference to use for piping progress updates
 	 */
-	public ModelListener ml_;
+	public Controller controller;
 
 	/**
 	 * Handle for killing in-progress analysis
@@ -109,8 +109,8 @@ public class DataModel {
 	 * 
 	 * @param c reference to a controller that will handle table updates.
 	 */
-	public DataModel(String featureXMLLocation, ModelListener c) {
-		ml_ = c;
+	public DataModel(String featureXMLLocation, Controller c) {
+		controller = c;
 		cancel_ = new Cancel();
 		LinkedList<MetaFeatureFactory> metaExtractors = new LinkedList<MetaFeatureFactory>();
 
@@ -192,8 +192,8 @@ public class DataModel {
 	 * executed from the consol, this value is null.
 	 */
 	public void updateTable() {
-		if (ml_ != null) {
-			ml_.updateTable();
+		if (controller != null) {
+			controller.updateTable();
 		}
 	}
 
@@ -246,7 +246,7 @@ public class DataModel {
 					areTypos = true;
 				}
 				if (areTypos){
-					JOptionPane.showMessageDialog(((Controller)ml_).getFrame(), "You select incorrect file names format.\nPlease see the instructions in the Help menu.", "Info",
+					JOptionPane.showMessageDialog(((Controller)controller).getFrame(), "You select incorrect file names format.\nPlease see the instructions in the Help menu.", "Info",
 							JOptionPane.INFORMATION_MESSAGE);
 					return null;
 				}
@@ -254,7 +254,7 @@ public class DataModel {
 			}
 			listFileNames = new ArrayList<String>(setFileNames);
 			if (listFileNames.size() < 2){
-				JOptionPane.showMessageDialog(((Controller)ml_).getFrame(), "You have to add at least 2 classes of sounds.\nPlease see the instructions in the Help menu.", "Info",
+				JOptionPane.showMessageDialog(((Controller)controller).getFrame(), "You have to add at least 2 classes of sounds.\nPlease see the instructions in the Help menu.", "Info",
 						JOptionPane.INFORMATION_MESSAGE);
 				return null;
 			}
@@ -279,12 +279,18 @@ public class DataModel {
 				window_overlap, sampling_rate, normalise, this.features,
 				this.defaults, save_features_for_each_window,
 				save_overall_recording_features, featureValue, featureKey,
-				outputType, cancel_, container, toClassify);
+				outputType, cancel_, container, toClassify, ((Controller)controller));
 
 		feature_values_per_file.clear();
 		
 		// Extract features from recordings one by one and save them
 		for (int i = 0; i < recordings.length; i++) {
+			//TODO check cancel button		
+			if(controller.feIsRunning == false){
+				return null;
+			}
+			controller.extractionThread.getProgressFrame().setLblFilename(recordings[i].identifier);
+			
 			File load_file = new File(recordings[i].file_path);
 			// update progressbar
 			if (updater != null) {
