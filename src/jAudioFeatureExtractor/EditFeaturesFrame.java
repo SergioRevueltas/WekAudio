@@ -81,7 +81,7 @@ public class EditFeaturesFrame extends JFrame implements ActionListener {
 		} else {
 			this.setTitle("Feature info");
 		}
-		this.setBounds(new Rectangle(210, 150, 500, 400));
+		this.setBounds(new Rectangle(210, 210, 500, 400));
 		this.getContentPane().setBackground(OuterFrame.GRAY_PANELS);
 		this.getContentPane().setLayout(new MigLayout("", "[67.00][]", "[93.00px:80.00px][60.00px:23px][]"));
 		this.setAlwaysOnTop(true);

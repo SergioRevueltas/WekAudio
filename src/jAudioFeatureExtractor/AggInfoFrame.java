@@ -114,7 +114,7 @@ public class AggInfoFrame extends JFrame {
 		this.setTitle(aggregator.getAggregatorDefinition().name);
 		//Icon from http://icons8.com/icons/#!/1391/audio-file
 		this.setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage("img/icon.png"));
-		this.setBounds(new Rectangle(260, 185, 500, 220));
+		this.setBounds(new Rectangle(260, 245, 500, 220));
 		this.getContentPane().setBackground(OuterFrame.GRAY_PANELS);
 		// this.getContentPane().setLayout(new MigLayout("", "[67.00][]", "[93.00px:80.00px][60.00px:23px][]"));
 		this.setAlwaysOnTop(true);

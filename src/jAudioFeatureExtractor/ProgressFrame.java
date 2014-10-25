@@ -51,7 +51,7 @@ public class ProgressFrame extends JFrame {
 		//Icon from http://icons8.com/icons/#!/1391/audio-file
 		this.setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage("img/icon.png"));
 		this.setTitle("Feature Procesor");
-		this.setBounds(new Rectangle(360, 180, 500, 400));
+		this.setBounds(new Rectangle(360, 240, 500, 400));
 		this.getContentPane().setBackground(OuterFrame.GRAY_PANELS);
 		fileProgressBar = new JProgressBar();
 		fileProgressBar.setStringPainted(true);
