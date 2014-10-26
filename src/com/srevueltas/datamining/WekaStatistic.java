@@ -3,6 +3,11 @@ package com.srevueltas.datamining;
 import weka.classifiers.Classifier;
 import weka.classifiers.evaluation.Evaluation;
 
+/**
+ * Class to store Weka training statistics 
+ * @author Sergio Revueltas
+ *
+ */
 public class WekaStatistic {
 
 	private Classifier cls;

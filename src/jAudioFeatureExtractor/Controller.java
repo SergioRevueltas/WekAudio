@@ -11,6 +11,7 @@ import jAudioFeatureExtractor.actions.CutAction;
 import jAudioFeatureExtractor.actions.ExecuteBatchAction;
 import jAudioFeatureExtractor.actions.ExitAction;
 import jAudioFeatureExtractor.actions.GlobalWindowChangeAction;
+import jAudioFeatureExtractor.actions.HelpMenuAction;
 import jAudioFeatureExtractor.actions.LoadAction;
 import jAudioFeatureExtractor.actions.LoadBatchAction;
 import jAudioFeatureExtractor.actions.OutputTypeAction;
@@ -164,6 +165,10 @@ public class Controller implements ModelListener {
 	 * @see jAudioFeatureExtractor.actions.AboutAction
 	 */
 	public AboutAction aboutAction = new AboutAction(this);
+	/**
+	 * @see jAudioFeatureExtractor.actions.HelpMenuAction
+	 */
+	public HelpMenuAction helpMenuAction = new HelpMenuAction(this);
 
 	/**
 	 * @see jAudioFeatureExtractor.actions.SaveBatchAction
@@ -269,6 +274,8 @@ public class Controller implements ModelListener {
 	private WekaStatistic wekaStatistics;
 
 	public AboutFrame aboutFrame;
+	
+	public HelpMenuFrame helpMenuFrame;
 
 	public boolean feIsRunning;
 	
@@ -308,8 +315,10 @@ public class Controller implements ModelListener {
 		loadBatchAction = new LoadBatchAction(this);
 		removeBatchAction = new RemoveBatchAction(this);
 		viewBatchAction = new ViewBatchAction(this);
+		
 		wekaStatistics = new WekaStatistic();
 		aboutFrame = new AboutFrame(this);
+		helpMenuFrame = new HelpMenuFrame(this);
 	}
 
 	/**
