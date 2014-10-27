@@ -11,17 +11,17 @@
 
 		<header> <!-- Defining the header section of the page with the appropriate tag -->
 
-			<h1>WekAudio</h1>
+			<h1 style="font-size:32px;">WekAudio</h1>
 
-			<h3>Instructions</h3>
+			<h2>Instructions index</h2>
 
 			<nav class="clear"> <!-- The nav link semantically marks your main site navigation -->
 
 				<ul>
 
 					<li><a href="#article1">Overview</a></li>
-					<li><a href="#article2">Train</a></li>
-					<li><a href="#article3">Classify</a></li>
+					<li><a href="#article2">Training</a></li>
+					<li><a href="#article3">Classification</a></li>
 
 				</ul>
 
@@ -35,38 +35,149 @@
 
 		<article id="article1"> <!-- The new article tag. The id is supplied so it can be scrolled into view. -->
 
-			<h2>Overwiew</h2>
+			<h1>Overwiew</h1>
+			
+			<p>This application is a prototype tool for audio pattern recognition by artificial intelligence. The main function can be summarized in two stages: training and classification.</p>
 
-			<div class="line"></div>
+			<div align="center">
 
-			<div class="articleBody clear">
+				<figure class="center"> <!-- The figure tag marks data (usually an image) that is part of the article -->
 
-				<figure> <!-- The figure tag marks data (usually an image) that is part of the article -->
-
-					<a href="http://tutorialzine.com/2010/02/photo-shoot-css-jquery/">
-						<img src="http://cdn.tutorialzine.com/img/featured/641.jpg" width="620" height="340" /></a>
+					<a class="center" href="http://tutorialzine.com/2010/02/photo-shoot-css-jquery/">
+						<img class="displayed" src="https://pbs.twimg.com/profile_images/1618896860/2.JPG" width="400" height="300" align="middle"/>
+						</a>
 
 				</figure>
-
-				<p>In this tutorial, we are creating a photo shoot effect with our just-released PhotoShoot jQuery plug-in. With it you can convert a regular div on the page into a photo shooting stage simulating a camera-like feel.</p>
-
-				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer luctus quam quis .... </p>
 
 			</div>
 
 		</article>
+		<div class="line"></div>  <!-- Dividing line -->
+		<div class="line"></div>  <!-- Dividing line -->
 
     <!-- Article 1 end -->
 	
-	 <footer> <!-- Marking the footer section -->
+	<article id="article2"> <!-- The new article tag. The id is supplied so it can be scrolled into view. -->
+
+			<h1>Training</h1>
+			
+			<p>The training is the process that consists of loading, pre-processing, analysis and feature extraction of audio files indicating that class or type are. From that process it is obtained a model based on a classifier (Bayesian network, decision tree, ...) that subsequently allow recognize new patterns of these audio classes.</p>
+			
+			<p>In another words, it comes to teaching the application to recognize particular audio signals or patterns like bells, horns, hooters, animals, instruments, human voices… by loading a lot of audio patterns of those classes to gain the knowledge that will allow classify and identify them in the future.</p>
+			
+			<p>To train the application properly, we have to load at least 2 classes of audio patterns (e.g., siren and bell) to discern between them, of which we must load sufficient number of audio files (10 total at least). It is obvious to say that while we load more files of each class, training and classification will be more accurate.</p>
+			
+			<p>In this application, training process consists of 3 steps:</p>
+			
+			<ol>
+				<li><p>RECORDINGS panel: To load files</p></li>
+				<li><p>FEATURES panel: To choose features, compression method (Aggregator) and Analysis options.</p></li>
+				<li><p>DATA MINING panel: To choose classifier and to train.</p></li>
+
+			</ol>
+			
+			<div class="line"></div>
+			<div class="line"></div>
+			
+			<h2>1. Load audio files</h2>
+			
+			<p>The audio file loading for training process has to accomplish some restrictions:</p>
+			<ul>
+				<li><p>You must add at least 10 audio files.</p></li>
+				<li><p>You must add at least 2 classes of sounds or audio patterns.</p></li>
+				<li>
+				<p>The audio file format must be wave (.wav) with the following nomenclature:</p>
+				<br />
+				<p style=" text-indent:60px;">className + (blank) + anything.wav</p>
+				<br />
+				<p>For example, some valid file names:</p>
+				<br />
+				<p style=" text-indent:20px;">“dog 00.wav”, “dog 001.wav”, “dog 00002.wav”, “dog qwerty.wav”…</p>
+				<br />
+				<p style=" text-indent:100px;">class1 = dog</p>
+				<br />
+				<p style=" text-indent:20px;">“cat (0).wav”, “cat (01).wav”, “cat (245).wav”, “cat (3654).wav”…</p>
+				<br />
+				<p style=" text-indent:100px;">class2 = cat</p>
+				</li>
+			</ul>
+
+			<p>NOTE: You can rename a group of files at once. In Windows, for example, just select all files that you want rename, by clicking on them while you hold CTRL or SHIFT key, and press F2 key to rename them. The OS will assign the same name to all selected files with an auto increment integer concatenated at the end.</p>
+			
+			<br />
+			
+			<p>There is no restrictions in terms of quality, sample rate, bit depth or audio file length, even though it is recommended short length audio files free of noise.</p>
+			
+			<br />
+			
+			<p>It should be noted that while we load more files of each class, the model that will we get from training will be better.</p>
+
+			<br />
+			
+			<ul>
+				<li><p>You can add audio files by pressing “Add Recordings” button or from the File menu, which allow multiple file selection. The selected files will be added to RECORDINGS panel table.</p></li>
+				<li><p>You can record from microphone and add it by pressing “Add from mic” button. It will open a small recorder that allows record audio from microphone with different encoding formats and save it to use for training. The selected file will be added to RECORDINGS panel table.</p></li>
+				<li><p>You can play loaded audio files by double clicking on them in RECORDINGS panel table.</p></li>
+				<li><p>You can delete loaded audio files by selecting them and pressing “Delete Recordings” button. It allows multiple selections.</p></li>
+			</ul>
+			
+			<div class="line"></div>
+
+			<h2>2. Feature selection</h2>
+
+			<p>The feature selection is the most complex part of the application, inasmuch as the correct choice of them will depend on what patterns we want to identify, among many other factors that would require extra education in this area (type of sound-wave, tone, pitch, intensity, timbre…)</p>
+			
+			<p>Therefore, there have been preselected a set of features to be extracted in FEATURES panel table, with which is obtained highly representative of the original audio signal,  as well as a method of data compression (Aggregator) and analysis options by default.</p>
+			
+			<p>However, although there is the possibility to select the features that you want even edit settings of some of them, it is recommended not select too many if not are known or studied in depth with the Weka tool.</p>
+			
+			<ul>
+				<li><p>You can select the features by clicking on “save” column checkboxes from FEATURES panel table.</p></li>
+				<li><p>You can obtain information about features even edit some of them by double clicking.</p></li>
+				<li><p>You can choose the analysis compression method (Aggregator) by pressing on “Alter Aggregators” button from FEATURES panel.</p></li>
+				<li><p>You can edit analysis options by pressing on “Analysis Options” button form FEATURES panel which allows set sample rate, window size, window overlap and normalize data or not.</p></li>
+			</ul>
+
+			<div class="line"></div>
+
+			<h2>3. Train</h2>
+			
+			<p>Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla Bla </p>
+			
+	</article>
+
+    <!-- Article 2 end -->
+	<div class="line"></div>  <!-- Dividing line -->
+	<div class="line"></div>  <!-- Dividing line -->
+	<div class="line"></div>  <!-- Dividing line -->
+
+	
+	<article id="article3"> <!-- The new article tag. The id is supplied so it can be scrolled into view. -->
+
+			<h1>Classification</h1>
+
+			<p>This application is a prototype tool for audio pattern recognition by artificial intelligence. The main function can be summarized in two stages: training and classification.</p>
+
+			<div class="line"></div>
+
+
+	</article>
+
+    <!-- Article 3 end -->
+	
+	<div class="line"></div>  <!-- Dividing line -->
+	
+	<footer> <!-- Marking the footer section -->
 
             <div class="line"></div>
 
-            <p>Copyright 2010 - YourSite.com</p> <!-- Change the copyright notice -->
+            <p>Copyright 2014 - @SergioRevueltas</p> 
             <a href="#" class="up">Go UP</a>
             <a href="http://tutorialzine.com/" class="by">Template by Tutorialzine</a>
 
-        </footer>
+			<div class="line"></div>
+			
+    </footer>
 
     </section> <!-- Closing the #page section -->
 
@@ -75,8 +186,6 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
     <script src="jquery.scrollTo-1.4.2/jquery.scrollTo-min.js"></script>
     <script src="script.js"></script>
-	
-	
 	
 	</body>
 

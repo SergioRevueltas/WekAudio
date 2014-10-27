@@ -6,14 +6,51 @@ figure{
     display:block;
 }
 
-article .line{
+h1, h2 , h3, p, nav, footer, li{
+	color: #ffffff;
+	font-family: arial;
+}
+h2{
+	margin-left: 1cm;
+}
+
+p{
+	margin-left: 1cm;
+}
+
+div.center {
+  margin-left: auto;
+  margin-right: auto;
+  width: 8em;
+}
+
+a.center {
+  margin-left: auto;
+  margin-right: auto;
+  width: 8em;
+}
+
+figure.center {
+  margin-left: auto;
+  margin-right: auto;
+  width: 8em;
+}
+
+img.displayed{
+	display: inline-block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+article.line{
     /* The dividing line inside of the article is darker: */
     background-color:#15242a;
     border-bottom-color:#204656;
     margin:1.3em 0;
+	
 }
 
-footer .line{
+footer.line{
     margin:2em 0;
 }
 

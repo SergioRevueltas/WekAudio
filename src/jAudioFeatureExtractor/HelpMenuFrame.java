@@ -8,6 +8,7 @@ Publisher: Prentice Hall
 */
 
 import java.awt.Cursor;
+import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -36,6 +37,10 @@ public class HelpMenuFrame extends JFrame {
 	public HelpMenuFrame(Controller controller) {
 		super("Help");
 		this.controller = controller;
+		this.getContentPane().setBackground(OuterFrame.GRAY_PANELS);
+		this.setBackground(OuterFrame.GRAY_PANELS);
+		this.setFont(new Font("Arial", Font.PLAIN, 10));
+
 		this.setBounds(new Rectangle(0, 20, 1024, 680));
 		getContentPane().setLayout(new MigLayout("", "[grow]", "[grow]"));
 		try {
@@ -51,6 +56,8 @@ public class HelpMenuFrame extends JFrame {
 		scrollPane = new JScrollPane(editorPane);
 		getContentPane().add(scrollPane, "cell 0 0,grow");
 		editorPane.setEditable(false); // Start read-only
+		editorPane.setBackground(OuterFrame.GRAY_PANELS);
+		editorPane.setFont(OuterFrame.NORMAL_FONT);
 
 		// Listen for page load to complete
 		editorPane.addPropertyChangeListener(new PropertyChangeListener() {
