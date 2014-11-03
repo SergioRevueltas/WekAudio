@@ -16,6 +16,7 @@ h2{
 
 p{
 	margin-left: 1cm;
+	text-align: justify;
 }
 
 div.center {
@@ -70,6 +71,8 @@ nav{
 
 nav ul li{
     display:inline;
+	text-align: justify;
+
 }
 
 nav ul li a,
