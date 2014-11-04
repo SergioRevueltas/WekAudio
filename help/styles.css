@@ -16,7 +16,12 @@ h2{
 
 p{
 	margin-left: 1cm;
+	margin-right: 1cm;
 	text-align: justify;
+}
+
+ul, li {
+	margin-right: 1cm;
 }
 
 div.center {
