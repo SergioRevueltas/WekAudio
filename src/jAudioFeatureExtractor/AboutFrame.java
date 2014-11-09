@@ -337,7 +337,7 @@ public class AboutFrame extends JFrame implements ActionListener{
 
 	private JLabel getLblJaudio() {
 		if (lblJaudio == null) {
-			lblJaudio = new CustomJLabel("Fork from jAudio project.");
+			lblJaudio = new CustomJLabel("Fork of jAudio project.");
 			lblJaudio.setFont(new Font("Arial", Font.BOLD, 14));
 		}
 		return lblJaudio;
