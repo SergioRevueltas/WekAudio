@@ -77,7 +77,8 @@ public class AboutFrame extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource().equals(btnWekAudio)){
-			//todo wekaudio url
+			openURL("https://github.com/SergioRevueltas/WekAudio");
+			
 		} else if(e.getSource().equals(btnJaudio)){
 			openURL("http://jaudio.sourceforge.net/");
 			
