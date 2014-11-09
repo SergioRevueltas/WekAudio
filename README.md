@@ -2,11 +2,13 @@
 
 This application is a prototype tool for audio pattern recognition by artificial intelligence. The purpose of this project is purely educational.
 
+## How does it work?
+
 The main function can be summarized in two stages: training and classification.
 
 ![alt tag](https://github.com/SergioRevueltas/WekAudio/blob/master/help/img/HelpDiagram600.png)
 
-## TRAINING
+### Training
 
 The training is the process that consists of loading, pre-processing, analysis and feature extraction of audio files indicating that class or type are. From that process it is obtained a model based on a classifier (Bayesian network, decision tree, ...) that subsequently allow recognize new patterns of these audio classes.
 
@@ -15,7 +17,7 @@ In another words, it comes to teaching the application to recognize particular a
 To train the application properly, we have to load at least 2 classes of audio patterns (e.g., siren and bell) to discern between them, of which we must load sufficient number of audio files (10 total at least). It is obvious to say that while we load more files of each class, training and classification will be more accurate.  
 
 
-##CLASSIFICATION
+### Classification
 
 The classification is the process that consists of loading, pre-processing, analysis and feature extraction of audio files without indicating what class or type are, so the application is able to determine each class using a previously stored model or classifier. 
 
@@ -55,4 +57,4 @@ USA.
 * [@SergioRevueltas](https://twitter.com/SergioRevueltas)
 
 ## 
-Built with &hearts in ☼ Retamar.
+Built with ♥ in ☼ Retamar.
