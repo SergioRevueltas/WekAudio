@@ -14,24 +14,14 @@ In another words, it comes to teaching the application to recognize particular a
 
 To train the application properly, we have to load at least 2 classes of audio patterns (e.g., siren and bell) to discern between them, of which we must load sufficient number of audio files (10 total at least). It is obvious to say that while we load more files of each class, training and classification will be more accurate.  
 
-In this application, training process consists of 3 steps:
-* 1. RECORDINGS panel: To load files
-* 2. FEATURES panel: To choose features, compression method (Aggregator) and Analysis options.
-* 3. DATA MINING panel: To choose classifier and to train.
-
 
 ##CLASSIFICATION
 
 The classification is the process that consists of loading, pre-processing, analysis and feature extraction of audio files without indicating what class or type are, so the application is able to determine each class using a previously stored model or classifier. 
 
-In this application, classification process consists of 3 steps:
-* 1. FEATURES panel: To choose features, compression method (Aggregator) and Analysis options.
-* 2. DATA MINING panel: To load an unknown audio file and previously stored model or classifier.
-* 3. DATA MINING panel: Classify.
-
 
 ## Install
-* 1. Clone with HTTPS, SSH or Surversion: `git clone git@github.com:SergioRevueltas/WekAudio.git` .	
+* 1. Clone with HTTPS, SSH or Surversion: `git clone git@github.com:SergioRevueltas/WekAudio.git`	
 * 2. Import project from Git on Eclipse: [EGit](http://wiki.eclipse.org/EGit/User_Guide)
 * 3. Run `src/com/srevueltas/gui/Main.java` on Eclipse as Java Application.
 
@@ -54,12 +44,15 @@ License along with this software; if not, write to the Free
 Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139,
 USA.
 
-####Fork of jAudio by Cory McKay and Daniel McEnnis
+####Fork of jAudio project by Cory McKay and Daniel McEnnis
 * [jAudio](http://jmir.sourceforge.net/jAudio.html)
 * [jMIR](https://github.com/DDMAL/jMIR)
 
-####Data Mining powered by Weka
+####Data Mining powered by Weka library
 * [Weka](http://www.cs.waikato.ac.nz/ml/weka/)
 
 ####Follow me
 * [@SergioRevueltas](https://twitter.com/SergioRevueltas)
+
+## 
+Built with &hearts in ☼ Retamar.
