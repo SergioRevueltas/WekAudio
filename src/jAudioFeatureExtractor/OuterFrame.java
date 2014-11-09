@@ -18,9 +18,7 @@ import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.MediaTracker;
-import java.awt.event.ActionEvent;
 
-import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
@@ -241,9 +239,10 @@ public class OuterFrame extends JFrame {
 		JMenu helpMenu = new JMenu("Help");
 		helpMenu.setForeground(Color.WHITE);
 		helpMenu.setBackground(GRAY_BACKGROUND);
-		//helpMenu.add(helpTopics);
+		helpMenu.add(c.helpMenuAction);
 		helpMenu.add(c.aboutAction);
-
+/*
+		//helpMenu.add(helpTopics);
 //		HelpSet hs = getHelpSet("Sample.hs");
 //		HelpBroker hb = hs.createHelpBroker();
 //
@@ -259,6 +258,8 @@ public class OuterFrame extends JFrame {
 				}
 			}
 		});
+		*/
+		
 		
 		menu.add(fileMenu);
 		menu.add(editMenu);

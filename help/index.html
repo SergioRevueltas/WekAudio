@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link rel="stylesheet" type="text/css" href="styles.css" />
+		<meta charset="UTF-8">
+		<title>Help</title>
+	</head>
+	<body>
+		<section id="page"> <!-- Defining the #page section with the section tag -->
+
+		<header> <!-- Defining the header section of the page with the appropriate tag -->
+
+			<h1 style="font-size:32px;">WekAudio</h1>
+
+			
+			<!--
+			<h2>Help index</h2>
+
+			<nav class="clear"> <!-- The nav link semantically marks your main site navigation 
+
+				<ul>
+
+					<li><a href="#article1">Overview</a></li>
+					<li><a href="#article2">Training</a></li>
+					<li><a href="#article3">Classification</a></li>
+
+				</ul>
+
+			</nav>
+			-->
+			
+		</header>
+	
+		 <!-- Article 1 start -->
+
+		<div class="line"></div>  <!-- Dividing line -->
+
+		<article id="article1"> <!-- The new article tag. The id is supplied so it can be scrolled into view. -->
+
+			<h1>Overwiew</h1>
+			
+			<p>This application is a prototype tool for audio pattern recognition by artificial intelligence. The main function can be summarized in two stages: training and classification.</p>
+
+			<div align="center">
+
+				<figure class="center"> <!-- The figure tag marks data (usually an image) that is part of the article -->
+<!--
+					<a class="center" href="http://tutorialzine.com/2010/02/photo-shoot-css-jquery/">
+	-->
+	<img class="displayed" src="img/HelpDiagram600.png" align="middle"/>
+<!--						</a>
+-->
+				</figure>
+
+			</div>
+
+		</article>
+		<div class="line"></div>  <!-- Dividing line -->
+		<div class="line"></div>  <!-- Dividing line -->
+
+    <!-- Article 1 end -->
+	
+	<article id="article2"> <!-- The new article tag. The id is supplied so it can be scrolled into view. -->
+
+			<h1>Training</h1>
+			
+			<p>The training is the process that consists of loading, pre-processing, analysis and feature extraction of audio files indicating that class or type are. From that process it is obtained a model based on a classifier (Bayesian network, decision tree, ...) that subsequently allow recognize new patterns of these audio classes.</p>
+			
+			<p>In another words, it comes to teaching the application to recognize particular audio signals or patterns like bells, horns, hooters, animals, instruments, human voices… by loading a lot of audio patterns of those classes to gain the knowledge that will allow classify and identify them in the future.</p>
+			
+			<p>To train the application properly, we have to load at least 2 classes of audio patterns (e.g., siren and bell) to discern between them, of which we must load sufficient number of audio files (10 total at least). It is obvious to say that while we load more files of each class, training and classification will be more accurate.</p>
+			
+			<p>In this application, training process consists of 3 steps:</p>
+			
+			<ol>
+				<li>RECORDINGS panel: To load audio files</li>
+				<li>FEATURES panel: To choose features, compression method (Aggregator) and Analysis options.</li>
+				<li>DATA MINING panel: To choose classifier and to train.</li>
+
+			</ol>
+			
+			<div class="line"></div>
+			
+			<h2>1. Load audio files</h2>
+			
+			<p>The audio file loading for training process has to accomplish some restrictions:</p>
+			<ul>
+				<li>You must add at least 10 audio files.</li>
+				<li>You must add at least 2 classes of sounds or audio patterns.</li>
+				<li>
+					The audio file format must be wave (.wav) with the following nomenclature:
+					<br />
+					<br />
+					<p style=" text-indent:60px;"><b>className + (blank) + anything.wav</b></p>
+					<br />
+					<p>For example, some valid file names:</p>
+					<br />
+					<p style=" text-indent:20px;">“dog 00.wav”, “dog 001.wav”, “dog 00002.wav”, “dog qwerty.wav”…</p>
+					<br />
+					<p style=" text-indent:100px;">class1 = dog</p>
+					<br />
+					<p style=" text-indent:20px;">“cat (0).wav”, “cat (01).wav”, “cat (245).wav”, “cat (3654).wav”…</p>
+					<br />
+					<p style=" text-indent:100px;">class2 = cat</p>
+				</li>
+			</ul>
+
+			<p>NOTE: You can rename a group of files at once. In Windows, for example, just select all files that you want rename, by clicking on them while you hold CTRL or SHIFT key, and press F2 key to rename them. The OS will assign the same name to all selected files with an auto increment integer concatenated at the end.</p>
+			
+			<p>There is no restrictions in terms of quality, sample rate, bit depth or audio file length, even though it is recommended short length audio files free of noise.</p>
+			
+			<p>It should be noted that while we load more files of each class, the model that will we get from training will be better.</p>
+			
+			<ul>
+				<li>You can add audio files by pressing “Add Recordings” button or from the File menu, which allow multiple file selection. The selected files will be added to RECORDINGS panel table.</li>
+				<li>You can record from microphone and add it by pressing “Add from mic” button. It will open a small recorder that allows record audio from microphone with different encoding formats and save it to use for training. The selected file will be added to RECORDINGS panel table.</li>
+				<li>You can play loaded audio files by double clicking on them in RECORDINGS panel table.</li>
+				<li>You can delete loaded audio files by selecting them and pressing “Delete Recordings” button. It allows multiple selections.</li>
+			</ul>
+			
+			<div class="line"></div>
+
+			<h2>2. Feature selection</h2>
+
+			<p>The feature selection is the most complex part of the application, inasmuch as the correct choice of them will depend on what patterns we want to identify, among many other factors that would require extra education in this area (type of sound-wave, tone, pitch, intensity, timbre…)</p>
+			
+			<p>Therefore, there have been preselected a set of features to be extracted in FEATURES panel table, with which is obtained highly representative of the original audio signal,  as well as a method of data compression (Aggregator) and analysis options by default.</p>
+			
+			<p>However, although there is the possibility to select the features that you want even edit settings of some of them, it is recommended not select too many if not are known or studied in depth with the Weka tool.</p>
+			
+			<ul>
+				<li>You can select the features by clicking on “save” column checkboxes from FEATURES panel table.</li>
+				<li>You can obtain information about features even edit some of them by double clicking.</li>
+				<li>You can choose the analysis compression method (Aggregator) by pressing on “Alter Aggregators” button from FEATURES panel.</li>
+				<li>You can edit analysis options by pressing on “Analysis Options” button form FEATURES panel which allows set sample rate, window size, window overlap and normalize data or not.</li>
+			</ul>
+
+			<div class="line"></div>
+
+			<h2>3. Train</h2>
+			
+			<p>In this step we just have to choose a classifier and training set save path (.arff) in DATA MINING panel, which will contains the selected features of preloaded audio files.</p>
+			
+			<p>When you press “Train” button in DATA MINING panel, the application analyzes all loaded audio files (with selected analysis options, extraction features and aggregators) and generates 2 files with same name but different extensions:</p>
+			<ul>
+				<li>Weka file (.arff)</li>
+				<li>Classifier file (.model)</li>
+			</ul>
+			<p>This process can take several minutes. It will vary depending on the experiment to be performed.</p>
+			
+			<p>After build the model, WekAudio does a cross validation evaluation and print the summary results in main window, including accuracy, hit rate or confusion matrix among others.</p>
+						
+	</article>
+
+    <!-- Article 2 end -->
+	<div class="line"></div>  <!-- Dividing line -->
+	<div class="line"></div>  <!-- Dividing line -->
+	<div class="line"></div>  <!-- Dividing line -->
+
+	
+	<article id="article3"> <!-- The new article tag. The id is supplied so it can be scrolled into view. -->
+
+			<h1>Classification</h1>
+
+			<p>The classification is the process that consists of loading, pre-processing, analysis and feature extraction of audio files without indicating what class or type are, so the application is able to determine each class using a previously stored model or classifier.</p>
+
+			<div class="line"></div>
+			
+			<p>In this application, classification process consists of 3 steps:</p>
+			
+			<ol>
+				<li>FEATURES panel: To choose features, compression method (Aggregator) and Analysis options.</li>
+				<li>DATA MINING panel: To load an unknown audio file and previously stored model or classifier.</li>
+				<li>DATA MINING panel: Classify.</li>
+
+			</ol>
+
+			<div class="line"></div>
+
+			<h2>1. Feature selection</h2>
+			
+			<p>The feature selection has to be the same that you did in training process. In another words, it has to be the same features that were stored in saved model or classifier. </p>
+			
+			<div class="line"></div>
+
+			<h2>2. Load audio and model files</h2>
+			
+			<p>The audio file format for classification process must be wave (.wav).</p>
+			
+			<p>There are no restrictions about file nomenclature.</p>
+
+			<p>There are no restrictions in terms of quality, sample rate, bit depth or audio file duration, even though it is recommended short duration audio files and free of noise.</p>
+
+			<p>Additionally, in this step you have to select the model path, previously generated in the training process, which will contain the selected features data of trained audio files.</p>
+
+			<div class="line"></div>
+
+			<h2>3. Classify</h2>
+			
+			<p>When you press the classify button in DATA MINING panel, the application analyzes loaded audio file with selected analysis options, features and aggregators settings, and classify it with the model that was selected in previous step. Finally, WekAudio will print classification result on main window.</p>
+			
+			<p>This process can take several minutes. It will vary depending on the experiment to be performed.</p>
+			
+
+	</article>
+
+    <!-- Article 3 end -->
+	
+	<div class="line"></div>  <!-- Dividing line -->
+	
+	<footer> <!-- Marking the footer section -->
+
+            <div class="line"></div>
+            <p align="center">Copyright 2014 - @SergioRevueltas</p> 
+			<p align="center">Logo by icons8.com</p>
+            <p align="center">Template by Tutorialzine</p> 
+			
+    </footer>
+
+    </section> <!-- Closing the #page section -->
+
+    <!-- JavaScript Includes -->
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+    <script src="jquery.scrollTo-1.4.2/jquery.scrollTo-min.js"></script>
+    <script src="script.js"></script>
+	
+	</body>
+
+</html>
