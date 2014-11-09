@@ -1,6 +1,6 @@
 # WekAudio
 
-This application is a prototype tool for audio pattern recognition by artificial intelligence. The purpose of this project is project is purely educational.
+This application is a prototype tool for audio pattern recognition by artificial intelligence. The purpose of this project is purely educational.
 
 The main function can be summarized in two stages: training and classification.
 
@@ -62,4 +62,4 @@ USA.
 * [Weka](http://www.cs.waikato.ac.nz/ml/weka/)
 
 ####Follow me
-[@SergioRevueltas](https://twitter.com/SergioRevueltas)
+* [@SergioRevueltas](https://twitter.com/SergioRevueltas)
