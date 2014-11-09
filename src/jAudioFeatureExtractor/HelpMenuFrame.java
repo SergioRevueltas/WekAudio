@@ -36,12 +36,13 @@ public class HelpMenuFrame extends JFrame {
 
 	public HelpMenuFrame(Controller controller) {
 		super("Help");
+		this.setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage("img/icon.png"));
 		this.controller = controller;
 		this.getContentPane().setBackground(OuterFrame.GRAY_PANELS);
 		this.setBackground(OuterFrame.GRAY_PANELS);
 		this.setFont(new Font("Arial", Font.PLAIN, 10));
-
 		this.setBounds(new Rectangle(0, 20, 1024, 680));
+		this.setResizable(false);
 		getContentPane().setLayout(new MigLayout("", "[grow]", "[grow]"));
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
