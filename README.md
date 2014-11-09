@@ -30,6 +30,11 @@ In this application, classification process consists of 3 steps:
 * 3. DATA MINING panel: Classify.
 
 
+## Install
+* 1. Clone with HTTPS, SSH or Surversion: `git clone git@github.com:SergioRevueltas/WekAudio.git` .	
+* 2. Import project from Git on Eclipse: [EGit](http://wiki.eclipse.org/EGit/User_Guide)
+* 3. Run `src/com/srevueltas/gui/Main.java` on Eclipse as Java Application.
+
 
 ## License
 WekAudio v.1.0
