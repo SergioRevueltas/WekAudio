@@ -4,6 +4,8 @@ This application is a prototype tool for audio pattern recognition by artificial
 
 The main function can be summarized in two stages: training and classification.
 
+![alt tag](https://github.com/SergioRevueltas/WekAudio/blob/master/help/img/HelpDiagram600.png)
+
 ## TRAINING
 
 The training is the process that consists of loading, pre-processing, analysis and feature extraction of audio files indicating that class or type are. From that process it is obtained a model based on a classifier (Bayesian network, decision tree, ...) that subsequently allow recognize new patterns of these audio classes.
