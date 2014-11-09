@@ -30,6 +30,9 @@ In this application, classification process consists of 3 steps:
 
 
 ## License
+WekAudio v.1.0
+Copyright (C) 2014 Sergio Revueltas
+
 This software is free software; you can redistribute it
 and/or modify it under the terms of the GNU General 
 Public License as published by the Free Software Foundation.
@@ -44,12 +47,12 @@ License along with this software; if not, write to the Free
 Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139,
 USA.
 
-###Fork of jAudio by Cory McKay and Daniel McEnnis
-[jAudio](http://jmir.sourceforge.net/jAudio.html)
-[jMIR](https://github.com/DDMAL/jMIR)
+####Fork of jAudio by Cory McKay and Daniel McEnnis
+* [jAudio](http://jmir.sourceforge.net/jAudio.html)
+* [jMIR](https://github.com/DDMAL/jMIR)
 
-###Data Mining powered by Weka
-[Weka](http://www.cs.waikato.ac.nz/ml/weka/)
+####Data Mining powered by Weka
+* [Weka](http://www.cs.waikato.ac.nz/ml/weka/)
 
-
+####Follow me
 [@SergioRevueltas](https://twitter.com/SergioRevueltas)
