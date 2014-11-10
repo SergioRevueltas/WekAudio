@@ -10,7 +10,7 @@ The main function can be summarized in two stages: training and classification.
 
 ### Training
 
-The training is the process that consists of loading, pre-processing, analysis and feature extraction of audio files indicating that class or type are. From that process it is obtained a model based on a classifier (Bayesian network, decision tree, ...) that subsequently allow recognize new patterns of these audio classes.
+The training is the process that consists of loading, pre-processing, analysis and feature extraction of audio files indicating what class or type are. From that process it is obtained a model based on a classifier (Bayesian network, decision tree, ...) that subsequently allow recognize new patterns of these audio classes.
 
 In another words, it comes to teaching the application to recognize particular audio signals or patterns like bells, horns, hooters, animals, instruments, human voices… by loading a lot of audio patterns of those classes to gain the knowledge that will allow classify and identify them in the future.
 
