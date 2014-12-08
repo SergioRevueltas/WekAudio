@@ -7,6 +7,7 @@
 package jAudioFeatureExtractor;
 
 import jAudioFeatureExtractor.DataTypes.RecordingInfo;
+import jAudioFeatureExtractor.GeneralTools.RecordingDisplay;
 import jAudioFeatureExtractor.jAudioTools.AudioMethods;
 import jAudioFeatureExtractor.jAudioTools.AudioMethodsPlayback;
 import jAudioFeatureExtractor.jAudioTools.AudioSamples;
@@ -29,6 +30,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.table.TableColumn;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -231,7 +233,16 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 		add(recordings_scroll_pane, "cell 0 2,grow");
 		recordings_scroll_pane.setBackground(OuterFrame.GRAY_BOXES_LINE);
 		recordings_scroll_pane.getViewport().setBackground(OuterFrame.GRAY_PANELS);
-
+		TableColumn tableColumn = recordings_table.getColumn(recordings_table.getColumnName(0));
+		tableColumn.setCellRenderer(new RecordingDisplay());
+		tableColumn = recordings_table.getColumn(recordings_table.getColumnName(1));
+		tableColumn.setCellRenderer(new RecordingDisplay());
+		tableColumn = recordings_table.getColumn(recordings_table.getColumnName(2));
+		tableColumn.setCellRenderer(new RecordingDisplay());
+		tableColumn = recordings_table.getColumn(recordings_table.getColumnName(3));
+		tableColumn.setCellRenderer(new RecordingDisplay());
+		//recordings_table.removeColumn(recordings_table.getColumn(recordings_table.getColumnName(3)));
+		
 		addTableMouseListener();
 		/*
 		controller.addBatchAction.setFilePath(values_save_path_text_field,
@@ -613,6 +624,7 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 		Object[] column_names = {
 				new String("#"),
 				new String("Name"),
+				new String("Class"),
 				new String("Path") };
 
 		int number_recordings = 0;

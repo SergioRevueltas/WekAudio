@@ -392,8 +392,11 @@ public class DataMiningPanel extends JPanel implements ActionListener, ThreadCom
 			controller.dm_.recordinInfo = new RecordingInfo(file.getName(), file.getPath(), null, false);
 
 			// Get the audio recordings to extract features from and throw an exception if there are none
-			RecordingInfo[] recordings = new RecordingInfo[1];
-			recordings[0] = controller.dm_.recordinInfo;
+			RecordingInfo[] recordings = controller.dm_.recordingsInfo;
+			
+			// Get the audio recordings to extract features from and throw an exception if there are none
+			//RecordingInfo[] recordings = new RecordingInfo[1];
+			//recordings[0] = controller.dm_.recordinInfo;
 
 			// Find which features are selected to be saved
 			for (int i = 0; i < controller.dm_.defaults.length; i++) {

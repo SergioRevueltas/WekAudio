@@ -8,6 +8,8 @@ package jAudioFeatureExtractor;
 
 import jAudioFeatureExtractor.DataTypes.RecordingInfo;
 
+import java.util.ArrayList;
+
 import javax.swing.table.DefaultTableModel;
 
 
@@ -53,15 +55,35 @@ public class RecordingsTableModel extends DefaultTableModel {
 		if (recording_list != null)
 			for (int i = 0; i < recording_list.length; i++)
 			{
-				Object[] row_contents = new Object[3];
+				Object[] row_contents = new Object[4];
 				row_contents[0] = i+1;
 				row_contents[1] = recording_list[i].identifier;
-				row_contents[2] = recording_list[i].file_path;
+				row_contents[2] = "???";
+				row_contents[3] = recording_list[i].file_path;
 				addRow(row_contents);
 			}
 	}
 
+	public void fillTable(RecordingInfo[] recording_list, ArrayList<String> recordingsClasses)
+	{
+		// Remove the contents of the table
+		clearTable();
 
+		// Populate each row one by one
+		if (recording_list != null)
+			for (int i = 0; i < recording_list.length; i++)
+			{
+				Object[] row_contents = new Object[4];
+				row_contents[0] = i+1;
+				row_contents[1] = recording_list[i].identifier;
+				row_contents[2] = recordingsClasses.get(i);
+				row_contents[3] = recording_list[i].file_path;
+				addRow(row_contents);
+			}
+	}
+
+	
+	
 	/**
 	 * Removes all contents of the table.
 	 */

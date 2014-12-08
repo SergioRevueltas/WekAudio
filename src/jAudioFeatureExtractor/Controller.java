@@ -298,6 +298,7 @@ public class Controller implements ModelListener {
 		rtm_ = new RecordingsTableModel(new Object[] { 
 				new String("#"),
 				new String("Name"),
+				new String("Class"),
 				new String("Path") }, 0);
 		aggList_ = new AggListTableModel();
 		activeAgg_ = new ActiveAggTableModel();

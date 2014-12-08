@@ -1,7 +1,5 @@
 package jAudioFeatureExtractor;
 
-import jAudioFeatureExtractor.DataTypes.RecordingInfo;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
@@ -96,8 +94,10 @@ public class ExtractionThread extends Thread implements Updater {
 				else if (classificationResults != null){
 					CustomJTextArea classificationTextArea = outerFrame.dataMiningPanel.getClassificationResultsTextArea();
 					if (classificationResults.size() > 0) {
-						classificationTextArea.setText(classificationResults.get(0));
-						outerFrame.dataMiningPanel.getLblClassificationDone().setVisible(true);
+						controller.rtm_.fillTable(controller.dm_.recordingsInfo, classificationResults);
+						controller.rtm_.fireTableDataChanged();
+						//classificationTextArea.setText(classificationResults.get(0));
+						//outerFrame.dataMiningPanel.getLblClassificationDone().setVisible(true);
 					} else {
 						classificationTextArea.setText("No data available.");
 					}
@@ -179,7 +179,7 @@ public class ExtractionThread extends Thread implements Updater {
 				classificationResults = controller.dm_.extractAndClassify(windowSize, windowOverlap,
 						controller.samplingRateAction.getSamplingRate(),
 						controller.normalise.isSelected(), perWindow, perFile,
-						new RecordingInfo[]{controller.dm_.recordinInfo}, controller.outputTypeAction
+						controller.dm_.recordingsInfo, controller.outputTypeAction
 								.getSelected(), toClassify, modelLoadPath);
 			}
 			
