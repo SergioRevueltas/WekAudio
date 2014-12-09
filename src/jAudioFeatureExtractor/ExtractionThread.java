@@ -1,5 +1,7 @@
 package jAudioFeatureExtractor;
 
+import jAudioFeatureExtractor.DataTypes.RecordingInfo;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
@@ -18,6 +20,10 @@ import com.srevueltas.gui.CustomJTextArea;
  */
 public class ExtractionThread extends Thread implements Updater {
 
+	public static final int TRAIN = 0;
+	public static final int CLASSIFY_ALL = 1;
+	public static final int CLASSIFY_SINGLE_FILE = 2;
+	
 	Runnable suspendGUI, resumeGUI;
 
 	ErrorGUI errorGUI;
@@ -44,7 +50,7 @@ public class ExtractionThread extends Thread implements Updater {
 
 	private ProgressFrame progressFrame;
 
-	boolean toClassify;
+	int extractionOption;
 	
 	private String modelLoadPath;
 	
@@ -77,7 +83,7 @@ public class ExtractionThread extends Thread implements Updater {
 				outerFrame.setEnabled(true);
 				outerFrame.toFront();
 				// train
-				if (!toClassify && classificationResults != null) {
+				if (extractionOption == TRAIN && classificationResults != null) {
 					CustomJTextArea trainingTextArea = outerFrame.dataMiningPanel.getTrainningResultsTextArea();
 					trainingTextArea.setText(controller.getWekaStatistics().getConfusionMatrix() +
 								controller.getWekaStatistics().getSummary()
@@ -94,10 +100,14 @@ public class ExtractionThread extends Thread implements Updater {
 				else if (classificationResults != null){
 					CustomJTextArea classificationTextArea = outerFrame.dataMiningPanel.getClassificationResultsTextArea();
 					if (classificationResults.size() > 0) {
-						controller.rtm_.fillTable(controller.dm_.recordingsInfo, classificationResults);
-						controller.rtm_.fireTableDataChanged();
-						//classificationTextArea.setText(classificationResults.get(0));
-						//outerFrame.dataMiningPanel.getLblClassificationDone().setVisible(true);
+						if (extractionOption == CLASSIFY_ALL){
+							controller.rtm_.fillTable(controller.dm_.recordingsInfo, classificationResults);
+							controller.rtm_.fireTableDataChanged();
+						} else {
+							classificationTextArea.setText(classificationResults.get(0));
+							outerFrame.dataMiningPanel.getLblClassificationDone().setVisible(true);
+							outerFrame.repaint();
+						}
 					} else {
 						classificationTextArea.setText("No data available.");
 					}
@@ -139,20 +149,20 @@ public class ExtractionThread extends Thread implements Updater {
 	 * @param definitionSavePath File to save descriptions of the features extracted
 	 * @param windowSize Size of the analysis window in samples
 	 * @param windowOverlap Percent of the window that is duplicated between analysis windows
-	 * @param toClassify
+	 * @param extractionOption
 	 * @param modelLoadPath 
 	 * @param classifierName 
 	 */
 	public void setup(boolean perFile, boolean perWindow,
 			String valuesSavePath, String definitionSavePath, int windowSize,
-			double windowOverlap, boolean toClassify, String modelLoadPath, String classifierName) {
+			double windowOverlap, int extractionOption, String modelLoadPath, String classifierName) {
 		this.perFile = perFile;
 		this.perWindow = perWindow;
 		this.valuesSavePath = valuesSavePath;
 		//this.definitionSavePath = definitionSavePath;
 		this.windowSize = windowSize;
 		this.windowOverlap = windowOverlap;
-		this.toClassify = toClassify;
+		this.extractionOption = extractionOption;
 		this.modelLoadPath = modelLoadPath;
 		this.classifierName = classifierName;
 	}
@@ -165,7 +175,7 @@ public class ExtractionThread extends Thread implements Updater {
 		try {
 			SwingUtilities.invokeAndWait(suspendGUI);
 			
-			if (!toClassify) { //train
+			if (extractionOption == TRAIN) { //train
 				controller.dm_.validateFile(valuesSavePath);
 				File feature_values_save_file = new File(valuesSavePath);
 				FileOutputStream values_to = new FileOutputStream(feature_values_save_file);
@@ -174,16 +184,22 @@ public class ExtractionThread extends Thread implements Updater {
 						controller.samplingRateAction.getSamplingRate(),
 						controller.normalise.isSelected(), perWindow, perFile,
 						controller.dm_.recordingsInfo, controller.outputTypeAction
-						.getSelected(), toClassify, modelLoadPath);
-			} else { //classify
+						.getSelected(), extractionOption, modelLoadPath);
+			} else if (extractionOption == CLASSIFY_ALL) { //classify
 				classificationResults = controller.dm_.extractAndClassify(windowSize, windowOverlap,
 						controller.samplingRateAction.getSamplingRate(),
 						controller.normalise.isSelected(), perWindow, perFile,
 						controller.dm_.recordingsInfo, controller.outputTypeAction
-								.getSelected(), toClassify, modelLoadPath);
+								.getSelected(), extractionOption, modelLoadPath);
+			} else { //classify
+				classificationResults = controller.dm_.extractAndClassify(windowSize, windowOverlap,
+						controller.samplingRateAction.getSamplingRate(),
+						controller.normalise.isSelected(), perWindow, perFile,
+						new RecordingInfo[]{controller.dm_.recordinInfo}, controller.outputTypeAction
+								.getSelected(), extractionOption, modelLoadPath);
 			}
 			
-			if (!toClassify && classificationResults != null){
+			if (extractionOption == TRAIN && classificationResults != null){
 				WekaStatistic wekaStatistic = WekaManager.saveModel(controller, valuesSavePath, classifierName);
 				controller.setWekaStatistics(wekaStatistic);
 			}

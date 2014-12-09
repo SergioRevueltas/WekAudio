@@ -30,6 +30,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.table.TableColumn;
 
 import net.miginfocom.swing.MigLayout;
@@ -198,14 +199,22 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 		setUpRecordingListTable();
 
 		recordings_table = new CustomJTable(controller.rtm_);
+		recordings_table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
 		recordings_table.getColumnModel().getColumn(0).setMinWidth(25);
-		recordings_table.getColumnModel().getColumn(1).setMinWidth(110);
+		recordings_table.getColumnModel().getColumn(1).setMinWidth(120);
+		recordings_table.getColumnModel().getColumn(2).setMinWidth(90);
 
+		recordings_table.getColumnModel().getColumn(0).setPreferredWidth(25);
+		recordings_table.getColumnModel().getColumn(1).setPreferredWidth(120);
+		recordings_table.getColumnModel().getColumn(2).setPreferredWidth(90);
+		
 		recordings_table.getColumnModel().getColumn(0).setMaxWidth(25);
-		recordings_table.getColumnModel().getColumn(1).setMaxWidth(110);
+		recordings_table.getColumnModel().getColumn(1).setMaxWidth(120);
+		recordings_table.getColumnModel().getColumn(2).setMaxWidth(90);
 
-		recordings_table.getColumnModel().getColumn(2).setPreferredWidth(400);
+
+		recordings_table.getColumnModel().getColumn(3).setPreferredWidth(400);
 
 		buttonsPanel = new JPanel();
 		add(buttonsPanel, "flowx,cell 0 1,grow");
@@ -241,16 +250,11 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 		tableColumn.setCellRenderer(new RecordingDisplay());
 		tableColumn = recordings_table.getColumn(recordings_table.getColumnName(3));
 		tableColumn.setCellRenderer(new RecordingDisplay());
+		
 		//recordings_table.removeColumn(recordings_table.getColumn(recordings_table.getColumnName(3)));
 		
 		addTableMouseListener();
-		/*
-		controller.addBatchAction.setFilePath(values_save_path_text_field,
-				definitions_save_path_text_field);
-		controller.viewBatchAction.setRecordingFields(
-				definitions_save_path_text_field, values_save_path_text_field);
-				*/
-
+		
 	}
 
 	/* PUBLIC METHODS ********************************************************* */
