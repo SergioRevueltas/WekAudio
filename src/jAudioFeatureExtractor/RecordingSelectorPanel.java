@@ -31,6 +31,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.table.TableColumn;
 
 import net.miginfocom.swing.MigLayout;
@@ -214,7 +215,7 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 		recordings_table.getColumnModel().getColumn(2).setMaxWidth(90);
 
 
-		recordings_table.getColumnModel().getColumn(3).setPreferredWidth(400);
+		recordings_table.getColumnModel().getColumn(3).setPreferredWidth(200);
 
 		buttonsPanel = new JPanel();
 		add(buttonsPanel, "flowx,cell 0 1,grow");
@@ -239,6 +240,8 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 
 		// Set up and display the table
 		recordings_scroll_pane = new JScrollPane(recordings_table);
+		recordings_scroll_pane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		recordings_scroll_pane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		add(recordings_scroll_pane, "cell 0 2,grow");
 		recordings_scroll_pane.setBackground(OuterFrame.GRAY_BOXES_LINE);
 		recordings_scroll_pane.getViewport().setBackground(OuterFrame.GRAY_PANELS);

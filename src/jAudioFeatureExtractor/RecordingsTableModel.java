@@ -58,7 +58,7 @@ public class RecordingsTableModel extends DefaultTableModel {
 				Object[] row_contents = new Object[4];
 				row_contents[0] = i+1;
 				row_contents[1] = recording_list[i].identifier;
-				row_contents[2] = "???";
+				row_contents[2] = "??????????";
 				row_contents[3] = recording_list[i].file_path;
 				addRow(row_contents);
 			}

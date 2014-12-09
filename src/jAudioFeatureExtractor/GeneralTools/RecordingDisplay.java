@@ -28,7 +28,7 @@ public class RecordingDisplay extends DefaultTableCellRenderer {
 		// if error when classify
 		String fileName = (String)table.getModel().getValueAt(row,1);
 		String className = (String) table.getModel().getValueAt(row,2);
-		if(!className.equals("???") && !fileName.contains(className)){
+		if(!className.contains("?") && !fileName.contains(className)){
 			setBackground(OuterFrame.GRAY_BACKGROUND);
 			tmp.setFont(tmp.getFont().deriveFont(Font.BOLD, 12));		
 		}else{
