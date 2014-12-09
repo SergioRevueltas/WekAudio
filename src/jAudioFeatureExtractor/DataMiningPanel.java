@@ -111,7 +111,7 @@ public class DataMiningPanel extends JPanel implements ActionListener, ThreadCom
 		this.controller = c;
 		// Set the file chooser to null initially
 		save_file_chooser = null;
-		setLayout(new MigLayout("", "[::340.00px]", "[23px][350.00px:n:350.00px][grow]"));
+		setLayout(new MigLayout("", "[::340.00px]", "[14px][350.00px:n:350.00px][grow]"));
 
 		// Add an overall title for this panel
 		JLabel label = new CustomJLabel("DATA MINING:");
@@ -454,9 +454,9 @@ public class DataMiningPanel extends JPanel implements ActionListener, ThreadCom
 			RecordingInfo[] recordings = controller.dm_.recordingsInfo;
 			if (recordings == null) {
 				JOptionPane.showMessageDialog(controller.getFrame(),
-						"No recordings selected to extract features from.\n"
-								+ "Add at least 10 audio files from disk or mic in the first panel.\n"
-								+ "Please, check out help menu to get more info.", "No recordings selected",
+						"No recordings loaded to extract features from.\n"
+								+ "Add audio files from disk or mic in the first panel.\n"
+								+ "Please, check out help menu to get more info.", "Info",
 						JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}

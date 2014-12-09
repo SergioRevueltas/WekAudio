@@ -50,7 +50,7 @@ public class ExtractionThread extends Thread implements Updater {
 
 	private ProgressFrame progressFrame;
 
-	int extractionOption;
+	private int extractionOption;
 	
 	private String modelLoadPath;
 	
@@ -103,6 +103,9 @@ public class ExtractionThread extends Thread implements Updater {
 						if (extractionOption == CLASSIFY_ALL){
 							controller.rtm_.fillTable(controller.dm_.recordingsInfo, classificationResults);
 							controller.rtm_.fireTableDataChanged();
+							JOptionPane.showMessageDialog(controller.getFrame(),
+									"Classification done.", "Info",
+									JOptionPane.INFORMATION_MESSAGE);
 						} else {
 							classificationTextArea.setText(classificationResults.get(0));
 							outerFrame.dataMiningPanel.getLblClassificationDone().setVisible(true);
@@ -113,11 +116,7 @@ public class ExtractionThread extends Thread implements Updater {
 					}
 					classificationTextArea.setVisible(true);
 					//classificationTextArea.setCaretPosition(0);
-					/*					
-					JOptionPane.showMessageDialog(controller.getFrame(),
-							"Classification done.", "Info",
-							JOptionPane.INFORMATION_MESSAGE);
-					*/
+					
 				}
 			}
 		};
