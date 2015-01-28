@@ -246,7 +246,7 @@ public class DataMiningPanel extends JPanel implements ActionListener, ThreadCom
 						"BayesNet", "ClassificationViaRegression", "CostSensitiveClassifier",
 						"DecisionTable", "FilteredClassifier", "HoeffdingTree",
 						"IBk", "InputMappedClassifier", "J48", "JRip",
-						"KStar", "NaiveBayes", "OneR", "RandomForest", "REPTree", "ZeroR" };
+						"KStar", "MultilayerPerceptron ", "NaiveBayes", "OneR", "RandomForest", "REPTree", "ZeroR" };
 		/* All who extends from Classifier
 		String[] classifierItems =
 				new String[] { "AbstractClassifier", "AdaBoostM1",

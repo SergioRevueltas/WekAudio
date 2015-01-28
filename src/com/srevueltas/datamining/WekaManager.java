@@ -17,6 +17,7 @@ import weka.classifiers.Classifier;
 import weka.classifiers.bayes.BayesNet;
 import weka.classifiers.bayes.NaiveBayes;
 import weka.classifiers.evaluation.Evaluation;
+import weka.classifiers.functions.MultilayerPerceptron;
 import weka.classifiers.lazy.IBk;
 import weka.classifiers.lazy.KStar;
 import weka.classifiers.meta.AdaBoostM1;
@@ -142,6 +143,9 @@ public class WekaManager {
 			break;
 		case "ZeroR":
 			cls = new ZeroR();
+			break;
+		case "MultilayerPerceptron":
+			cls = new MultilayerPerceptron();
 			break;
 		default:
 			cls = new BayesNet();
