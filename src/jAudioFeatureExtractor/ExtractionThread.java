@@ -5,6 +5,7 @@ import jAudioFeatureExtractor.DataTypes.RecordingInfo;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -57,6 +58,10 @@ public class ExtractionThread extends Thread implements Updater {
 	private ArrayList<String> classificationResults;
 
 	private String classifierName;
+	
+	private String time;
+	
+	private long a, b;
 
 	/**
 	 * This constructor constructs the thread, partially preparing it for execution
@@ -91,9 +96,13 @@ public class ExtractionThread extends Thread implements Updater {
 								);
 					trainingTextArea.setVisible(true);
 					trainingTextArea.setCaretPosition(0);
-					
+					String modelLoadPath = outerFrame.dataMiningPanel.getLoadModelTextField().getText();
+					int pos = modelLoadPath.lastIndexOf("/");
+					String classifierName = modelLoadPath.substring(pos+1, modelLoadPath.length());
+					long timeSeconds = TimeUnit.MILLISECONDS.toSeconds(b - a);
+					time = timeSeconds + " seconds.";
 					JOptionPane.showMessageDialog(controller.getFrame(),
-							"Features successfully extracted and saved.", "Congrats!!",
+							"Features successfully extracted and saved.\nBuilt " + classifierName + " classifier.\nTotal time: " + (b - a) + " ms.", "Congrats!!",
 							JOptionPane.INFORMATION_MESSAGE);
 							
 				} //classify 
@@ -173,7 +182,7 @@ public class ExtractionThread extends Thread implements Updater {
 		controller.feIsRunning = true;
 		try {
 			SwingUtilities.invokeAndWait(suspendGUI);
-			
+			a = System.currentTimeMillis();
 			if (extractionOption == TRAIN) { //train
 				controller.dm_.validateFile(valuesSavePath);
 				File feature_values_save_file = new File(valuesSavePath);
@@ -197,10 +206,14 @@ public class ExtractionThread extends Thread implements Updater {
 						new RecordingInfo[]{controller.dm_.recordinInfo}, controller.outputTypeAction
 								.getSelected(), extractionOption, modelLoadPath);
 			}
-			
+			b = System.currentTimeMillis();
 			if (extractionOption == TRAIN && classificationResults != null){
 				WekaStatistic wekaStatistic = WekaManager.saveModel(controller, valuesSavePath, classifierName);
 				controller.setWekaStatistics(wekaStatistic);
+				int pos = valuesSavePath.lastIndexOf(".");
+				String tmp = valuesSavePath.substring(0, pos);
+				String modelPath = tmp + ".model";
+				controller.getFrame().dataMiningPanel.getLoadModelTextField().setText(modelPath);
 			}
 			SwingUtilities.invokeLater(resumeGUI);
 		} 

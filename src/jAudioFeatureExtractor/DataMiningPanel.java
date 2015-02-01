@@ -91,6 +91,7 @@ public class DataMiningPanel extends JPanel implements ActionListener, ThreadCom
 	private CustomJTextField arffSavePathTextField;
 	private CustomJTextField loadFileToClassifyTextField;
 	private CustomJTextField loadModelTextField;
+
 	private CustomJComboBox cbClassifiers;
 	private CustomJTextArea trainresultsTextarea;
 	private CustomJTextArea classificationResultsTextArea;
@@ -754,4 +755,12 @@ public class DataMiningPanel extends JPanel implements ActionListener, ThreadCom
 		return lblClassificationDone;
 	}
 
+	public CustomJTextField getLoadModelTextField() {
+		return loadModelTextField;
+	}
+
+	
+	public void setLoadModelTextField(CustomJTextField loadModelTextField) {
+		this.loadModelTextField = loadModelTextField;
+	}
 }
