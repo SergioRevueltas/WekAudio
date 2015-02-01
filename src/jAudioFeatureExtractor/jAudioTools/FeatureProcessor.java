@@ -572,7 +572,7 @@ public class FeatureProcessor {
 				preEmphasis(samples);
 
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(controller.getFrame(), "Bad file: " + recording_file.getName() + "\nPress to continue the process without this file.", "Info",
+			JOptionPane.showMessageDialog(controller.extractionThread.getProgressFrame(), "Bad file: " + recording_file.getName() + "\nPress to continue the process without this file.", "Info",
 					JOptionPane.INFORMATION_MESSAGE);
 			System.out.println("Bad file: " + recording_file.getName());
 			// e.printStackTrace();
