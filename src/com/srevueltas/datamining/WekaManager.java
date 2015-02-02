@@ -56,7 +56,7 @@ public class WekaManager {
 		int pos = arffPath.lastIndexOf(".");
 		String tmp = arffPath.substring(0, pos);
 		String modelPath = tmp + ".model";
-		
+				
 		Classifier cls = loadSelectedClassifier(classifierName);
 
 		System.out.println("SELECTED CLASSIFIER: " + cls.getClass().toString());
@@ -121,6 +121,7 @@ public class WekaManager {
 			cls = new IBk();
 			break;
 		case "J48":
+			System.out.println("new J48");
 			cls = new J48();
 			break;
 		case "JRip":
@@ -128,6 +129,9 @@ public class WekaManager {
 			break;
 		case "KStar":
 			cls = new KStar();
+			break;
+		case "MultilayerPerceptron":
+			cls = new MultilayerPerceptron();
 			break;
 		case "NaiveBayes":
 			cls = new NaiveBayes();
@@ -144,10 +148,8 @@ public class WekaManager {
 		case "ZeroR":
 			cls = new ZeroR();
 			break;
-		case "MultilayerPerceptron":
-			cls = new MultilayerPerceptron();
-			break;
 		default:
+			System.out.println("Default --------- BayesNet");
 			cls = new BayesNet();
 			break;
 		}
