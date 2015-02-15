@@ -25,7 +25,9 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.KeyStroke;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
@@ -250,6 +252,7 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 				controller.dm_.is_primary);
 		decorator = new SortingTableModelDecorator(controller.fstm_);
 		features_table = new CustomJTable(decorator);
+		features_table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
 		multipleToggleAction = new MultipleToggleAction(features_table);
 		String key = "MultipleToggleAction";
@@ -280,13 +283,13 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 					width[i]);
 		}
 		*/
-		features_table.getColumnModel().getColumn(0).setPreferredWidth(28);
-		features_table.getColumnModel().getColumn(1).setPreferredWidth(200);
-		features_table.getColumnModel().getColumn(2).setPreferredWidth(40);
+		features_table.getColumnModel().getColumn(0).setPreferredWidth(40);
+		features_table.getColumnModel().getColumn(1).setPreferredWidth(230);
+		features_table.getColumnModel().getColumn(2).setPreferredWidth(70);
 
-		features_table.getColumnModel().getColumn(0).setMinWidth(28);
-		features_table.getColumnModel().getColumn(1).setMinWidth(200);
-		features_table.getColumnModel().getColumn(2).setMinWidth(40);
+		features_table.getColumnModel().getColumn(0).setMinWidth(40);
+		features_table.getColumnModel().getColumn(1).setMinWidth(230);
+		features_table.getColumnModel().getColumn(2).setMinWidth(70);
 
 		// add handler for sorting panel
 		JTableHeader header = (JTableHeader) features_table.getTableHeader();
@@ -319,6 +322,7 @@ public class FeatureSelectorPanel extends JPanel implements ActionListener {
 
 		// Set up and display the table
 		features_scroll_pane = new JScrollPane(features_table);
+		features_scroll_pane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		features_panel = new JPanel(new GridLayout(1, 1));
 		features_panel.add(features_scroll_pane);
 		features_scroll_pane.setBackground(OuterFrame.GRAY_BOXES_LINE);

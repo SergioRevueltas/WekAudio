@@ -40,6 +40,9 @@ public class DataMiningPanel extends JPanel implements ActionListener, ThreadCom
 	/* FIELDS ***************************************************************** */
 
 	static final long serialVersionUID = 1;
+	public static final int TRAIN = 0;
+	public static final int CLASSIFY_ALL = 1;
+	public static final int CLASSIFY_SINGLE_FILE = 2;
 
 	public static final Color GRAY = Color.GRAY;
 	/**
@@ -88,14 +91,17 @@ public class DataMiningPanel extends JPanel implements ActionListener, ThreadCom
 	private CustomJTextField arffSavePathTextField;
 	private CustomJTextField loadFileToClassifyTextField;
 	private CustomJTextField loadModelTextField;
+
 	private CustomJComboBox cbClassifiers;
 	private CustomJTextArea trainresultsTextarea;
 	private CustomJTextArea classificationResultsTextArea;
 
+	private CustomJButton classifyAll_button;
+
 	/* CONSTRUCTOR ************************************************************ */
 	/**
 	 * Set up frame.
-	 * <p> 
+	 * <p>
 	 * Daniel McEnnis 05-08-05 Added GlobalWindowChange button
 	 * 
 	 * @param outer_frame The GUI element that contains this object.
@@ -106,7 +112,7 @@ public class DataMiningPanel extends JPanel implements ActionListener, ThreadCom
 		this.controller = c;
 		// Set the file chooser to null initially
 		save_file_chooser = null;
-		setLayout(new MigLayout("", "[::340.00px]", "[23px][350.00px:n:350.00px][grow]"));
+		setLayout(new MigLayout("", "[::340.00px]", "[14px][350.00px:n:350.00px][grow]"));
 
 		// Add an overall title for this panel
 		JLabel label = new CustomJLabel("DATA MINING:");
@@ -162,7 +168,8 @@ public class DataMiningPanel extends JPanel implements ActionListener, ThreadCom
 
 		classifyPanel = new JPanel();
 		add(classifyPanel, "flowx,cell 0 2,growy");
-		classifyPanel.setLayout(new MigLayout("ins 0", "[92.00px:n:92.00px,grow][180:n,grow][37px:n:37px,grow]", "[][][50.00px:50.00px:50.00px][][][grow,top]"));
+		classifyPanel.setLayout(new MigLayout("ins 0", "[92.00px:n:92.00px,grow][180:n,grow][37px:n:37px,grow]",
+				"[][50px:50px:50px][][50.00px:50.00px:50.00px][][][grow,top]"));
 		classifyPanel.setBackground(GRAY);
 
 		lblModelLoadPath = new CustomJLabel("Model Load Path");
@@ -175,32 +182,35 @@ public class DataMiningPanel extends JPanel implements ActionListener, ThreadCom
 		loadModelTextField.setColumns(50);
 
 		lblFileToClassify = new CustomJLabel("File to classify");
-		classifyPanel.add(lblFileToClassify, "cell 0 1,alignx trailing");
+		classifyPanel.add(lblFileToClassify, "cell 0 2,alignx trailing");
 		lblFileToClassify.setFont(new Font("Arial", Font.BOLD, 12));
 
 		loadFileToClassifyTextField = new CustomJTextField();
 		loadFileToClassifyTextField.setEditable(false);
-		classifyPanel.add(loadFileToClassifyTextField, "flowx,cell 1 1,alignx left");
+		classifyPanel.add(loadFileToClassifyTextField, "flowx,cell 1 2,alignx left");
 		loadFileToClassifyTextField.setColumns(50);
 		// classificationResultsTextArea.setText("train Results Text Area slkdfglñkdfjg ñldfkgj ñldkgj dlfñkgj ñldskg"
 		// + "asdfsadf sadfasd fsda fasd f asdf sda fsda f sdafjasdlkfjasñlk sdlkj fsdlkñj fsaldñk flñksd");
 
 		play_recording_button = new CustomJButton("Play");
-		classifyPanel.add(play_recording_button, "cell 2 1,growx");
+		classifyPanel.add(play_recording_button, "cell 2 2,growx");
 		play_recording_button.addActionListener(this);
 
+		classifyAll_button = new CustomJButton("Classify All");
+		classifyPanel.add(classifyAll_button, "cell 0 1 3 1,grow");
+
 		classify_button = new CustomJButton("Classify");
-		classifyPanel.add(classify_button, "cell 0 2 3 1,grow");
+		classifyPanel.add(classify_button, "cell 0 3 3 1,grow");
 
 		lblClassificationDone = new CustomJLabel("Classification done. The class of the audio file is:");
 		lblClassificationDone.setFont(new Font("Arial", Font.PLAIN, 10));
-		classifyPanel.add(lblClassificationDone, "cell 0 4 3 1");
+		classifyPanel.add(lblClassificationDone, "cell 0 5 3 1");
 		lblClassificationDone.setVisible(false);
 
 		classificationResultsPanel = new JPanel();
-		classifyPanel.add(classificationResultsPanel, "cell 0 5 3 1,grow");
+		classifyPanel.add(classificationResultsPanel, "cell 0 6 3 1,grow");
 		classificationResultsPanel.setLayout(new MigLayout("", "[grow]", "[grow]"));
-		classificationResultsPanel.setBackground(GRAY); 
+		classificationResultsPanel.setBackground(GRAY);
 
 		classificationResultsTextArea = new CustomJTextArea();
 		classificationResultsTextArea.setWrapStyleWord(true);
@@ -213,11 +223,12 @@ public class DataMiningPanel extends JPanel implements ActionListener, ThreadCom
 		classifyPanel.add(loadModelBrowseButton, "cell 1 0 2 1,alignx right");
 
 		loadFileBrowseButton = new CustomJButton("Browse");
-		classifyPanel.add(loadFileBrowseButton, "cell 1 1");
+		classifyPanel.add(loadFileBrowseButton, "cell 1 2");
 		loadFileBrowseButton.addActionListener(this);
 		loadModelBrowseButton.addActionListener(this);
 
 		classify_button.addActionListener(this);
+		classifyAll_button.addActionListener(this);
 
 		controller.dm_.aggregators = new Aggregator[] {
 				// (Aggregator) (controller.dm_.aggregatorMap.get("Mean").clone()),
@@ -236,7 +247,7 @@ public class DataMiningPanel extends JPanel implements ActionListener, ThreadCom
 						"BayesNet", "ClassificationViaRegression", "CostSensitiveClassifier",
 						"DecisionTable", "FilteredClassifier", "HoeffdingTree",
 						"IBk", "InputMappedClassifier", "J48", "JRip",
-						"KStar", "NaiveBayes", "OneR", "RandomForest", "REPTree", "ZeroR" };
+						"KStar", "MultilayerPerceptron", "NaiveBayes", "OneR", "RandomForest", "REPTree", "ZeroR" };
 		/* All who extends from Classifier
 		String[] classifierItems =
 				new String[] { "AbstractClassifier", "AdaBoostM1",
@@ -290,8 +301,10 @@ public class DataMiningPanel extends JPanel implements ActionListener, ThreadCom
 			stopRecording();
 			if (event.getSource().equals(extract_features_button))
 				train(false);
-			else if (event.getSource().equals(classify_button)) {
-				classifyInstances(true);
+			else if (event.getSource().equals(classifyAll_button)) {
+				classifyAllInstances();
+			} else if (event.getSource().equals(classify_button)) {
+				classifySingleInstance();
 			} else if (event.getSource().equals(saveBrowseButton)) {
 				browseFeatureValuesSavePath();
 			} else if (event.getSource().equals(loadModelBrowseButton)) {
@@ -307,6 +320,73 @@ public class DataMiningPanel extends JPanel implements ActionListener, ThreadCom
 				}
 			}
 		}
+	}
+
+	private void classifySingleInstance() {
+		try {
+			// Get the control parameters
+			boolean save_features_for_each_window = false;
+			boolean save_overall_recording_features = true;
+			// String feature_values_save_path = arffSavePathTextField.getText();
+			controller.windowSizeCombo.setSelectedIndex(controller.window_size_index);
+			int window_size = (int) controller.windowSizeCombo.getSelectedItem();
+			double window_overlap_percentage = controller.getWindow_overlap_value();
+			double window_overlap_fraction = window_overlap_percentage / 100;
+
+			if (loadFileToClassifyTextField.getText().compareTo("") == 0) {
+				JOptionPane.showMessageDialog(controller.getFrame(), "No recording selected above to classify.",
+						"Info",
+						JOptionPane.INFORMATION_MESSAGE);
+				return;
+			}
+			if (loadModelTextField.getText().compareTo("") == 0) {
+				JOptionPane.showMessageDialog(controller.getFrame(), "No model selected above to classify.", "Info",
+						JOptionPane.INFORMATION_MESSAGE);
+				return;
+			}
+			File file = load_file_chooser.getSelectedFile();
+			if (file == null) {
+				JOptionPane.showMessageDialog(controller.getFrame(), "No recording selected above.", "Info",
+						JOptionPane.INFORMATION_MESSAGE);
+				return;
+			}
+			// Get selected file info and override data model
+			controller.dm_.recordinInfo = new RecordingInfo(file.getName(), file.getPath(), null, false);
+
+			// Get the audio recordings to extract features from and throw an exception if there are none
+			RecordingInfo[] recordings = new RecordingInfo[1];
+			recordings[0] = controller.dm_.recordinInfo;
+
+			// Find which features are selected to be saved
+			for (int i = 0; i < controller.dm_.defaults.length; i++) {
+				controller.dm_.defaults[i] = ((Boolean) controller.fstm_
+						.getValueAt(i, 0)).booleanValue();
+			}
+
+			// threads can only execute once. Rebuild the thread here
+			controller.extractionThread = new ExtractionThread(controller, outer_frame);
+
+			controller.extractionThread.setup(save_overall_recording_features,
+					save_features_for_each_window, "",
+					"", window_size, window_overlap_fraction, CLASSIFY_SINGLE_FILE, loadModelTextField.getText(), "");
+			// extract the features
+			controller.extractionThread.start();
+
+		} catch (Throwable t) {
+			// React to the Java Runtime running out of memory
+			if (t.toString().equals("java.lang.OutOfMemoryError"))
+				JOptionPane.showMessageDialog(
+						controller.getFrame(),
+						"The Java Runtime ran out of memory. Please rerun this program\n"
+								+ "with a higher amount of memory assigned to the Java Runtime heap.",
+						"ERROR", JOptionPane.ERROR_MESSAGE);
+			else if (t instanceof Exception) {
+				Exception e = (Exception) t;
+				JOptionPane.showMessageDialog(controller.getFrame(), e.getMessage(), "No recording selected",
+						JOptionPane.INFORMATION_MESSAGE);
+			}
+		}
+
 	}
 
 	/**
@@ -360,7 +440,7 @@ public class DataMiningPanel extends JPanel implements ActionListener, ThreadCom
 	 * Extract the features from all of the files added in the GUI. Use the features and feature settings entered in the
 	 * GUI. Save the results in a feature_vector_file and classify features used in a stored model. Sergio Revueltas
 	 */
-	private void classifyInstances(boolean toClassify) {
+	private void classifyAllInstances() {
 		try {
 			// Get the control parameters
 			boolean save_features_for_each_window = false;
@@ -371,9 +451,13 @@ public class DataMiningPanel extends JPanel implements ActionListener, ThreadCom
 			double window_overlap_percentage = controller.getWindow_overlap_value();
 			double window_overlap_fraction = window_overlap_percentage / 100;
 
-			if (loadFileToClassifyTextField.getText().compareTo("") == 0) {
-				JOptionPane.showMessageDialog(controller.getFrame(), "No recording selected above to classify.",
-						"Info",
+			// Get the audio recordings to extract features from and throw an exception if there are none
+			RecordingInfo[] recordings = controller.dm_.recordingsInfo;
+			if (recordings == null) {
+				JOptionPane.showMessageDialog(controller.getFrame(),
+						"No recordings loaded to extract features from.\n"
+								+ "Add audio files from disk or mic in the first panel.\n"
+								+ "Please, check out help menu to get more info.", "Info",
 						JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}
@@ -382,18 +466,6 @@ public class DataMiningPanel extends JPanel implements ActionListener, ThreadCom
 						JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}
-			File file = load_file_chooser.getSelectedFile();
-			if (file == null) {
-				JOptionPane.showMessageDialog(controller.getFrame(), "No recording selected above.", "Info",
-						JOptionPane.INFORMATION_MESSAGE);
-				return;
-			}
-			// Get selected file info and override data model
-			controller.dm_.recordinInfo = new RecordingInfo(file.getName(), file.getPath(), null, false);
-
-			// Get the audio recordings to extract features from and throw an exception if there are none
-			RecordingInfo[] recordings = new RecordingInfo[1];
-			recordings[0] = controller.dm_.recordinInfo;
 
 			// Find which features are selected to be saved
 			for (int i = 0; i < controller.dm_.defaults.length; i++) {
@@ -406,7 +478,7 @@ public class DataMiningPanel extends JPanel implements ActionListener, ThreadCom
 
 			controller.extractionThread.setup(save_overall_recording_features,
 					save_features_for_each_window, "",
-					"", window_size, window_overlap_fraction, toClassify, loadModelTextField.getText(), "");
+					"", window_size, window_overlap_fraction, CLASSIFY_ALL, loadModelTextField.getText(), "");
 			// extract the features
 			controller.extractionThread.start();
 
@@ -483,7 +555,7 @@ public class DataMiningPanel extends JPanel implements ActionListener, ThreadCom
 			// setup thread
 			controller.extractionThread.setup(save_overall_recording_features,
 					save_features_for_each_window, feature_values_save_path,
-					"", window_size, window_overlap_fraction, toClassify, "", classifierName);
+					"", window_size, window_overlap_fraction, TRAIN, "", classifierName);
 			// extract the features
 			controller.extractionThread.start();
 
@@ -683,4 +755,12 @@ public class DataMiningPanel extends JPanel implements ActionListener, ThreadCom
 		return lblClassificationDone;
 	}
 
+	public CustomJTextField getLoadModelTextField() {
+		return loadModelTextField;
+	}
+
+	
+	public void setLoadModelTextField(CustomJTextField loadModelTextField) {
+		this.loadModelTextField = loadModelTextField;
+	}
 }

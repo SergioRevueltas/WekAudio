@@ -17,6 +17,7 @@ import weka.classifiers.Classifier;
 import weka.classifiers.bayes.BayesNet;
 import weka.classifiers.bayes.NaiveBayes;
 import weka.classifiers.evaluation.Evaluation;
+import weka.classifiers.functions.MultilayerPerceptron;
 import weka.classifiers.lazy.IBk;
 import weka.classifiers.lazy.KStar;
 import weka.classifiers.meta.AdaBoostM1;
@@ -55,7 +56,7 @@ public class WekaManager {
 		int pos = arffPath.lastIndexOf(".");
 		String tmp = arffPath.substring(0, pos);
 		String modelPath = tmp + ".model";
-		
+				
 		Classifier cls = loadSelectedClassifier(classifierName);
 
 		System.out.println("SELECTED CLASSIFIER: " + cls.getClass().toString());
@@ -120,6 +121,7 @@ public class WekaManager {
 			cls = new IBk();
 			break;
 		case "J48":
+			System.out.println("new J48");
 			cls = new J48();
 			break;
 		case "JRip":
@@ -127,6 +129,9 @@ public class WekaManager {
 			break;
 		case "KStar":
 			cls = new KStar();
+			break;
+		case "MultilayerPerceptron":
+			cls = new MultilayerPerceptron();
 			break;
 		case "NaiveBayes":
 			cls = new NaiveBayes();
@@ -144,6 +149,7 @@ public class WekaManager {
 			cls = new ZeroR();
 			break;
 		default:
+			System.out.println("Default --------- BayesNet");
 			cls = new BayesNet();
 			break;
 		}

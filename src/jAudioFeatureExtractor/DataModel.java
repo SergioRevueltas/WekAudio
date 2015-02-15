@@ -210,14 +210,14 @@ public class DataModel {
 	 * @param destinationFK file where descriptions of features extracted should be stored
 	 * @param info list of the files that are to be analyzed
 	 * @param arff output format of the data
-	 * @param toClassify
+	 * @param extractionOption
 	 * @param modelLoadPath
 	 * @return
 	 * @throws Exception
 	 */
 	public ArrayList<String> extractAndClassify(int windowSize, double windowOverlap,
 			double samplingRate, boolean normalise, boolean perWindowStats,
-			boolean overallStats, RecordingInfo[] info, int arff, boolean toClassify, String modelLoadPath)
+			boolean overallStats, RecordingInfo[] info, int arff, int extractionOption, String modelLoadPath)
 			throws Exception {
 		// Get the control parameters
 		boolean save_features_for_each_window = perWindowStats;
@@ -235,7 +235,7 @@ public class DataModel {
 		}
 		ArrayList<String> listFileNames = null;
 		// Obtain set of file names to create classes in arff
-		if (!toClassify) {
+		if (extractionOption == 0) {
 			Set<String> setFileNames = new HashSet<String>();
 			boolean areTypos = false;
 			for (RecordingInfo r : recordings) {
@@ -279,7 +279,7 @@ public class DataModel {
 				window_overlap, sampling_rate, normalise, this.features,
 				this.defaults, save_features_for_each_window,
 				save_overall_recording_features, featureValue, featureKey,
-				outputType, cancel_, container, toClassify, ((Controller)controller));
+				outputType, cancel_, container, extractionOption, ((Controller)controller));
 
 		feature_values_per_file.clear();
 		
@@ -297,12 +297,12 @@ public class DataModel {
 				updater.announceUpdate(i, 0);
 			}
 			processor.extractFeatures(load_file, updater, listFileNames);
-			if (toClassify) {
+			if (extractionOption != 0) {
 				feature_values_per_file.add(container.getResultsToSingleArray());
 			}
 		}
 		ArrayList<String> classPerFile = null;
-		if (toClassify) {
+		if (extractionOption != 0) {
 			classPerFile = new ArrayList<String>();
 			for (int i = 0; i < feature_values_per_file.size(); i++) {
 				//classPerFile.add("File " + i + ": "	+ WekaManager.classify(modelLoadPath, feature_values_per_file.get(i)) + "\n");

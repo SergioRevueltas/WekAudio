@@ -7,6 +7,7 @@
 package jAudioFeatureExtractor;
 
 import jAudioFeatureExtractor.DataTypes.RecordingInfo;
+import jAudioFeatureExtractor.GeneralTools.RecordingDisplay;
 import jAudioFeatureExtractor.jAudioTools.AudioMethods;
 import jAudioFeatureExtractor.jAudioTools.AudioMethodsPlayback;
 import jAudioFeatureExtractor.jAudioTools.AudioSamples;
@@ -29,6 +30,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.table.TableColumn;
 
 import net.miginfocom.swing.MigLayout;
 
@@ -196,14 +200,22 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 		setUpRecordingListTable();
 
 		recordings_table = new CustomJTable(controller.rtm_);
+		recordings_table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
 		recordings_table.getColumnModel().getColumn(0).setMinWidth(25);
-		recordings_table.getColumnModel().getColumn(1).setMinWidth(110);
+		recordings_table.getColumnModel().getColumn(1).setMinWidth(120);
+		recordings_table.getColumnModel().getColumn(2).setMinWidth(90);
 
+		recordings_table.getColumnModel().getColumn(0).setPreferredWidth(25);
+		recordings_table.getColumnModel().getColumn(1).setPreferredWidth(120);
+		recordings_table.getColumnModel().getColumn(2).setPreferredWidth(90);
+		
 		recordings_table.getColumnModel().getColumn(0).setMaxWidth(25);
-		recordings_table.getColumnModel().getColumn(1).setMaxWidth(110);
+		recordings_table.getColumnModel().getColumn(1).setMaxWidth(120);
+		recordings_table.getColumnModel().getColumn(2).setMaxWidth(90);
 
-		recordings_table.getColumnModel().getColumn(2).setPreferredWidth(400);
+
+		recordings_table.getColumnModel().getColumn(3).setPreferredWidth(200);
 
 		buttonsPanel = new JPanel();
 		add(buttonsPanel, "flowx,cell 0 1,grow");
@@ -228,18 +240,24 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 
 		// Set up and display the table
 		recordings_scroll_pane = new JScrollPane(recordings_table);
+		recordings_scroll_pane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		recordings_scroll_pane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		add(recordings_scroll_pane, "cell 0 2,grow");
 		recordings_scroll_pane.setBackground(OuterFrame.GRAY_BOXES_LINE);
 		recordings_scroll_pane.getViewport().setBackground(OuterFrame.GRAY_PANELS);
-
+		TableColumn tableColumn = recordings_table.getColumn(recordings_table.getColumnName(0));
+		tableColumn.setCellRenderer(new RecordingDisplay());
+		tableColumn = recordings_table.getColumn(recordings_table.getColumnName(1));
+		tableColumn.setCellRenderer(new RecordingDisplay());
+		tableColumn = recordings_table.getColumn(recordings_table.getColumnName(2));
+		tableColumn.setCellRenderer(new RecordingDisplay());
+		tableColumn = recordings_table.getColumn(recordings_table.getColumnName(3));
+		tableColumn.setCellRenderer(new RecordingDisplay());
+		
+		//recordings_table.removeColumn(recordings_table.getColumn(recordings_table.getColumnName(3)));
+		
 		addTableMouseListener();
-		/*
-		controller.addBatchAction.setFilePath(values_save_path_text_field,
-				definitions_save_path_text_field);
-		controller.viewBatchAction.setRecordingFields(
-				definitions_save_path_text_field, values_save_path_text_field);
-				*/
-
+		
 	}
 
 	/* PUBLIC METHODS ********************************************************* */
@@ -613,6 +631,7 @@ public class RecordingSelectorPanel extends JPanel implements ActionListener {
 		Object[] column_names = {
 				new String("#"),
 				new String("Name"),
+				new String("Class"),
 				new String("Path") };
 
 		int number_recordings = 0;

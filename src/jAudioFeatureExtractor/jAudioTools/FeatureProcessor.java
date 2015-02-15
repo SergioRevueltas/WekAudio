@@ -116,7 +116,7 @@ public class FeatureProcessor {
 
 	private boolean preEmphasis;
 
-	private boolean toClassify;
+	private int extractionOption;
 
 	private Controller controller;
 
@@ -139,7 +139,7 @@ public class FeatureProcessor {
 	 *            accross all windows.
 	 * @param feature_values_save_path The path of the feature_vector_file XML file to save feature values to.
 	 * @param feature_definitions_save_path The path of the feature_key_file file to save feature definitions to.
-	 * @param toClassify
+	 * @param extractionOption
 	 * @throws Exception Throws an informative exception if the input parameters are invalid.
 	 */
 	public FeatureProcessor(int window_size, double window_overlap,
@@ -153,10 +153,10 @@ public class FeatureProcessor {
 			int outputType,
 			Cancel cancel,
 			AggregatorContainer container,
-			boolean toClassify, Controller c)
+			int extractionOption, Controller c)
 			throws Exception {
 		this.controller = c;
-		this.toClassify = toClassify;
+		this.extractionOption = extractionOption;
 		this.cancel = cancel;
 		this.preEmphasis = false;
 
@@ -195,7 +195,7 @@ public class FeatureProcessor {
 					"INTERNAL ERROR - only ARFF and ACE output files are supported");
 		}
 
-		if (!toClassify) {
+		if (extractionOption == 0) {
 			values_writer = new DataOutputStream(feature_values_save_path);
 		} else {
 			values_writer = null;
@@ -216,7 +216,7 @@ public class FeatureProcessor {
 				features_to_save_among_all);
 
 		// Write the headers of the feature_vector_file
-		if (!toClassify) {
+		if (extractionOption == 0) {
 			if (outputType == 0) {
 				writeValuesXMLHeader();
 			} else if (outputType == 1) {
@@ -278,7 +278,7 @@ public class FeatureProcessor {
 				aggregator.add(feature_extractors, features_to_save);
 				aggregator.aggregate(window_feature_values);
 			}
-			if (!toClassify) {
+			if (extractionOption == 0) {
 				// Save the feature values for this recording
 				if (outputType == 0) {
 					saveACEFeatureVectorsForARecording(window_feature_values,
@@ -296,7 +296,7 @@ public class FeatureProcessor {
 				saveFeatureDefinitions(window_feature_values, aggregator);
 			}
 			 */
-			if (toClassify) {
+			if (extractionOption != 0) {
 				return window_feature_values;
 			} else {
 				return null;
@@ -572,7 +572,7 @@ public class FeatureProcessor {
 				preEmphasis(samples);
 
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(controller.getFrame(), "Bad file: " + recording_file.getName() + "\nPress to continue the process without this file.", "Info",
+			JOptionPane.showMessageDialog(controller.extractionThread.getProgressFrame(), "Bad file: " + recording_file.getName() + "\nPress to continue the process without this file.", "Info",
 					JOptionPane.INFORMATION_MESSAGE);
 			System.out.println("Bad file: " + recording_file.getName());
 			// e.printStackTrace();
