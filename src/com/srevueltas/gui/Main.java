@@ -10,6 +10,5 @@ public class Main {
 		Controller c = new Controller();
 		OuterFrame outerFrame = new OuterFrame(c);
 		c.setFrame(outerFrame);
-		//new MainWindow();
 	}
 }

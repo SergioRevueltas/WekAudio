@@ -85,10 +85,9 @@ public class HelpMenuFrame extends JFrame {
 	}
 
 	private void cancel() {
-		this.setVisible(false);
 		this.controller.getFrame().setEnabled(true);
 		this.controller.getFrame().toFront();
-
+		this.setVisible(false);
 	}
 
 	private void loadUrl() {

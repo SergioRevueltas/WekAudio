@@ -111,8 +111,9 @@ public class ProgressFrame extends JFrame {
 
 	private void cancel() {
 		controller.feIsRunning = false;
-		this.setVisible(false);
 		controller.getFrame().setEnabled(true);
 		controller.getFrame().toFront();
+		this.setVisible(false);
+
 	}
 }

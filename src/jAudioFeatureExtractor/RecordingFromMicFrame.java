@@ -396,9 +396,10 @@ public class RecordingFromMicFrame extends JFrame implements ActionListener, Thr
 		stopRecording();
 		// stopPlayback();
 		last_recorded_audio = null;
-		this.setVisible(false);
 		this.controller.getFrame().setEnabled(true);
 		this.controller.getFrame().toFront();
+		this.setVisible(false);
+
 	}
 
 	/**
@@ -457,7 +458,7 @@ public class RecordingFromMicFrame extends JFrame implements ActionListener, Thr
 				// See if user wishes to overwrite if a file with the same name exists
 				if (save_file.exists())
 				{
-					int overwrite = JOptionPane.showConfirmDialog(controller.getFrame(),
+					int overwrite = JOptionPane.showConfirmDialog(this,
 							"This file already exists.\nDo you wish to overwrite it?",
 							"WARNING",
 							JOptionPane.YES_NO_OPTION);

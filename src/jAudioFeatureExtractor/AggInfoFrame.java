@@ -129,9 +129,9 @@ public class AggInfoFrame extends JFrame {
 	}
 
 	private void cancel(){
-		this.setVisible(false);
 		this.parent.setEnabled(true);
 		this.parent.toFront();
+		this.setVisible(false);
 	}
 
 	

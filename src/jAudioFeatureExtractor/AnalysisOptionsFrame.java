@@ -133,10 +133,9 @@ public class AnalysisOptionsFrame extends JFrame implements ActionListener {
 
 	
 	private void cancel() {
-		this.setVisible(false);
 		this.controller.getFrame().setEnabled(true);
 		this.controller.getFrame().toFront();
-
+		this.setVisible(false);
 	}
 	
 	@Override

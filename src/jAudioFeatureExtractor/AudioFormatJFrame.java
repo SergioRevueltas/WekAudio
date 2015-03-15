@@ -460,9 +460,9 @@ public class AudioFormatJFrame extends JFrame implements ActionListener {
 
 		// React to the ok_button
 		else if (event.getSource().equals(ok_button)) {
-			this.setVisible(false);
 			this.parent.setEnabled(true);
 			this.parent.toFront();
+			this.setVisible(false);
 		}
 	}
 
@@ -495,8 +495,8 @@ public class AudioFormatJFrame extends JFrame implements ActionListener {
 	private void cancel()
 	{
 		setAudioFormat(temp_format);
-		this.setVisible(false);
 		this.parent.setEnabled(true);
 		this.parent.toFront();
+		this.setVisible(false);
 	}
 }

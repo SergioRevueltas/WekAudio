@@ -86,9 +86,9 @@ public class AggregatorsFrame extends JFrame implements ActionListener {
 	}
 	
 	private void cancel(){
-		this.setVisible(false);
 		this.controller.getFrame().setEnabled(true);
 		this.controller.getFrame().toFront();
+		this.setVisible(false);
 	}
 
 	/**
@@ -329,9 +329,8 @@ public class AggregatorsFrame extends JFrame implements ActionListener {
 		if (event.getSource() == saveButton) {
 			if ((controller.activeAgg_.getAggregator() != null) && (controller.activeAgg_.getAggregator().length > 0)) {
 				controller.dm_.aggregators = controller.activeAgg_.getAggregator();
-				this.setVisible(false);
-				this.controller.getFrame().setEnabled(true);
-				this.controller.getFrame().toFront();
+				cancel();
+
 			} else {
 				// controller.dm_.aggregators = new Aggregator[] { new Mean() };
 				lblErrorlabel.setVisible(true);

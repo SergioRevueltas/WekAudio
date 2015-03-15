@@ -157,9 +157,10 @@ public class AboutFrame extends JFrame implements ActionListener{
 	}
 
 	private void cancel() {
-		this.setVisible(false);
 		controller.getFrame().setEnabled(true);
 		controller.getFrame().toFront();
+		this.setVisible(false);
+
 	}
 
 	/**

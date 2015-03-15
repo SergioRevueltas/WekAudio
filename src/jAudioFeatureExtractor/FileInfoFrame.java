@@ -107,9 +107,9 @@ public class FileInfoFrame extends JFrame implements ActionListener, ThreadCompl
 
 	private void cancel() {
 		stopRecording();
-		setVisible(false);
 		this.controller.getFrame().setEnabled(true);
 		this.controller.getFrame().toFront();
+		setVisible(false);
 	}
 
 	/**

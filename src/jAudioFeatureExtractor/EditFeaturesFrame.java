@@ -160,9 +160,9 @@ public class EditFeaturesFrame extends JFrame implements ActionListener {
 	 * Called either when either the cancel button is pressed or when the window is eplicitly closed by a kill box.
 	 */
 	private void cancel() {
-		setVisible(false);
 		this.controller.getFrame().setEnabled(true);
 		this.controller.getFrame().toFront();
+		setVisible(false);
 	}
 
 	/**
