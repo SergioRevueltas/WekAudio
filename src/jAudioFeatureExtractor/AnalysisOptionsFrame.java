@@ -128,7 +128,7 @@ public class AnalysisOptionsFrame extends JFrame implements ActionListener {
 			}
 		});
 
-		setAlwaysOnTop(true);
+		//setAlwaysOnTop(true);
 	}
 
 	

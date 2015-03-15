@@ -129,7 +129,7 @@ public class AboutFrame extends JFrame implements ActionListener{
 		this.setBounds(new Rectangle(260, 95, 500, 500));
 		this.getContentPane().setBackground(OuterFrame.GRAY_PANELS);
 		// this.getContentPane().setLayout(new MigLayout("", "[67.00][]", "[93.00px:80.00px][60.00px:23px][]"));
-		this.setAlwaysOnTop(true);
+		//this.setAlwaysOnTop(true);
 		this.setResizable(false);
 		// Cause program to react when the exit box is pressed
 		addWindowListener(new WindowAdapter() {

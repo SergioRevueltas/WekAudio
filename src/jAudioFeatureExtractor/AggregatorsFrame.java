@@ -74,7 +74,7 @@ public class AggregatorsFrame extends JFrame implements ActionListener {
 		this.setIconImage(java.awt.Toolkit.getDefaultToolkit().getImage("img/icon.png"));
 		this.setBounds(new Rectangle(195, 200, 630, 290));
 		this.setResizable(false);
-		this.setAlwaysOnTop(true);
+		//this.setAlwaysOnTop(true);
 		// Cause program to react when the exit box is pressed
 		addWindowListener(new WindowAdapter() {
 
